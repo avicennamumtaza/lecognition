@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 final theme = ThemeData(
   useMaterial3: true,
@@ -12,15 +12,14 @@ final theme = ThemeData(
 );
 
 void main() {
-  // WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,31 +30,43 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
   final String title;
 
   @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  @override
+  void initState() {
+    super.initState();
+    initialization();
+  }
+
+  void initialization() async {
+    // Display splash screen until initialization completes
+    await Future.delayed(const Duration(seconds: 1));
+    FlutterNativeSplash.remove(); // Remove splash screen
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // body: Scaffold(
-      // No appbar provided to the Scaffold, only a body with a
-      // CustomScrollView.
       body: CustomScrollView(
         slivers: [
-          // Add the app bar to the CustomScrollView.
           SliverAppBar(
             expandedHeight: 250.0,
-            // actions: [],
-            actions: const [Icon(Icons.add_ic_call_outlined)],
             floating: true,
             pinned: true,
+            actions: const [Icon(Icons.add_ic_call_outlined)],
             title: Text(
-              title,
+              widget.title,
               style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                     color: Theme.of(context).colorScheme.onPrimary,
                     fontWeight: FontWeight.w500,
-                  ), // Use theme text style
+                  ),
             ),
             backgroundColor: Theme.of(context).colorScheme.primary,
             flexibleSpace: FlexibleSpaceBar(
@@ -67,7 +78,6 @@ class MyHomePage extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        // Button 1: Carousel Placeholder
                         Container(
                           width: 150,
                           height: 100,
@@ -83,7 +93,6 @@ class MyHomePage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        // Button 2: Scanner Icon Placeholder
                         Container(
                           width: 100,
                           height: 100,
@@ -111,25 +120,23 @@ class MyHomePage extends StatelessWidget {
               ),
             ),
           ),
-          // Next, create a SliverList
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) => Padding(
                 padding: const EdgeInsets.symmetric(
-                    vertical: 8.0, horizontal: 16.0), // Add space between rows
+                    vertical: 8.0, horizontal: 16.0),
                 child: Container(
                   height: 50,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: Colors.white, // Background color of each row
-                    borderRadius:
-                        BorderRadius.circular(12.0), // Rounded corners
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12.0),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.5), // Shadow color
-                        spreadRadius: 2, // Spread of the shadow
-                        blurRadius: 5, // Blur radius
-                        offset: Offset(0, 3), // Offset for shadow (x, y)
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3),
                       ),
                     ],
                   ),

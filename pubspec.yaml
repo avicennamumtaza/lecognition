@@ -38,6 +38,13 @@ dependencies:
   google_fonts: ^6.2.1
   flutter_native_splash: ^2.4.1
 
+flutter_native_splash:
+  color: "#ffffff" # Set background color of the splash screen
+  image: assets/logojti.png # Path to your splash screen image
+  android: true
+  ios: true
+  web: false
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -61,8 +68,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/logojti.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
