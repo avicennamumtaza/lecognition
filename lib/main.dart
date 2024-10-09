@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: theme,
       title: 'Flutter Demo',
       home: const MyHomePage(title: 'Home Page'),
@@ -54,20 +55,25 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Home Page'),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Colors.white,
+      ),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: 250.0,
+            expandedHeight: 150.0,
             floating: true,
-            pinned: true,
-            actions: const [Icon(Icons.add_ic_call_outlined)],
-            title: Text(
-              widget.title,
-              style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    fontWeight: FontWeight.w500,
-                  ),
-            ),
+            // pinned: true,
+            // actions: const [Icon(Icons.add_ic_call_outlined)],
+            // title: Text(
+            //   widget.title,
+            //   style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+            //         color: Theme.of(context).colorScheme.onPrimary,
+            //         fontWeight: FontWeight.w500,
+            //       ),
+            // ),
             backgroundColor: Theme.of(context).colorScheme.primary,
             flexibleSpace: FlexibleSpaceBar(
               background: Column(
@@ -76,43 +82,52 @@ class _MyHomePageState extends State<MyHomePage> {
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          width: 150,
+                          width: MediaQuery.of(context).size.width * 0.9,
                           height: 100,
                           decoration: BoxDecoration(
                             color: Colors.green.shade300,
                             borderRadius: BorderRadius.circular(12),
                           ),
+                          padding: EdgeInsets.all(20),
+                          // child: const Center(
+                          //   child: Text(
+                          //     "Carousel berisi\ninformasi2 yg eye catching",
+                          //     textAlign: TextAlign.center,
+                          //     style: TextStyle(color: Colors.white),
+                          //   ),
+                          // ),
                           child: const Center(
                             child: Text(
-                              "Carousel berisi\ninformasi2 yg eye catching",
-                              textAlign: TextAlign.center,
+                              "Selamat tinggal penyakit mangga! Pindai daun, dapatkan diagnosis, dan rawat tanaman Anda dengan mudah."
+                                "Dapatkan hasil panen mangga yang optimal dengan menjaga kesehatan tanaman Anda menggunakan aplikasi ini.",
+                              textAlign: TextAlign.start,
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
                         ),
-                        Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            color: Colors.green.shade300,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.camera_alt,
-                                  size: 40, color: Colors.white),
-                              SizedBox(height: 8),
-                              Text(
-                                'Scanner',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ),
+                        // Container(
+                        //   width: 100,
+                        //   height: 100,
+                        //   decoration: BoxDecoration(
+                        //     color: Colors.green.shade300,
+                        //     borderRadius: BorderRadius.circular(12),
+                        //   ),
+                        //   child: const Column(
+                        //     mainAxisAlignment: MainAxisAlignment.center,
+                        //     children: [
+                        //       Icon(Icons.camera_alt,
+                        //           size: 40, color: Colors.white),
+                        //       SizedBox(height: 8),
+                        //       Text(
+                        //         'Scanner',
+                        //         style: TextStyle(color: Colors.white),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
@@ -150,6 +165,29 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               childCount: 100, // Number of rows
             ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+
+        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+        unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+        type: BottomNavigationBarType.fixed,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            activeIcon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.camera_alt_outlined),
+            activeIcon: Icon(Icons.camera_alt),
+            label: 'Scan',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu),
+            activeIcon: Icon(Icons.menu),
+            label: 'Menu',
           ),
         ],
       ),
