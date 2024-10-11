@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:lecognition/camera_app.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 final theme = ThemeData(
   useMaterial3: true,
@@ -13,33 +15,33 @@ final theme = ThemeData(
   textTheme: GoogleFonts.poppinsTextTheme(),
 );
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+// Future<void> main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize the available cameras and pass them to the CameraApp
-  final cameras = await availableCameras();
-  runApp(CameraApp(cameras: cameras));
-}
-
-/// CameraApp is the Main Application.
-class CameraApp extends StatelessWidget {
-  /// Constructor to accept cameras list
-  const CameraApp({super.key, required this.cameras});
-  final List<CameraDescription> cameras;
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: CameraScreen(cameras: cameras), // Navigate to CameraScreen
-    );
-  }
-}
-
-// void main() {
-//   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-//   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-//   runApp(const MyApp());
+//   // Initialize the available cameras and pass them to the CameraApp
+//   final cameras = await availableCameras();
+//   runApp(CameraApp(cameras: cameras));
 // }
+
+// /// CameraApp is the Main Application.
+// class CameraApp extends StatelessWidget {
+//   /// Constructor to accept cameras list
+//   const CameraApp({super.key, required this.cameras});
+//   final List<CameraDescription> cameras;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: CameraScreen(cameras: cameras), // Navigate to CameraScreen
+//     );
+//   }
+// }
+
+void main() {
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -64,6 +66,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool isLoading = true; // Add this flag
+
   @override
   void initState() {
     super.initState();
@@ -71,122 +75,107 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void initialization() async {
-    // Display splash screen until initialization completes
     await Future.delayed(const Duration(seconds: 1));
     FlutterNativeSplash.remove(); // Remove splash screen
+    await Future.delayed(const Duration(seconds: 5));
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home Page'),
+        title: Text(widget.title),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
       ),
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            expandedHeight: 150.0,
-            floating: true,
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Row(
+      body: isLoading
+          ? const Center(
+              child: SpinKitSquareCircle(
+                color: Colors.green,
+                size: 50.0,
+              ),
+            )
+          : CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  expandedHeight: 150.0,
+                  floating: true,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            color: Colors.green.shade300,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          padding: EdgeInsets.all(20),
-                          // child: const Center(
-                          //   child: Text(
-                          //     "Carousel berisi\ninformasi2 yg eye catching",
-                          //     textAlign: TextAlign.center,
-                          //     style: TextStyle(color: Colors.white),
-                          //   ),
-                          // ),
-                          child: const Center(
-                            child: Text(
-                              "Selamat tinggal penyakit mangga! Pindai daun, dapatkan diagnosis, dan rawat tanaman Anda dengan mudah."
-                                "Dapatkan hasil panen mangga yang optimal dengan menjaga kesehatan tanaman Anda menggunakan aplikasi ini.",
-                              textAlign: TextAlign.start,
-                              style: TextStyle(color: Colors.white),
-                            ),
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.9,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  color: Colors.green.shade300,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding: const EdgeInsets.all(20),
+                                child: const Center(
+                                  child: AutoSizeText(
+                                    "Selamat tinggal penyakit mangga! Pindai daun, dapatkan diagnosis, dan rawat tanaman Anda dengan mudah."
+                                    "Dapatkan hasil panen mangga yang optimal dengan menjaga kesehatan tanaman Anda menggunakan aplikasi ini.",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(color: Colors.white),
+                                    maxLines: 3,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        // Container(
-                        //   width: 100,
-                        //   height: 100,
-                        //   decoration: BoxDecoration(
-                        //     color: Colors.green.shade300,
-                        //     borderRadius: BorderRadius.circular(12),
-                        //   ),
-                        //   child: const Column(
-                        //     mainAxisAlignment: MainAxisAlignment.center,
-                        //     children: [
-                        //       Icon(Icons.camera_alt,
-                        //           size: 40, color: Colors.white),
-                        //       SizedBox(height: 8),
-                        //       Text(
-                        //         'Scanner',
-                        //         style: TextStyle(color: Colors.white),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) => Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 8.0, horizontal: 16.0),
-                child: Container(
-                  height: 50,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) => Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 16.0),
+                      child: Container(
+                        height: 50,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Content $index',
+                            style: const TextStyle(color: Colors.black),
+                          ),
+                        ),
                       ),
-                    ],
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Content $index',
-                      style: const TextStyle(color: Colors.black),
                     ),
+                    childCount: 100, // Number of rows
                   ),
                 ),
-              ),
-              childCount: 100, // Number of rows
+              ],
             ),
-          ),
-        ],
-      ),
       bottomNavigationBar: BottomNavigationBar(
-
-        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-        unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+        selectedLabelStyle:
+            const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+        unselectedLabelStyle:
+            const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
