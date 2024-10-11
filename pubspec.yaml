@@ -41,6 +41,7 @@ dependencies:
   camera: ^0.11.0+2
   flutter_spinkit: ^5.2.1
   auto_size_text: ^3.0.0
+  skeletonizer: ^1.4.2
 
 flutter_native_splash:
   color: "#ffffff" # Set background color of the splash screen
@@ -50,10 +51,10 @@ flutter_native_splash:
   web: false
 
 flutter_launcher_icons:
-  android: "launcher_icon"
+  android: true
   ios: true
   image_path: "assets/logojti.png"
-  min_sdk_android: 21
+  # min_sdk_android: 21
 
 dev_dependencies:
   flutter_test:
