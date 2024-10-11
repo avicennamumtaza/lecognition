@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:lecognition/data/dummy_disease.dart';
+import 'package:lecognition/widgets/diseaseCard.dart'; // Import list diagnosises
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initialization() async {
     await Future.delayed(const Duration(seconds: 1));
     FlutterNativeSplash.remove(); // Remove splash screen
-    await Future.delayed(const Duration(seconds: 5));
+    await Future.delayed(const Duration(seconds: 1));
     setState(() {
       isLoading = false;
     });
@@ -59,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: const EdgeInsets.all(10),
                         child: const Center(
                           child: AutoSizeText(
-                            "Selamat Pagi Lukman!",
+                            "Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman!",
                             textAlign: TextAlign.center,
                             style: TextStyle(color: Colors.white),
                           ),
@@ -69,42 +71,41 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(
+              //     horizontal: 20,
+              //     vertical: 10,
+              //   ),
+              // child:
               SliverList(
                 delegate: SliverChildBuilderDelegate(
-                  (context, index) => Padding(
-                    padding: EdgeInsets.only(
-                        top: index == 0 ? 20.0 : 15.0,
-                        left: 16.0,
-                        right: 16.0,
-                        bottom: index == 0 ? 10 : 10),
-                    child: Container(
-                      height: 100,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Content $index',
-                          style: const TextStyle(
-                            color: Colors.black,
-                          ),
+                  (context, index) {
+                    final disease = diseases[index];
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: index == 0 ? 25.0 : 15.0,
+                              left: 16.0,
+                              right: 16.0,
+                              bottom: index == 0 ? 10 : 10),
+                          child: DiseaseCard(disease: disease),
                         ),
-                      ),
-                    ),
-                  ),
-                  childCount: 100, // Number of rows
+
+                        // Menambahkan Divider sebagai garis bawah
+                        const Divider(
+                          color: Colors.grey, // Warna garis bawah
+                          thickness: 1.0, // Ketebalan garis
+                          height: 1.0, // Jarak vertikal garis
+                        ),
+                      ],
+                    );
+                  },
+                  childCount:
+                      diseases.length, // Sesuaikan dengan jumlah diagnosis
                 ),
               ),
+              // ),
             ],
           );
   }

@@ -7,7 +7,7 @@ class Diagnosis {
   final DateTime diagnosisDate;
   final double confidenceLevel;
 
-  Diagnosis({
+  const Diagnosis({
     required this.diagnosisId,
     required this.leafId,
     required this.diseaseId,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lecognition/screens/camera.dart';
+import 'package:lecognition/screens/diagnozer.dart';
 import 'package:lecognition/screens/home.dart';
 import 'package:lecognition/screens/profile.dart';
 
@@ -22,7 +22,7 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   Widget build(BuildContext context) {
     Widget activeScreen = const HomeScreen();
-    var activeScreenTitle = "";
+    var activeScreenTitle = "Home";
     if (_selectedScreenIndex == 1) {
       activeScreen = const DiagnozerScreen();
       activeScreenTitle = "Diagnozer";
