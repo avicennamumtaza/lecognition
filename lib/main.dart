@@ -101,48 +101,45 @@ class _MyHomePageState extends State<MyHomePage> {
           : CustomScrollView(
               slivers: [
                 SliverAppBar(
-                  expandedHeight: 150.0,
+                  expandedHeight: MediaQuery.of(context).size.width / 2,
                   floating: true,
-                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  backgroundColor: Colors.transparent,
                   flexibleSpace: FlexibleSpaceBar(
-                    background: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width * 0.9,
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  color: Colors.green.shade300,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                padding: const EdgeInsets.all(20),
-                                child: const Center(
-                                  child: AutoSizeText(
-                                    "Selamat tinggal penyakit mangga! Pindai daun, dapatkan diagnosis, dan rawat tanaman Anda dengan mudah."
-                                    "Dapatkan hasil panen mangga yang optimal dengan menjaga kesehatan tanaman Anda menggunakan aplikasi ini.",
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(color: Colors.white),
-                                    maxLines: 3,
-                                  ),
+                    background: 
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.width / 2,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.primary,
+                                borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(40), bottomRight: Radius.circular(40)),
+                              ),
+                              padding: const EdgeInsets.all(10),
+                              child: const Center(
+                                child: AutoSizeText(
+                                  "Selamat Pagi Lukman!",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.white),
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                        // ),
+                    //   ],
+                    // ),
                   ),
                 ),
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) => Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 16.0),
+                      padding: EdgeInsets.only(
+                        top: index == 0 ? 20.0 : 15.0,
+                        left: 16.0,
+                        right: 16.0,
+                      ),
                       child: Container(
                         height: 50,
                         width: double.infinity,
