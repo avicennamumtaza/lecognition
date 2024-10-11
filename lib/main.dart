@@ -1,6 +1,8 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:lecognition/camera_app.dart';
 
 final theme = ThemeData(
   useMaterial3: true,
@@ -11,11 +13,33 @@ final theme = ThemeData(
   textTheme: GoogleFonts.poppinsTextTheme(),
 );
 
-void main() {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize the available cameras and pass them to the CameraApp
+  final cameras = await availableCameras();
+  runApp(CameraApp(cameras: cameras));
 }
+
+/// CameraApp is the Main Application.
+class CameraApp extends StatelessWidget {
+  /// Constructor to accept cameras list
+  const CameraApp({super.key, required this.cameras});
+  final List<CameraDescription> cameras;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: CameraScreen(cameras: cameras), // Navigate to CameraScreen
+    );
+  }
+}
+
+// void main() {
+//   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+//   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+//   runApp(const MyApp());
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -65,15 +89,6 @@ class _MyHomePageState extends State<MyHomePage> {
           SliverAppBar(
             expandedHeight: 150.0,
             floating: true,
-            // pinned: true,
-            // actions: const [Icon(Icons.add_ic_call_outlined)],
-            // title: Text(
-            //   widget.title,
-            //   style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-            //         color: Theme.of(context).colorScheme.onPrimary,
-            //         fontWeight: FontWeight.w500,
-            //       ),
-            // ),
             backgroundColor: Theme.of(context).colorScheme.primary,
             flexibleSpace: FlexibleSpaceBar(
               background: Column(
