@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 // class DiagnozerScreen extends StatelessWidget {
 //   const DiagnozerScreen({super.key});
@@ -41,123 +42,115 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
       );
     }
     return SafeArea(
-      child: Stack(
-        children: [
-          Container(
-            child: CameraPreview(cameraController!),
-          ),
-          Positioned(
-            bottom: 20,
-            left: 0,
-            right: 0,
-            child: Center(
+        child: Stack(
+      children: [
+        CameraPreview(cameraController!),
+        Positioned(
+          bottom: 20,
+          left: 0,
+          right: 0,
+          child: Center(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    child: IconButton(
-                      onPressed: () {
-                        // Navigator.of(context).pushNamed('/result', arguments: {
-                        //   'cameraController': cameraController,
-                        // });
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('Alert'),
-                              content: const Text('Image Button pressed!'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            );
-                          },
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              IconButton(
+                onPressed: () {
+                  // Navigator.of(context).pushNamed('/result', arguments: {
+                  //   'cameraController': cameraController,
+                  // });
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Alert'),
+                        content: const Text('Image Button pressed!'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                icon: const Icon(Icons.image, size: 35, color: Colors.white),
+              ),
+              Container(
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border(
+                    top: BorderSide(width: 1, color: Colors.white),
+                    bottom: BorderSide(width: 1, color: Colors.white),
+                    left: BorderSide(width: 1, color: Colors.white),
+                    right: BorderSide(width: 1, color: Colors.white),
+                  ),
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Alert'),
+                          content: const Text('Camera Button pressed!'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
                         );
                       },
-                      icon: const Icon(Icons.image, size: 35, color: Colors.white),
-                    ),
-                  ),
-                  Container(
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border(
-                        top: BorderSide(width: 1, color: Colors.white),
-                        bottom: BorderSide(width: 1, color: Colors.white),
-                        left: BorderSide(width: 1, color: Colors.white),
-                        right: BorderSide(width: 1, color: Colors.white),
-                      ),
-                    ),
-                    child: IconButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('Alert'),
-                              content: const Text('Camera Button pressed!'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                      icon: const Icon(Icons.camera, size: 50, color: Colors.white),
-                    ),
-                  ),
-                  Container(
-                    child: IconButton(
-                      onPressed: () {
-                        // Navigator.of(context).pushNamed('/result', arguments: {
-                        //   'cameraController': cameraController,
-                        // });
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('Alert'),
-                              content: const Text('Flash Button pressed!'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                      icon: const Icon(Icons.flash_on, size: 35, color: Colors.white),
-                    ),
-                  ),
-                ],
-              )
-            ),
-          ),
-        ],
-      )
-    );
+                    );
+                  },
+                  icon: const Icon(Icons.camera, size: 50, color: Colors.white),
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  // Navigator.of(context).pushNamed('/result', arguments: {
+                  //   'cameraController': cameraController,
+                  // });
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Alert'),
+                        content: const Text('Flash Button pressed!'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                icon: const Icon(Icons.flash_on, size: 35, color: Colors.white),
+              ),
+            ],
+          )),
+        ),
+      ],
+    ));
   }
 
   Future<void> _setupCameraController() async {
-    List<CameraDescription> _cameras = await availableCameras();
-    if (_cameras.isNotEmpty) {
+    List<CameraDescription> cameraList = await availableCameras();
+    if (cameraList.isNotEmpty) {
       setState(() {
-        cameras = _cameras;
+        cameras = cameraList;
         cameraController =
-            CameraController(_cameras.first, ResolutionPreset.high);
+            CameraController(cameraList.first, ResolutionPreset.high);
       });
       cameraController?.initialize().then((_) {
         setState(() {});

@@ -33,12 +33,12 @@ class DiseaseCard extends StatelessWidget {
                     child: Container(
                       width: 45.0,
                       height: 45.0,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.inversePrimary,
                       ),
                       child: const Icon(
-                        Icons.star_border,
+                        Icons.bookmark_border_sharp,
                       ),
                     ),
                   ),
@@ -82,8 +82,9 @@ class DiseaseCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         disease.diseaseName,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 17.0,
+                          color: Theme.of(context).colorScheme.onPrimaryContainer,
                         ),
                       ),
                     ),
@@ -91,7 +92,7 @@ class DiseaseCard extends StatelessWidget {
                       disease.diseaseName,
                       style: TextStyle(
                         fontSize: 17.0,
-                        color: Colors.green.shade300,
+                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
                       ),
                     )
                   ],
@@ -101,9 +102,9 @@ class DiseaseCard extends StatelessWidget {
                 ),
                 Text(
                   disease.description,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 13.0,
-                    color: Color(0xFF343434),
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
                   ),
                 ),
                 const SizedBox(
@@ -121,9 +122,9 @@ class DiseaseCard extends StatelessWidget {
                     ),
                     Text(
                       disease.diseaseName,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13.0,
-                        color: Color(0xFF343434),
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
                       ),
                     ),
                   ],

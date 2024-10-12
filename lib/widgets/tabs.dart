@@ -36,7 +36,7 @@ class _TabsScreenState extends State<TabsScreen> {
         appBar: AppBar(
           title: Text(activeScreenTitle),
           backgroundColor: Theme.of(context).colorScheme.primary,
-          foregroundColor: Colors.white,
+          foregroundColor: Theme.of(context).colorScheme.onPrimary,
         ),
         body: activeScreen,
         bottomNavigationBar: BottomNavigationBar(

@@ -3,7 +3,8 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:lecognition/data/dummy_disease.dart';
-import 'package:lecognition/widgets/diseaseCard.dart'; // Import list diagnosises
+import 'package:lecognition/widgets/diseaseCard.dart';
+import 'package:skeletonizer/skeletonizer.dart'; // Import list diagnosises
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -32,81 +33,86 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading
-        ? const Center(
-            child: SpinKitSquareCircle(
-              color: Colors.green,
-              size: 50.0,
-            ),
-          )
-        : CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                expandedHeight: MediaQuery.of(context).size.width / 2,
-                floating: true,
-                backgroundColor: Colors.transparent,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.width / 2,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primary,
-                          borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(70),
-                              bottomRight: Radius.circular(70)),
-                        ),
-                        padding: const EdgeInsets.all(10),
-                        child: const Center(
-                          child: AutoSizeText(
-                            "Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman!",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white),
+    return Skeletonizer(
+      enabled: isLoading,
+      child: 
+      // isLoading
+      //     ? const Center(
+      //         child: SpinKitSquareCircle(
+      //           color: Colors.green,
+      //           size: 50.0,
+      //         ),
+      //       )
+      //     : 
+          CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  expandedHeight: MediaQuery.of(context).size.width / 2,
+                  floating: true,
+                  backgroundColor: Colors.transparent,
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.width / 2,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.primary,
+                            borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(70),
+                                bottomRight: Radius.circular(70)),
+                          ),
+                          padding: const EdgeInsets.all(10),
+                          child: Center(
+                            child: AutoSizeText(
+                              "Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman!",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(
-              //     horizontal: 20,
-              //     vertical: 10,
-              //   ),
-              // child:
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    final disease = diseases[index];
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: index == 0 ? 25.0 : 15.0,
-                              left: 16.0,
-                              right: 16.0,
-                              bottom: index == 0 ? 10 : 10),
-                          child: DiseaseCard(disease: disease),
-                        ),
-
-                        // Menambahkan Divider sebagai garis bawah
-                        const Divider(
-                          color: Colors.grey, // Warna garis bawah
-                          thickness: 1.0, // Ketebalan garis
-                          height: 1.0, // Jarak vertikal garis
-                        ),
-                      ],
-                    );
-                  },
-                  childCount:
-                      diseases.length, // Sesuaikan dengan jumlah diagnosis
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(
+                //     horizontal: 20,
+                //     vertical: 10,
+                //   ),
+                // child:
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final disease = diseases[index];
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(
+                                top: index == 0 ? 25.0 : 15.0,
+                                left: 16.0,
+                                right: 16.0,
+                                bottom: index == 0 ? 10 : 10),
+                            child: DiseaseCard(disease: disease),
+                          ),
+      
+                          // Menambahkan Divider sebagai garis bawah
+                          Divider(
+                            color: Theme.of(context).colorScheme.secondary, // Warna garis bawah
+                            thickness: 1.0, // Ketebalan garis
+                            height: 1.0, // Jarak vertikal garis
+                          ),
+                        ],
+                      );
+                    },
+                    childCount:
+                        diseases.length, // Sesuaikan dengan jumlah diagnosis
+                  ),
                 ),
-              ),
-              // ),
-            ],
-          );
+                // ),
+              ],
+            ),
+    );
   }
 }

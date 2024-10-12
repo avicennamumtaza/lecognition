@@ -16,28 +16,6 @@ final theme = ThemeData(
   ],
 );
 
-// Future<void> main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-
-//   // Initialize the available cameras and pass them to the CameraApp
-//   final cameras = await availableCameras();
-//   runApp(CameraApp(cameras: cameras));
-// }
-
-// /// CameraApp is the Main Application.
-// class CameraApp extends StatelessWidget {
-//   /// Constructor to accept cameras list
-//   const CameraApp({super.key, required this.cameras});
-//   final List<CameraDescription> cameras;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: CameraScreen(cameras: cameras), // Navigate to CameraScreen
-//     );
-//   }
-// }
-
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
