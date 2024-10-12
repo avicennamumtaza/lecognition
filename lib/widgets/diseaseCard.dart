@@ -35,7 +35,7 @@ class DiseaseCard extends StatelessWidget {
                       height: 45.0,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Theme.of(context).colorScheme.inversePrimary,
+                        color: Theme.of(context).colorScheme.surface,
                       ),
                       child: const Icon(
                         Icons.bookmark_border_sharp,
