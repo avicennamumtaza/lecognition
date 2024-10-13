@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:lecognition/models/disease.dart';
 
-class DiseaseCard extends StatelessWidget {
+class DiseaseCard extends StatefulWidget {
   const DiseaseCard({required this.disease, super.key});
   final Disease disease;
 
   @override
+  State<DiseaseCard> createState() => _DiseaseCardState();
+}
+
+class _DiseaseCardState extends State<DiseaseCard> {
+  var isFavorite = false;
+
+  @override
   Widget build(BuildContext context) {
+    // final favoriteMeals = ref.watch(favoriteMealsProvider);
+    onFavorite() {
+      setState(() {
+        isFavorite = !isFavorite;
+      });
+    }
+
     return SizedBox(
       height: MediaQuery.of(context).size.height / 4,
       // width: MediaQuery.of(context).size.width / - 20,
@@ -21,7 +35,8 @@ class DiseaseCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(18.0),
                     image: const DecorationImage(
                       fit: BoxFit.cover,
-                      image: NetworkImage("https://halosehat.com/wp-content/uploads/2019/05/manfaat-daun-mangga-696x395.jpg"),
+                      image: NetworkImage(
+                          "https://halosehat.com/wp-content/uploads/2019/05/manfaat-daun-mangga-696x395.jpg"),
                     ),
                   ),
                 ),
@@ -37,8 +52,41 @@ class DiseaseCard extends StatelessWidget {
                         shape: BoxShape.circle,
                         color: Theme.of(context).colorScheme.surface,
                       ),
-                      child: const Icon(
-                        Icons.bookmark_border_sharp,
+                      child: IconButton(
+                        icon: AnimatedSwitcher(
+                          duration: const Duration(
+                            milliseconds: 300,
+                          ),
+                          transitionBuilder: (child, animation) {
+                            return RotationTransition(
+                              turns: Tween<double>(
+                                begin: 0.5,
+                                end: 1,
+                              ).animate(animation),
+                              child: child,
+                            );
+                          },
+                          child: Icon(
+                            isFavorite ? Icons.bookmark_outlined : Icons.bookmark_border_outlined,
+                            key: ValueKey(
+                              isFavorite,
+                            ),
+                          ),
+                        ),
+                        onPressed: onFavorite,
+                        // () {
+                        // final wasAdded = ref
+                        //     .read(favoriteMealsProvider.notifier)
+                        //     .toggleMealFavoriteStatus(meal);
+                        // ScaffoldMessenger.of(context).clearSnackBars();
+                        // ScaffoldMessenger.of(context).showSnackBar(
+                        //   SnackBar(
+                        //     content: Text(wasAdded
+                        //         ? "Meal added as a favorite"
+                        //         : "Meal removed from favorite"),
+                        //   ),
+                        // );
+                        // },
                       ),
                     ),
                   ),
@@ -81,18 +129,22 @@ class DiseaseCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        disease.diseaseName,
+                        widget.disease.diseaseName,
                         style: TextStyle(
                           fontSize: 17.0,
-                          color: Theme.of(context).colorScheme.onPrimaryContainer,
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer,
                         ),
                       ),
                     ),
                     Text(
-                      disease.diseaseName,
+                      widget.disease.diseaseName,
                       style: TextStyle(
                         fontSize: 17.0,
-                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withOpacity(0.5),
                       ),
                     )
                   ],
@@ -101,7 +153,7 @@ class DiseaseCard extends StatelessWidget {
                   height: 5.0,
                 ),
                 Text(
-                  disease.description,
+                  widget.disease.description,
                   style: TextStyle(
                     fontSize: 13.0,
                     color: Theme.of(context).colorScheme.onPrimaryContainer,
@@ -121,7 +173,7 @@ class DiseaseCard extends StatelessWidget {
                       width: 5.0,
                     ),
                     Text(
-                      disease.diseaseName,
+                      widget.disease.diseaseName,
                       style: TextStyle(
                         fontSize: 13.0,
                         color: Theme.of(context).colorScheme.onPrimaryContainer,

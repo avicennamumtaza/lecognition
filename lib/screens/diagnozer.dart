@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -15,7 +14,7 @@ class DiagnozerScreen extends StatefulWidget {
 class _DiagnozerScreenState extends State<DiagnozerScreen> {
   List<CameraDescription> cameras = [];
   CameraController? cameraController;
-  File? _selectedImage; // Nullable since it may not always have an image
+  File? _selectedImage;
 
   @override
   void initState() {
@@ -44,22 +43,6 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
     }
   }
 
-  Future _pickImageCamera() async {
-    try {
-      final returnedImage =
-          await ImagePicker().pickImage(source: ImageSource.camera);
-      if (returnedImage == null) {
-        throw Exception('No image captured');
-      }
-      setState(() {
-        _selectedImage = File(returnedImage.path);
-      });
-      _navigateToResultScreen(); // Navigate to result screen if image is captured
-    } catch (e) {
-      _showErrorDialog('Failed to capture image from camera: ${e.toString()}');
-    }
-  }
-
   Future<void> _setupCameraController() async {
     List<CameraDescription> cameraList = await availableCameras();
     if (cameraList.isNotEmpty) {
@@ -71,6 +54,26 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
       cameraController?.initialize().then((_) {
         setState(() {});
       });
+    }
+  }
+
+  Future<void> _takePicture() async {
+    if (!cameraController!.value.isInitialized) {
+      return;
+    }
+
+    try {
+      // Ambil gambar dari kamera dan simpan dalam file sementara
+      final XFile image = await cameraController!.takePicture();
+
+      setState(() {
+        _selectedImage = File(image.path);
+      });
+
+      // Navigasi ke layar hasil (ResultScreen)
+      _navigateToResultScreen();
+    } catch (e) {
+      _showErrorDialog('Error saat mengambil gambar: $e');
     }
   }
 
@@ -123,7 +126,8 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
                 children: [
                   IconButton(
                     onPressed: _pickImageGallery,
-                    icon: const Icon(Icons.image, size: 35, color: Colors.white),
+                    icon:
+                        const Icon(Icons.image, size: 35, color: Colors.white),
                   ),
                   Container(
                     decoration: const BoxDecoration(
@@ -136,9 +140,9 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
                       ),
                     ),
                     child: IconButton(
-                      onPressed: _pickImageCamera,
-                      icon:
-                          const Icon(Icons.camera, size: 50, color: Colors.white),
+                      onPressed: _takePicture, // Mengambil gambar langsung
+                      icon: const Icon(Icons.camera,
+                          size: 50, color: Colors.white),
                     ),
                   ),
                   IconButton(

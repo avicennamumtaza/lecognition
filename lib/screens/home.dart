@@ -66,7 +66,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           padding: const EdgeInsets.all(10),
                           child: Center(
                             child: AutoSizeText(
-                              "Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman! Selamat Datang Lukman!",
+                              "Selamat Datang Lukman!",
+                              minFontSize: 35,
                               textAlign: TextAlign.center,
                               style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
                             ),
