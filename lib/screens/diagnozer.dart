@@ -18,6 +18,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
   List<CameraDescription> cameras = [];
   CameraController? cameraController;
   File? _selectedImage;
+  bool _isTorchOn = false;
 
   @override
   void initState() {
@@ -40,6 +41,22 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
     // Simpan kembali daftar gambar
     await prefs.setStringList('diagnosis_images', savedImages);
   }
+
+  Future<void> _toggleFlashlight() async {
+    try {
+      if (_isTorchOn) {
+        await cameraController?.setFlashMode(FlashMode.off);
+      } else {
+        await cameraController?.setFlashMode(FlashMode.torch);
+      }
+      setState(() {
+        _isTorchOn = !_isTorchOn;
+      });
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
 
   Future<File> _saveImageLocally(File imageFile) async {
     try {
@@ -98,13 +115,18 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
 
   Future<void> _takePicture() async {
     if (cameraController == null || !cameraController!.value.isInitialized) {
+      _isTorchOn = false;
+      await cameraController?.setFlashMode(FlashMode.off);
       _showErrorDialog('Kamera belum diinisialisasi.');
       return;
     }
 
     try {
       // Ambil gambar dari kamera dan simpan dalam file sementara
+      await cameraController?.setFocusMode(FocusMode.auto); // Fokus otomatis
       final XFile image = await cameraController!.takePicture();
+      _isTorchOn = false;
+      await cameraController?.setFlashMode(FlashMode.off);
 
       setState(() {
         _selectedImage = File(image.path);
@@ -193,25 +215,9 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
                   ),
                   IconButton(
                     onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text('Alert'),
-                            content: const Text('Flash Button pressed!'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('OK'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                      _toggleFlashlight();
                     },
-                    icon: const Icon(Icons.flash_on,
+                    icon: Icon(_isTorchOn ? Icons.flash_on : Icons.flash_off,
                         size: 35, color: Colors.white),
                   ),
                 ],
