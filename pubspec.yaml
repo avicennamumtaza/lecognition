@@ -44,6 +44,7 @@ dependencies:
   image_picker: ^1.1.2
   path_provider: ^2.0.14
   shared_preferences: ^2.3.2
+  percent_indicator: ^4.2.3
 
 flutter_native_splash:
   # color: "#ffffff" # Set background color of the splash screen
@@ -61,7 +62,7 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/byu.jpg"
+  image_path: "assets/logojti.jpg"
   # adaptive_icon_foreground: "assets/logojti.png"
   # adaptive_icon_background: "#FFFFFF" 
 
@@ -87,7 +88,6 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/logojti.png
-    - assets/byu.jpg
     - assets/mg2.jpeg
   #   - images/a_dot_ham.jpeg
 
