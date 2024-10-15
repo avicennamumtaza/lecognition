@@ -3,6 +3,9 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lecognition/screens/result.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DiagnozerScreen extends StatefulWidget {
   const DiagnozerScreen({super.key});
@@ -22,6 +25,40 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
     _setupCameraController();
   }
 
+  Future<void> _saveImagePathToPreferences(String imagePath) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? savedImages = prefs.getStringList('diagnosis_images');
+
+    // Jika belum ada daftar gambar, buat list baru
+    if (savedImages == null) {
+      savedImages = [];
+    }
+
+    // Tambahkan path gambar ke dalam daftar
+    savedImages.add(imagePath);
+
+    // Simpan kembali daftar gambar
+    await prefs.setStringList('diagnosis_images', savedImages);
+  }
+
+  Future<File> _saveImageLocally(File imageFile) async {
+    try {
+      // Mendapatkan direktori lokal aplikasi
+      final directory = await getApplicationDocumentsDirectory();
+
+      // Membuat path baru untuk gambar
+      final fileName = imageFile.path.split('/').last;
+      final newImagePath = '${directory.path}/$fileName';
+
+      // Menyalin gambar ke direktori lokal
+      final newImage = await imageFile.copy(newImagePath);
+
+      return newImage;
+    } catch (e) {
+      throw Exception('Error saat menyimpan gambar: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return _buildCameraPreview();
@@ -37,6 +74,8 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
       setState(() {
         _selectedImage = File(returnedImage.path);
       });
+      final savedImage = await _saveImageLocally(_selectedImage!);
+      await _saveImagePathToPreferences(savedImage.path);
       _navigateToResultScreen(); // Navigate to result screen if image is selected
     } catch (e) {
       _showErrorDialog('Failed to pick image from gallery: ${e.toString()}');
@@ -58,7 +97,8 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
   }
 
   Future<void> _takePicture() async {
-    if (!cameraController!.value.isInitialized) {
+    if (cameraController == null || !cameraController!.value.isInitialized) {
+      _showErrorDialog('Kamera belum diinisialisasi.');
       return;
     }
 
@@ -69,6 +109,9 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
       setState(() {
         _selectedImage = File(image.path);
       });
+
+      final savedImage = await _saveImageLocally(_selectedImage!);
+      await _saveImagePathToPreferences(savedImage.path);
 
       // Navigasi ke layar hasil (ResultScreen)
       _navigateToResultScreen();
@@ -108,7 +151,10 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
     if (cameraController == null ||
         cameraController?.value.isInitialized == false) {
       return const Center(
-        child: CircularProgressIndicator(),
+        child: SpinKitSquareCircle(
+          color: Colors.green,
+          size: 50.0,
+        ),
       );
     }
     return SafeArea(

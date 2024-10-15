@@ -37,30 +37,35 @@ dependencies:
   cupertino_icons: ^1.0.8
   google_fonts: ^6.2.1
   flutter_native_splash: ^2.4.1
-  flutter_launcher_icons: ^0.14.1
   camera: ^0.11.0+2
   flutter_spinkit: ^5.2.1
   auto_size_text: ^3.0.0
   skeletonizer: ^1.4.2
   image_picker: ^1.1.2
+  path_provider: ^2.0.14
+  shared_preferences: ^2.3.2
 
 flutter_native_splash:
-  color: "#ffffff" # Set background color of the splash screen
+  # color: "#ffffff" # Set background color of the splash screen
+  background_image: assets/mg2.jpeg 
   image: assets/logojti.png # Path to your splash screen image
   android: true
   ios: true
   web: false
 
-flutter_launcher_icons:
-  android: true
-  ios: true
-  image_path: "assets/logojti.png"
-  # min_sdk_android: 21
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.14.1
 
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/byu.jpg"
+  # adaptive_icon_foreground: "assets/logojti.png"
+  # adaptive_icon_background: "#FFFFFF" 
+
+  # min_sdk_android: 21
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -82,6 +87,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/logojti.png
+    - assets/byu.jpg
+    - assets/mg2.jpeg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

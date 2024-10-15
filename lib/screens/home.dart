@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:lecognition/data/dummy_disease.dart';
 import 'package:lecognition/widgets/diseaseCard.dart';
-import 'package:skeletonizer/skeletonizer.dart'; // Import list diagnosises
+import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
