@@ -5,27 +5,34 @@ import 'package:lecognition/widgets/bookmarkedCard.dart';
 class BookmarkedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: 0,
-        horizontal: 10.0,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Bookmarked Diseases'),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
       ),
-      child: ListView(
-        children: <Widget>[
-          // SearchCard(),
-          SizedBox(height: 10.0),
-          ListView.builder(
-            primary: false,
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: diseases.length,
-            itemBuilder: (BuildContext context, int index) {
-              final eachDisease = diseases[index];
-              return BookmarkedCard(disease: eachDisease);
-            },
-          ),
-          SizedBox(height: 10.0),
-        ],
+      body: Padding(
+        padding: EdgeInsets.symmetric(
+          vertical: 0,
+          horizontal: 10.0,
+        ),
+        child: ListView(
+          children: <Widget>[
+            // SearchCard(),
+            SizedBox(height: 10.0),
+            ListView.builder(
+              primary: false,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: diseases.length,
+              itemBuilder: (BuildContext context, int index) {
+                final eachDisease = diseases[index];
+                return BookmarkedCard(disease: eachDisease);
+              },
+            ),
+            SizedBox(height: 10.0),
+          ],
+        ),
       ),
     );
   }

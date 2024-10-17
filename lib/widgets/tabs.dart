@@ -4,14 +4,18 @@ import 'package:lecognition/screens/home.dart';
 import 'package:lecognition/screens/profile.dart';
 
 class TabsScreen extends StatefulWidget {
-  const TabsScreen({super.key});
+  const TabsScreen({super.key, this.index});
+  final int? index;
 
   @override
-  State<TabsScreen> createState() => _TabsScreenState();
+  State<TabsScreen> createState() => _TabsScreenState(index);
 }
 
 class _TabsScreenState extends State<TabsScreen> {
   int _selectedScreenIndex = 0;
+  _TabsScreenState(int? index) {
+    _selectedScreenIndex = index ?? 0;
+  }
 
   void _selectScreen(int index) {
     setState(() {

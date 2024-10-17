@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:lecognition/screens/bookmarked.dart';
 import 'package:lecognition/widgets/tabs.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -31,7 +32,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: theme,
       title: 'Flutter Demo',
-      home: const TabsScreen(),
+      routes: {
+        '/': (context) => const TabsScreen(),
+        '/bookmarked': (context) => BookmarkedScreen(),
+      },
+      // home: const TabsScreen(),
     );
   }
 }
