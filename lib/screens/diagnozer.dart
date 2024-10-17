@@ -6,6 +6,9 @@ import 'package:lecognition/screens/result.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lecognition/data/dummy_diagnosis.dart';
+import 'package:lecognition/data/dummy_disease.dart';
+import 'dart:math'; // Untuk randomizer
 
 class DiagnozerScreen extends StatefulWidget {
   const DiagnozerScreen({super.key});
@@ -26,20 +29,34 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
     _setupCameraController();
   }
 
-  Future<void> _saveImagePathToPreferences(String imagePath) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? savedImages = prefs.getStringList('diagnosis_images');
+  // Future<void> _saveImagePathToPreferences(String imagePath) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   List<String>? savedImages = prefs.getStringList('diagnosis_images');
 
-    // Jika belum ada daftar gambar, buat list baru
-    if (savedImages == null) {
-      savedImages = [];
+  //   // Jika belum ada daftar gambar, buat list baru
+  //   if (savedImages == null) {
+  //     savedImages = [];
+  //   }
+
+  //   // Tambahkan path gambar ke dalam daftar
+  //   savedImages.add(imagePath);
+
+  //   // Simpan kembali daftar gambar
+  //   await prefs.setStringList('diagnosis_images', savedImages);
+  // }
+
+  Future<void> _setupCameraController() async {
+    List<CameraDescription> cameraList = await availableCameras();
+    if (cameraList.isNotEmpty) {
+      setState(() {
+        cameras = cameraList;
+        cameraController =
+            CameraController(cameraList.first, ResolutionPreset.high);
+      });
+      cameraController?.initialize().then((_) {
+        setState(() {});
+      });
     }
-
-    // Tambahkan path gambar ke dalam daftar
-    savedImages.add(imagePath);
-
-    // Simpan kembali daftar gambar
-    await prefs.setStringList('diagnosis_images', savedImages);
   }
 
   Future<void> _toggleFlashlight() async {
@@ -56,7 +73,6 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
       print('Error: $e');
     }
   }
-
 
   Future<File> _saveImageLocally(File imageFile) async {
     try {
@@ -76,9 +92,29 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return _buildCameraPreview();
+  Future<void> _saveDiagnosis(File image) async {
+    final randomIndex = Random().nextInt(diagnosises.length);
+    final randomDiagnosis = diagnosises[randomIndex];
+    final diseaseId = randomDiagnosis.diseaseId;
+    final matchingDisease =
+        diseases.firstWhere((disease) => disease.diseaseId == diseaseId);
+
+    final diseaseName = matchingDisease.diseaseName;
+    final diseaseDescription = matchingDisease.description;
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? savedImages = prefs.getStringList('diagnosis_images') ?? [];
+    List<String>? savedNames = prefs.getStringList('diagnosis_names') ?? [];
+    List<String>? savedDescriptions =
+        prefs.getStringList('diagnosis_descriptions') ?? [];
+
+    savedImages.add(image.path);
+    savedNames.add(diseaseName);
+    savedDescriptions.add(diseaseDescription);
+
+    await prefs.setStringList('diagnosis_images', savedImages);
+    await prefs.setStringList('diagnosis_names', savedNames);
+    await prefs.setStringList('diagnosis_descriptions', savedDescriptions);
   }
 
   Future _pickImageGallery() async {
@@ -92,24 +128,10 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
         _selectedImage = File(returnedImage.path);
       });
       final savedImage = await _saveImageLocally(_selectedImage!);
-      await _saveImagePathToPreferences(savedImage.path);
+      await _saveDiagnosis(savedImage);
       _navigateToResultScreen(); // Navigate to result screen if image is selected
     } catch (e) {
       _showErrorDialog('Failed to pick image from gallery: ${e.toString()}');
-    }
-  }
-
-  Future<void> _setupCameraController() async {
-    List<CameraDescription> cameraList = await availableCameras();
-    if (cameraList.isNotEmpty) {
-      setState(() {
-        cameras = cameraList;
-        cameraController =
-            CameraController(cameraList.first, ResolutionPreset.high);
-      });
-      cameraController?.initialize().then((_) {
-        setState(() {});
-      });
     }
   }
 
@@ -133,7 +155,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
       });
 
       final savedImage = await _saveImageLocally(_selectedImage!);
-      await _saveImagePathToPreferences(savedImage.path);
+      await _saveDiagnosis(savedImage);
 
       // Navigasi ke layar hasil (ResultScreen)
       _navigateToResultScreen();
@@ -144,8 +166,25 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
 
   void _navigateToResultScreen() {
     if (_selectedImage != null) {
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => ResultScreen(photo: _selectedImage!)));
+      // Retrieve the disease name and description from the preferences
+      SharedPreferences.getInstance().then((prefs) {
+        List<String>? savedNames = prefs.getStringList('diagnosis_names') ?? [];
+        List<String>? savedDescriptions =
+            prefs.getStringList('diagnosis_descriptions') ?? [];
+
+        // Assuming the last saved entry corresponds to the current image
+        String diseaseName =
+            savedNames.isNotEmpty ? savedNames.last : 'Unknown Disease';
+        String diseaseDescription = savedDescriptions.isNotEmpty
+            ? savedDescriptions.last
+            : 'No description available';
+
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ResultScreen(
+                photo: _selectedImage!,
+                diseaseName: diseaseName,
+                diseaseDescription: diseaseDescription)));
+      });
     }
   }
 
@@ -167,6 +206,11 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
         );
       },
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _buildCameraPreview();
   }
 
   Widget _buildCameraPreview() {

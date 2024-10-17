@@ -1,14 +1,19 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:lecognition/data/dummy_disease.dart';
-import 'dart:math';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class ResultScreen extends StatelessWidget {
-  ResultScreen({super.key, required this.photo});
+  ResultScreen({
+    super.key, 
+    required this.photo, 
+    required this.diseaseName, // New parameter
+    required this.diseaseDescription, // New parameter
+  });
+
   final File photo;
-  int index = Random().nextInt(diseases.length - 2);
+  final String diseaseName; // Variable to hold the disease name
+  final String diseaseDescription; // Variable to hold the disease description
 
   @override
   Widget build(BuildContext context) {
@@ -46,14 +51,14 @@ class ResultScreen extends StatelessWidget {
             alignment: Alignment.topLeft,
             child: ListTile(
               title: Text(
-                diseases[index].diseaseName,
+                diseaseName, // Display the passed disease name
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               subtitle: Text(
-                diseases[index].description,
+                diseaseDescription, // Display the passed disease description
                 style: const TextStyle(
                   fontSize: 15,
                 ),
@@ -81,12 +86,12 @@ class ResultScreen extends StatelessWidget {
                   fontSize: 17,
                 ),
                 'Pengobatan penyakit ini dapat dilakukan dengan cara:\n'
-                    '1. Menyemprotkan pestisida\n'
-                    '2. Pangkas bagian yang terinfeksi\n'
-                    '3. Pengelolaan lingkungan\n'
-                    '4. Penggunaan pestisida organik\n'
-                    '5. Peningkatan nutrisi tanaman\n'
-                    '6. Pemantauan rutin\n',
+                '1. Menyemprotkan pestisida\n'
+                '2. Pangkas bagian yang terinfeksi\n'
+                '3. Pengelolaan lingkungan\n'
+                '4. Penggunaan pestisida organik\n'
+                '5. Peningkatan nutrisi tanaman\n'
+                '6. Pemantauan rutin\n',
               ),
             ),
           ),
@@ -111,13 +116,13 @@ class ResultScreen extends StatelessWidget {
                   fontSize: 17,
                 ),
                 'Pencegahan penyakit ini dapat dilakukan dengan cara:\n'
-                    '1. Menjaga kebersihan tanaman\n'
-                    '2. Menyemprotkan pestisida\n'
-                    '3. Menyiram tanaman secara teratur\n'
-                    '4. Menyediakan nutrisi yang cukup untuk tanaman\n'
-                    '5. Menyediakan cahaya yang cukup untuk tanaman\n'
-                    '6. Menyediakan air yang cukup untuk tanaman\n'
-                    '7. Menyediakan udara yang cukup untuk tanaman\n',
+                '1. Menjaga kebersihan tanaman\n'
+                '2. Menyemprotkan pestisida\n'
+                '3. Menyiram tanaman secara teratur\n'
+                '4. Menyediakan nutrisi yang cukup untuk tanaman\n'
+                '5. Menyediakan cahaya yang cukup untuk tanaman\n'
+                '6. Menyediakan air yang cukup untuk tanaman\n'
+                '7. Menyediakan udara yang cukup untuk tanaman\n',
               ),
             ),
           ),
@@ -158,21 +163,19 @@ class ResultScreen extends StatelessWidget {
             ),
             alignment: Alignment.center,
             child: Center(
-              child: new CircularPercentIndicator(
+              child: CircularPercentIndicator(
                 radius: 70.0,
                 lineWidth: 13.0,
                 percent: 0.735,
                 animation: true,
                 animationDuration: 1000,
-                center: new Text(
+                center: Text(
                   "73.5%",
-                  style:
-                  new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
                 ),
-                footer: new Text(
-                  "Presentase Akurasi",
-                  style:
-                  new TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+                footer: Text(
+                  "Persentase Akurasi",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
                 ),
                 circularStrokeCap: CircularStrokeCap.round,
                 progressColor: Theme.of(context).colorScheme.primary,
