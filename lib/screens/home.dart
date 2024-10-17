@@ -3,6 +3,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:lecognition/data/dummy_disease.dart';
 import 'package:lecognition/widgets/diseaseCard.dart';
+import 'package:lecognition/widgets/tabs.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -63,14 +64,75 @@ class _HomeScreenState extends State<HomeScreen> {
                                 bottomRight: Radius.circular(70)),
                           ),
                           padding: const EdgeInsets.all(10),
-                          child: Center(
-                            child: AutoSizeText(
-                              "Selamat Datang Lukman!",
-                              minFontSize: 35,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-                            ),
-                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Center(
+                                child: AutoSizeText(
+                                  "Selamat Datang Lukman!",
+                                  minFontSize: 35,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  IconButton(
+                                    onPressed: (){
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text('Informasi'),
+                                            content: const Text(
+                                              'Gunakan menu diagnozer untuk mendeteksi penyakit tanaman mangga berdasarkan daunnya.'
+                                            ),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                    icon: Icon(
+                                      Icons.info_outline,
+                                      color: Colors.white,
+                                      size: 40,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: (){
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => TabsScreen(index: 1,)),
+                                      );
+                                    },
+                                    icon: Icon(
+                                      Icons.camera_alt_outlined,
+                                      color: Colors.white,
+                                      size: 40,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: (){
+                                      Navigator.pushNamed(context, '/bookmarked');
+                                    },
+                                    icon: Icon(
+                                      Icons.bookmark,
+                                      color: Colors.white,
+                                      size: 40,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
                         ),
                       ],
                     ),
