@@ -36,7 +36,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   google_fonts: ^6.2.1
-  flutter_native_splash: ^2.4.1
+#  flutter_native_splash: ^2.4.1
   camera: ^0.11.0+2
   flutter_spinkit: ^5.2.1
   auto_size_text: ^3.0.0
@@ -46,13 +46,13 @@ dependencies:
   shared_preferences: ^2.3.2
   percent_indicator: ^4.2.3
 
-flutter_native_splash:
-  # color: "#ffffff" # Set background color of the splash screen
-  background_image: assets/mg2.jpeg 
-  image: assets/logojti.png # Path to your splash screen image
-  android: true
-  ios: true
-  web: false
+#flutter_native_splash:
+#  # color: "#ffffff" # Set background color of the splash screen
+#  background_image: assets/mg2.jpeg
+#  image: assets/logojti.png # Path to your splash screen image
+#  android: true
+#  ios: true
+#  web: false
 
 dev_dependencies:
   flutter_test:
@@ -62,9 +62,9 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/logojti.jpg"
+  image_path: "assets/images/icon.png"
+  adaptive_icon_background: "#57cc99"
   # adaptive_icon_foreground: "assets/logojti.png"
-  # adaptive_icon_background: "#FFFFFF" 
 
   # min_sdk_android: 21
   # The "flutter_lints" package below contains a set of recommended lints to

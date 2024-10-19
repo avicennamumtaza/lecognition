@@ -225,6 +225,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
     }
     return SafeArea(
       child: Stack(
+        fit: StackFit.expand,
         children: [
           CameraPreview(cameraController!),
           Positioned(

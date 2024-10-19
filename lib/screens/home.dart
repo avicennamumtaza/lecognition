@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
+// import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:lecognition/data/dummy_disease.dart';
 import 'package:lecognition/widgets/diseaseCard.dart';
@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void initialization() async {
     await Future.delayed(const Duration(seconds: 1));
-    FlutterNativeSplash.remove(); // Remove splash screen
+    // FlutterNativeSplash.remove(); // Remove splash screen
     await Future.delayed(const Duration(seconds: 1));
     setState(() {
       isLoading = false;
