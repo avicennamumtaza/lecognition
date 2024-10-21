@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Diagnosis {
   final int diagnosisId;
   final int leafId;

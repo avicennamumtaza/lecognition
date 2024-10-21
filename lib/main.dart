@@ -6,10 +6,16 @@ import 'package:lecognition/widgets/tabs.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 final theme = ThemeData(
-  useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(
-    brightness: Brightness.light,
-    seedColor: const Color.fromARGB(255, 0, 155, 0),
+    seedColor: Color.fromARGB(
+      255,
+      255,
+      0,
+      0,
+    ), // Seed color yang Anda inginkan
+    brightness: Brightness.light, // Untuk memastikan warna terang
+  ).copyWith(
+    primary: Colors.amber, // Set warna primary secara eksplisit
   ),
   textTheme: GoogleFonts.poppinsTextTheme(),
   extensions: const [
