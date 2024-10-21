@@ -25,8 +25,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String>? savedImages = prefs.getStringList('diagnosis_images') ?? [];
     List<String>? savedNames = prefs.getStringList('diagnosis_names') ?? [];
-    List<String>? savedDescriptions =
-        prefs.getStringList('diagnosis_descriptions') ?? [];
+    List<String>? savedDescriptions = prefs.getStringList('diagnosis_descriptions') ?? [];
 
     setState(() {
       _imagePaths = savedImages;
@@ -44,16 +43,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         : ListView.builder(
             itemCount: _imagePaths.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                leading: Image.file(
-                  File(_imagePaths[index]),
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.cover,
-                ),
-                title: Text(
-                  'Diagnosis #${index + 1}: ${_diseaseNames[index]}', // Show diagnosis name
-                ),
+              return GestureDetector(
                 onTap: () {
                   // Navigate to detail screen when tapped
                   Navigator.push(
@@ -62,13 +52,71 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       builder: (context) => ResultHistoryScreen(
                         imagePath: _imagePaths[index],
                         diseaseName: _diseaseNames[index], // Pass disease name
-                        diseaseDescription: _diseaseDescriptions[
-                            index], // Pass disease description
+                        diseaseDescription: _diseaseDescriptions[index], // Pass disease description
                         diagnosisNumber: index,
                       ),
                     ),
                   );
                 },
+                child: Card(
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0), // 16px padding from all sides
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start, // Align items to the top
+                          children: [
+                            // Image placed on the top-left of the card
+                            Image.file(
+                              File(_imagePaths[index]),
+                              width: 70,
+                              height: 70,
+                              fit: BoxFit.cover,
+                            ),
+                            const SizedBox(width: 10), // Space between image and text
+                            // Column for text
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '#${index + 1} ${_diseaseNames[index]}', // Diagnosis name
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      Text(
+                                        '21-10-2024', // Static date, replace with actual if needed
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    _diseaseDescriptions[index], // Disease description
+                                    style: const TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               );
             },
           );
