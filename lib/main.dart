@@ -9,15 +9,13 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 final theme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
-    seedColor: Color.fromARGB(
-      255,
-      255,
-      0,
-      0,
-    ), // Seed color yang Anda inginkan
+    seedColor: Color.fromARGB(255, 52, 121, 40,),
     brightness: Brightness.light, // Untuk memastikan warna terang
   ).copyWith(
-    primary: Colors.amber, // Set warna primary secara eksplisit
+    primary: Color.fromARGB(255, 52, 121, 40), // Set warna primary secara eksplisit
+    secondary: Color.fromARGB(255, 192, 235, 166), // Set warna secondary secara eksplisit
+    onPrimary: Color.fromARGB(255, 255, 251, 230), // Set warna teks pada primary secara eksplisit
+    onSecondary: Color.fromARGB(255, 255, 255, 255), // Set warna teks pada secondary secara eksplisit
   ),
   textTheme: GoogleFonts.poppinsTextTheme(),
   extensions: const [
