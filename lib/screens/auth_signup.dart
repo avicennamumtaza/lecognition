@@ -177,9 +177,10 @@ class _AuthSignupState extends State<AuthSignup> {
                         debugPrint("Validation failed");
                       }
                     },
-                    child: const Text(
+                    child: Text(
                       'Register',
                       style: TextStyle(
+                        color: ThemeData().colorScheme.onPrimary,
                         fontWeight: FontWeight.w800,
                       ),
                     ),
