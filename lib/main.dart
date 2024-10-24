@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lecognition/screens/auth_signin.dart';
+import 'package:lecognition/screens/auth_signup.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:lecognition/screens/bookmarked.dart';
 import 'package:lecognition/widgets/tabs.dart';
@@ -37,8 +39,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: theme,
+      // localizationsDelegates: ,
+      // supportedLocales: ,
       title: 'Flutter Demo',
+      initialRoute: "/signup",
       routes: {
+        '/signup': (context) => const AuthSignup(),
+        '/signin': (context) => const AuthSignin(),
         '/': (context) => const TabsScreen(),
         '/bookmarked': (context) => BookmarkedScreen(),
       },

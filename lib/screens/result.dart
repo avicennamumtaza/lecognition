@@ -21,7 +21,7 @@ class ResultScreen extends StatelessWidget {
   final String diseaseDescription; // Variable to hold the disease description
 
   Disease ds = diseases[0];
-  double percentage = Random().nextDouble();
+  final double percentage = Random().nextDouble();
 
   Disease _findDisease() {
     for (var disease in diseases) {
