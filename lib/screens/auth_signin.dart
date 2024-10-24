@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:http/http.dart' as http;
+import 'package:lecognition/widgets/tabs.dart';
 
 class AuthSignin extends StatefulWidget {
   const AuthSignin({super.key});
@@ -96,12 +97,23 @@ class _AuthSigninState extends State<AuthSignin> {
                           false) {
                         final formValues = _globalFormKey.currentState?.value;
                         debugPrint(formValues.toString());
-                        Navigator.pushNamed(context, "/");
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const TabsScreen(index: 0),
+                          ),
+                              (Route<dynamic> route) => false, // Remove all previous routes
+                        );
                       } else {
                         debugPrint("Validation failed");
                       }
                     },
-                    child: const Text('Login', style: TextStyle(fontWeight: FontWeight.w800),),
+                    child: Text(
+                      'Login',
+                      style: TextStyle(
+                        color: ThemeData().colorScheme.onPrimary,
+                        fontWeight: FontWeight.w800),
+                    ),
                   ),
                   const SizedBox(height: 10),
                   Align(
