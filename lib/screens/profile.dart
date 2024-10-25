@@ -1,124 +1,124 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:lecognition/screens/result_history.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lecognition/screens/histori_screen.dart'; // Import HistoriScreen
+import 'package:lecognition/screens/akun_screen.dart'; // Import AkunScreen
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends State<ProfileScreen> {
-  List<String> _imagePaths = [];
-  List<String> _diseaseNames = []; // List for disease names
-  List<String> _diseaseDescriptions = []; // List for disease descriptions
-
-  @override
-  void initState() {
-    super.initState();
-    _loadData(); // Load all relevant data
-  }
-
-  Future<void> _loadData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? savedImages = prefs.getStringList('diagnosis_images') ?? [];
-    List<String>? savedNames = prefs.getStringList('diagnosis_names') ?? [];
-    List<String>? savedDescriptions = prefs.getStringList('diagnosis_descriptions') ?? [];
-
-    setState(() {
-      _imagePaths = savedImages;
-      _diseaseNames = savedNames;
-      _diseaseDescriptions = savedDescriptions;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return _imagePaths.isEmpty
-        ? const Center(
-            child: Text('Belum ada diagnosis yang tersimpan.'),
-          )
-        : ListView.builder(
-            itemCount: _imagePaths.length,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  // Navigate to detail screen when tapped
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ResultHistoryScreen(
-                        imagePath: _imagePaths[index],
-                        diseaseName: _diseaseNames[index], // Pass disease name
-                        diseaseDescription: _diseaseDescriptions[index], // Pass disease description
-                        diagnosisNumber: index,
-                      ),
-                    ),
-                  );
-                },
-                child: Card(
-                  color: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0), // 16px padding from all sides
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start, // Align items to the top
-                          children: [
-                            // Image placed on the top-left of the card
-                            Image.file(
-                              File(_imagePaths[index]),
-                              width: 70,
-                              height: 70,
-                              fit: BoxFit.cover,
-                            ),
-                            const SizedBox(width: 10), // Space between image and text
-                            // Column for text
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        '#${index + 1} ${_diseaseNames[index]}', // Diagnosis name
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                      Text(
-                                        '21-10-2024', // Static date, replace with actual if needed
-                                        style: const TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    _diseaseDescriptions[index], // Disease description
-                                    style: const TextStyle(fontSize: 14),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+    return Scaffold(
+      appBar: AppBar(
+        // title: const Text('Profil Pengguna'),
+        backgroundColor: Colors.amber, // Warna latar belakang AppBar
+      ),
+      body: Column(
+        children: [
+          // Bagian Header untuk Profil Pengguna
+          Stack(
+            alignment: Alignment.center, // Ini akan memusatkan elemen secara horizontal dan vertikal
+            children: [
+              Container(
+                height: 200,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Colors.amber, Color.fromARGB(255, 250, 193, 23)],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
                   ),
                 ),
-              );
-            },
-          );
+              ),
+              Positioned(
+                top: 50, // Tetap mengatur posisi vertikal
+                child: const CircleAvatar(
+                  radius: 70,
+                  backgroundImage: AssetImage('assets/images/profile_pic.jpg'), // Tambahkan gambar profil
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 70), // Spasi antara header dan menu
+          const Text(
+            'Nazwa Ayunda M',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+            ),
+          ),
+          const SizedBox(height: 4),
+          const Text(
+            'Frontend & Backend Developer',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey,
+            ),
+          ),
+          const SizedBox(height: 20),
+          // Menu Profile
+          Expanded(
+            child: ListView(
+              children: [
+                _buildMenuItem(
+                  icon: Icons.account_circle,
+                  title: 'Akun',
+                  onTap: () {
+                    // Navigasi ke halaman Akun
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AkunScreen(), // Pindah ke layar AkunScreen
+                      ),
+                    );
+                  },
+                ),
+                _buildMenuItem(
+                  icon: Icons.history,
+                  title: 'Histori Diagnosis',
+                  onTap: () {
+                    // Navigate to HistoriScreen when tapped
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HistoriScreen(),
+                      ),
+                    );
+                  },
+                ),
+                _buildMenuItem(
+                  icon: Icons.settings,
+                  title: 'Pengaturan',
+                  onTap: () {
+                    // Bisa digunakan untuk menu pengaturan
+                  },
+                ),
+                _buildMenuItem(
+                  icon: Icons.logout,
+                  title: 'Keluar',
+                  onTap: () {
+                    // Bisa digunakan untuk logout
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Function to build each menu item
+  Widget _buildMenuItem({required IconData icon, required String title, required Function() onTap}) {
+    return Card(
+      elevation: 2,
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: ListTile(
+        leading: Icon(icon, size: 30, color: Colors.teal),
+        title: Text(title, style: const TextStyle(fontSize: 18)),
+        onTap: onTap,
+      ),
+    );
   }
 }
