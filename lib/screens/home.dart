@@ -32,32 +32,28 @@ class _HomeScreenState extends State<HomeScreen> {
   void _loadDiseases() async {
     try {
       final url = Uri.http("10.0.2.2:8000", "/api/disease");
-      print("Fetching data from: $url"); // Log the URL
       final response = await http.get(
         url,
         headers: {
           "Content-Type": "application/json",
-          // "Authorization": "Bearer <your-token>",
         },
       );
 
-      print(
-        "Response status: ${response.statusCode}",
-      ); // Log the response status
-
       if (response.statusCode >= 400) {
-        setState(() {
-          _error = "Failed to fetch data, please try again later :(";
-        });
+        if (mounted) {
+          setState(() {
+            _error = "Failed to fetch data, please try again later :(";
+          });
+        }
         return;
       }
-      
-      print(response.body); // Log the response body for debugging
 
       if (response.body == "null") {
-        setState(() {
-          _isLoading = false;
-        });
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
         return;
       }
 
@@ -74,26 +70,34 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       }
 
-      setState(() {
-        _diseases = _loadedItems;
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _diseases = _loadedItems;
+          _isLoading = false;
+        });
+      }
     } catch (e) {
-      setState(() {
-        _error = "Something went wrong, please try again :(";
-      });
-      print("Error: $e"); // Log any caught errors
+      if (mounted) {
+        setState(() {
+          _error = "Something went wrong, please try again :(";
+        });
+      }
     }
   }
 
   void initialization() async {
     await Future.delayed(const Duration(seconds: 1));
-    // FlutterNativeSplash.remove(); // Remove splash screen
-    await Future.delayed(const Duration(seconds: 1));
-    setState(() {
-      _isLoading = false;
-    });
-    // _loadDiseases();
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    // Add any necessary cleanup here if using other async listeners.
+    super.dispose();
   }
 
   @override
@@ -121,88 +125,89 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.width / 2,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary,
-                        borderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(70),
-                            bottomRight: Radius.circular(70)),
-                      ),
-                      padding: const EdgeInsets.all(10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Center(
-                            child: AutoSizeText(
-                              "Selamat Datang Lukman!",
-                              minFontSize: 35,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary),
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.width / 2,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(70),
+                          bottomRight: Radius.circular(70)),
+                    ),
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Center(
+                          child: AutoSizeText(
+                            "Selamat Datang Lukman!",
+                            minFontSize: 35,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.onPrimary),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('Informasi'),
+                                      content: const Text(
+                                          'Gunakan menu diagnozer untuk mendeteksi penyakit tanaman mangga berdasarkan daunnya.'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              icon: Icon(
+                                Icons.info_outline,
+                                color: Colors.white,
+                                size: 40,
+                              ),
                             ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: const Text('Informasi'),
-                                        content: const Text(
-                                            'Gunakan menu diagnozer untuk mendeteksi penyakit tanaman mangga berdasarkan daunnya.'),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: const Text('OK'),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                },
-                                icon: Icon(
-                                  Icons.info_outline,
-                                  color: Colors.white,
-                                  size: 40,
-                                ),
+                            IconButton(
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => TabsScreen(
+                                      index: 1,
+                                    ),
+                                  ),
+                                );
+                              },
+                              icon: Icon(
+                                Icons.camera_alt_outlined,
+                                color: Colors.white,
+                                size: 40,
                               ),
-                              IconButton(
-                                onPressed: () {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => TabsScreen(
-                                              index: 1,
-                                            )),
-                                  );
-                                },
-                                icon: Icon(
-                                  Icons.camera_alt_outlined,
-                                  color: Colors.white,
-                                  size: 40,
-                                ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/bookmarked');
+                              },
+                              icon: Icon(
+                                Icons.bookmark,
+                                color: Colors.white,
+                                size: 40,
                               ),
-                              IconButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(context, '/bookmarked');
-                                },
-                                icon: Icon(
-                                  Icons.bookmark,
-                                  color: Colors.white,
-                                  size: 40,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      )),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),

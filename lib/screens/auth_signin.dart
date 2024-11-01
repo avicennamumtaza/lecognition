@@ -19,10 +19,10 @@ class _AuthSigninState extends State<AuthSignin> {
   String? username;
   String? password;
   // String? _error;
-  
+
   // void _register(Map newUser) async {
   //   if (newUser["username"] == "database") {
-      
+
   //   }
   // }
 
@@ -102,7 +102,8 @@ class _AuthSigninState extends State<AuthSignin> {
                           MaterialPageRoute(
                             builder: (context) => const TabsScreen(index: 0),
                           ),
-                              (Route<dynamic> route) => false, // Remove all previous routes
+                          (Route<dynamic> route) =>
+                              false, // Remove all previous routes
                         );
                       } else {
                         debugPrint("Validation failed");
@@ -111,8 +112,8 @@ class _AuthSigninState extends State<AuthSignin> {
                     child: Text(
                       'Login',
                       style: TextStyle(
-                        color: ThemeData().colorScheme.onPrimary,
-                        fontWeight: FontWeight.w800),
+                          color: ThemeData().colorScheme.onPrimary,
+                          fontWeight: FontWeight.w800),
                     ),
                   ),
                   const SizedBox(height: 10),
