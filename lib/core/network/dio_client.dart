@@ -9,7 +9,7 @@ class DioClient {
       : _dio = Dio(
           BaseOptions(
             baseUrl: ApiUrls.baseUrl,
-            headers: {'Content-Type': 'application/json; charset=UTF-8'},
+            headers: {'Content-Type': 'application/json'},
             responseType: ResponseType.json,
             sendTimeout: const Duration(seconds: 10),
             receiveTimeout: const Duration(seconds: 10),
@@ -62,6 +62,7 @@ class DioClient {
       );
       return response;
     } catch (e) {
+      print(e);
       rethrow;
     }
   }
