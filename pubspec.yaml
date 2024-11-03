@@ -55,6 +55,7 @@ dependencies:
   get_it:
   flutter_svg:
   fan_carousel_image_slider:
+  mockito: ^5.4.4
 
 #flutter_native_splash:
 #  # color: "#ffffff" # Set background color of the splash screen
