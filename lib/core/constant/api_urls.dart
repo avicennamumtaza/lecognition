@@ -12,7 +12,8 @@ class ApiUrls {
   // } else {
   //   return 'http://192.168.x.x:8000'; // Ganti dengan IP komputer untuk perangkat fisik
   // }
-  static const myIpAddress = "192.168.x.x";
+
+  static const myComputerIpAddress = "192.168.x.x";
   static final baseUrl = kIsWeb
       ? "http://localhost:8000/api"
       : Platform.isAndroid
