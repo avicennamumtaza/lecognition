@@ -6,6 +6,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:http/http.dart' as http;
 import 'package:lecognition/widgets/tabs.dart';
+// import 'package:lecognition/widgets/tabs.dart';
 
 class AuthSignin extends StatefulWidget {
   const AuthSignin({super.key});
@@ -112,8 +113,9 @@ class _AuthSigninState extends State<AuthSignin> {
                     child: Text(
                       'Login',
                       style: TextStyle(
-                          color: ThemeData().colorScheme.onPrimary,
-                          fontWeight: FontWeight.w800),
+                        color: ThemeData().colorScheme.onPrimary,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 10),
