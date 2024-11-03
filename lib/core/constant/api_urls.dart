@@ -20,7 +20,7 @@ class ApiUrls {
           ? "http://10.0.2.2:8000/api/"
           : Platform.isIOS
               ? "http://127.0.0.1:8000/api"
-              : "http://$myIpAddress:8000/api";
+              : "http://$myComputerIpAddress:8000/api";
 
   // Auth-related URLs
   static const login = "login";
