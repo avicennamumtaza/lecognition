@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:lecognition/core/configs/theme/app_theme.dart';
-import 'package:lecognition/screens/auth_signin.dart';
-import 'package:lecognition/screens/auth_signup.dart';
+// import 'package:lecognition/presentation/auth/pages/signin.dart';
+// import 'package:lecognition/presentation/auth/pages/signup.dart';
+import 'package:lecognition/presentation/splash/bloc/splash_cubit.dart';
+import 'package:lecognition/presentation/splash/pages/splash.dart';
+// import 'package:lecognition/screens/auth_signin.dart';
+// import 'package:lecognition/screens/auth_signup.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:lecognition/screens/bookmarked.dart';
-import 'package:lecognition/widgets/tabs.dart';
+// import 'package:lecognition/screens/bookmarked.dart';
+import 'package:lecognition/service_locator.dart';
+// import 'package:lecognition/widgets/tabs.dart';
 // import 'package:skeletonizer/skeletonizer.dart';
 
 // final theme = ThemeData(
@@ -25,8 +32,9 @@ import 'package:lecognition/widgets/tabs.dart';
 // );
 
 void main() {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  setupServiceLocator();
   runApp(const MyApp());
 }
 
@@ -35,20 +43,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.appTheme,
-      // localizationsDelegates: ,
-      // supportedLocales: ,
-      title: 'Flutter Demo',
-      initialRoute: "/signup",
-      routes: {
-        '/signup': (context) => const AuthSignup(),
-        '/signin': (context) => const AuthSignin(),
-        '/': (context) => const TabsScreen(),
-        '/bookmarked': (context) => BookmarkedScreen(),
-      },
-      // home: const TabsScreen(),
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+      ),
+    );
+    return BlocProvider(
+      create: (context) => SplashCubit()..appStarted(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.appTheme,
+        home: const SplashPage(),
+      ),
     );
   }
 }
