@@ -55,9 +55,9 @@ class SignupPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: Column(children: [
-              _usernameField(),
-              const SizedBox(height: 15),
               _emailField(),
+              const SizedBox(height: 15),
+              _usernameField(),
               const SizedBox(height: 15),
               _passwordField(),
               const SizedBox(height: 30),
@@ -144,28 +144,31 @@ class SignupPage extends StatelessWidget {
         minimumSize: const Size(double.infinity, 50), // ukuran tombol
       ),
       onPressed: () async {
-        try {
-          final result = await sl<SignupUseCase>().call(
-            params: SignupReqParams(
-              username: _usernameController.text,
-              email: _emailController.text,
-              password: _passwordController.text,
-            ),
-          );
-          result.fold(
-            (failure) {
-              DisplayMessage.errorMessage(context, failure.toString());
-            },
-            (success) {
-              AppNavigator.pushAndRemove(
-                context,
-                SigninPage(),
-              );
-            },
-          );
-        } catch (error) {
-          DisplayMessage.errorMessage(context, error.toString());
-        }
+        // try {
+        print(_emailController.text);
+        print(_usernameController.text);
+        print(_passwordController.text);
+        final result = await sl<SignupUseCase>().call(
+          params: SignupReqParams(
+            email: _emailController.text,
+            username: _usernameController.text,
+            password: _passwordController.text,
+          ),
+        );
+        result.fold(
+          (failure) {
+            DisplayMessage.errorMessage(context, failure.toString());
+          },
+          (success) {
+            AppNavigator.pushAndRemove(
+              context,
+              SigninPage(),
+            );
+          },
+        );
+        // } catch (error) {
+        //   DisplayMessage.errorMessage(context, error.toString());
+        // }
       },
       child: const Text(
         "Sign Up",

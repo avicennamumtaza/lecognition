@@ -21,8 +21,11 @@ class AuthApiServiceImpl extends AuthService {
       );
       return Right(response.data);
     } on DioException catch (error) {
-      return Left(
-          error.response?.data["message"] ?? "An unknown error occurred");
+      print(error.response?.data["email"].toString());
+      return Left(error.response?.data["email"] != null
+          ? error.response?.data["password"]?.toString() ??
+              "An unknown error occurred"
+          : "An unknown error occurred");
     }
   }
 
@@ -35,8 +38,11 @@ class AuthApiServiceImpl extends AuthService {
       );
       return Right(response.data);
     } on DioException catch (error) {
-      return Left(
-          error.response?.data["message"] ?? "An unknown error occurred");
+      print(error.response?.data["email"].toString());
+      return Left(error.response?.data["email"] != null
+          ? error.response?.data["password"]?.toString() ??
+              "An unknown error occurred"
+          : "An unknown error occurred");
     }
   }
 }

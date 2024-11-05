@@ -20,9 +20,9 @@ class AuthRepositoryImpl extends AuthRepository {
         return Left(error);
       },
       (data) async {
-        final SharedPreferences sharedPreferences =
-            await SharedPreferences.getInstance();
-        sharedPreferences.setString('access_token', data['access']);
+        // final SharedPreferences sharedPreferences =
+        //     await SharedPreferences.getInstance();
+        // sharedPreferences.setString('access_token', data['access'].toString());
         return Right(data);
       },
     );
