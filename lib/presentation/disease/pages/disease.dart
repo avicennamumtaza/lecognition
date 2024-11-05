@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lecognition/common/widgets/appbar.dart';
 import 'package:lecognition/models/disease.dart';
 
 class DiseaseScreen extends StatelessWidget {
@@ -12,11 +13,8 @@ class DiseaseScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Theme.of(context).colorScheme.onPrimary,
-        // title: const Text('Disease Details'),
-        title: Text(disease.diseaseName),
+      appBar: AppBarWidget(
+        title: disease.diseaseName,
       ),
       body: ListView(
         padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
@@ -31,9 +29,12 @@ class DiseaseScreen extends StatelessWidget {
             margin: const EdgeInsets.only(bottom: 15),
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height / 3.5,
-            child: Image.network(
-              "https://halosehat.com/wp-content/uploads/2019/05/manfaat-daun-mangga-696x395.jpg",
-              fit: BoxFit.cover,
+            child: Hero(
+              tag: "photo_${disease.diseaseId}",
+              child: Image.network(
+                "https://halosehat.com/wp-content/uploads/2019/05/manfaat-daun-mangga-696x395.jpg",
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           // Deskripsi Penyakit

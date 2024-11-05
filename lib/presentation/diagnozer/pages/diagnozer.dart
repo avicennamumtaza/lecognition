@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:lecognition/screens/result.dart';
+import 'package:lecognition/presentation/diagnozer/pages/result.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -97,7 +97,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
     final randomDiagnosis = diagnosises[randomIndex];
     final diseaseId = randomDiagnosis.diseaseId;
     final matchingDisease =
-        diseases.firstWhere((disease) => disease.diseaseId == diseaseId);
+    diseases.firstWhere((disease) => disease.diseaseId == diseaseId);
 
     final diseaseName = matchingDisease.diseaseName;
     final diseaseDescription = matchingDisease.description;
@@ -120,7 +120,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
   Future _pickImageGallery() async {
     try {
       final returnedImage =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
+      await ImagePicker().pickImage(source: ImageSource.gallery);
       if (returnedImage == null) {
         throw Exception('No image selected');
       }
@@ -174,7 +174,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
 
         // Assuming the last saved entry corresponds to the current image
         String diseaseName =
-            savedNames.isNotEmpty ? savedNames.last : 'Unknown Disease';
+        savedNames.isNotEmpty ? savedNames.last : 'Unknown Disease';
         String diseaseDescription = savedDescriptions.isNotEmpty
             ? savedDescriptions.last
             : 'No description available';
@@ -240,7 +240,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
                   IconButton(
                     onPressed: _pickImageGallery,
                     icon:
-                        const Icon(Icons.image, size: 35, color: Colors.white),
+                    const Icon(Icons.image, size: 35, color: Colors.white),
                   ),
                   Container(
                     decoration: const BoxDecoration(

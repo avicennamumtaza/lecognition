@@ -1,11 +1,12 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:lecognition/common/widgets/appbar.dart';
+import 'package:lecognition/presentation/disease/pages/disease.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
-import '../data/dummy_disease.dart';
-import '../models/disease.dart';
-import 'disease.dart';
+import '../../../data/dummy_disease.dart';
+import '../../../models/disease.dart';
 
 class ResultHistoryScreen extends StatelessWidget {
   final String imagePath;
@@ -37,34 +38,7 @@ class ResultHistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Theme.of(context).colorScheme.onPrimary,
-        title: Text('Detail #${diagnosisNumber + 1} / 22-10-2024'),
-      ),
-      // body: Padding(
-      //   padding: const EdgeInsets.all(10.0),
-      //   child: Column(
-      //     children: [
-      //       Image.file(
-      //         File(imagePath),
-      //         width: 300,
-      //         height: 300,
-      //         fit: BoxFit.cover,
-      //       ),
-      //       const SizedBox(height: 20),
-      //       Text(
-      //         diseaseName, // Display disease name
-      //         style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-      //       ),
-      //       const SizedBox(height: 10),
-      //       Text(
-      //         diseaseDescription, // Display disease description
-      //         style: const TextStyle(fontSize: 16),
-      //       ),
-      //     ],
-      //   ),
-      // ),
+      appBar: AppBarWidget(title: 'Detail #${diagnosisNumber + 1} / 22-10-2024'),
       body: ListView(
         padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
         children: [
@@ -77,12 +51,15 @@ class ResultHistoryScreen extends StatelessWidget {
             margin: const EdgeInsets.only(bottom: 15),
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.width,
-            child: Image.file(
-              File(imagePath),
-              fit: BoxFit.cover,
+            child: Hero(
+              tag: imagePath,
+              child: Image.file(
+                File(imagePath),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-          
+
           Container(
             margin: const EdgeInsets.only(bottom: 10),
             decoration: BoxDecoration(

@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:lecognition/common/widgets/appbar.dart';
 import 'package:lecognition/data/dummy_disease.dart';
 import 'package:lecognition/widgets/bookmarkedCard.dart';
 
-class BookmarkedScreen extends StatelessWidget {
+class BookmarkedScreen extends StatefulWidget {
+  const BookmarkedScreen({super.key});
+
+  @override
+  State<BookmarkedScreen> createState() => _BookmarkedScreenState();
+}
+
+class _BookmarkedScreenState extends State<BookmarkedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Bookmarked Diseases'),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Theme.of(context).colorScheme.onPrimary,
-      ),
+      appBar: AppBarWidget(title: 'Penyakit Favorit'),
       body: Padding(
         padding: EdgeInsets.symmetric(
           vertical: 0,
