@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lecognition/common/helper/navigation/app_navigator.dart';
+import 'package:lecognition/common/widgets/tabs.dart';
 import 'package:lecognition/core/configs/assets/app_images.dart';
 import 'package:lecognition/presentation/auth/pages/signin.dart';
-// import 'package:lecognition/presentation/home/pages/home.dart';
 import 'package:lecognition/presentation/splash/bloc/splash_cubit.dart';
 import 'package:lecognition/presentation/splash/bloc/splash_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lecognition/widgets/tabs.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});

@@ -1,17 +1,16 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:lecognition/common/widgets/appbar.dart';
 import 'package:lecognition/data/dummy_disease.dart';
 import 'package:lecognition/models/disease.dart';
-import 'package:lecognition/widgets/tabs.dart';
+import 'package:lecognition/presentation/disease/pages/disease.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-
-import 'disease.dart';
 
 class ResultScreen extends StatelessWidget {
   ResultScreen({
-    super.key, 
-    required this.photo, 
+    super.key,
+    required this.photo,
     required this.diseaseName, // New parameter
     required this.diseaseDescription, // New parameter
   });
@@ -36,11 +35,7 @@ class ResultScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Theme.of(context).colorScheme.onPrimary,
-        title: const Text('Result Screen'),
-      ),
+      appBar: AppBarWidget(title: 'Hasil Diagnosa'),
       body: ListView(
         padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
         children: [

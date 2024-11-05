@@ -2,11 +2,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:lecognition/common/helper/message/display_message.dart';
 import 'package:lecognition/common/helper/navigation/app_navigator.dart';
+import 'package:lecognition/common/widgets/tabs.dart';
 import 'package:lecognition/data/auth/models/signin_req_params.dart';
 import 'package:lecognition/domain/auth/usecases/signin.dart';
 import 'package:lecognition/presentation/auth/pages/signup.dart';
 import 'package:lecognition/service_locator.dart';
-import 'package:lecognition/widgets/tabs.dart';
 
 class SigninPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();

@@ -53,7 +53,7 @@ class _BookmarkedCardState extends State<BookmarkedCard> {
                     right: 6.0,
                     child: Card(
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4.0)),
+                          borderRadius: BorderRadius.circular(100.0)),
                       child: Padding(
                         padding: EdgeInsets.all(1.0),
                         child: Row(
@@ -64,11 +64,8 @@ class _BookmarkedCardState extends State<BookmarkedCard> {
                                   milliseconds: 300,
                                 ),
                                 transitionBuilder: (child, animation) {
-                                  return RotationTransition(
-                                    turns: Tween<double>(
-                                      begin: 0.5,
-                                      end: 1,
-                                    ).animate(animation),
+                                  return ScaleTransition(
+                                    scale: animation,
                                     child: child,
                                   );
                                 },

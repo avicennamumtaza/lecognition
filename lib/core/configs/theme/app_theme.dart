@@ -21,7 +21,7 @@ class AppTheme {
       SkeletonizerConfigData(),
     ],
     primaryColor: AppColors.primary,
-    scaffoldBackgroundColor: AppColors.onPrimary,
+    scaffoldBackgroundColor: Colors.white,
     brightness: Brightness.light,
     snackBarTheme: SnackBarThemeData(
       backgroundColor: AppColors.onSecondary,
