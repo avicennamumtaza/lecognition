@@ -17,7 +17,8 @@ class DiseaseApiServiceImpl extends DiseaseApiService {
       );
       return Right(response.data);
     } on DioException catch (error) {
-      return Left(error.response!.data["message"]);
+      return Left(
+          error.response!.data["message"] ?? "An unknown error occured");
     }
   }
 }

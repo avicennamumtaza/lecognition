@@ -2,11 +2,11 @@ import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:lecognition/common/widgets/appbar.dart';
+import 'package:lecognition/domain/disease/entities/disease.dart';
 import 'package:lecognition/presentation/disease/pages/disease.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../../../data/dummy_disease.dart';
-import '../../../models/disease.dart';
 
 class ResultHistoryScreen extends StatelessWidget {
   final String imagePath;
@@ -22,12 +22,12 @@ class ResultHistoryScreen extends StatelessWidget {
     required this.diagnosisNumber,
   }) : super(key: key);
 
-  Disease ds = diseases[0];
+  DiseaseEntity ds = diseases[0];
   double percentage = Random().nextDouble();
 
-  Disease _findDisease() {
+  DiseaseEntity _findDisease() {
     for (var disease in diseases) {
-      if (disease.diseaseName == diseaseName) {
+      if (disease.name == diseaseName) {
         ds = disease;
         break;
       }

@@ -1,5 +1,7 @@
 import 'package:dartz/dartz.dart';
+import 'package:lecognition/common/helper/mapper/disease_mapper.dart';
 import 'package:lecognition/data/disease/sources/disease_api_service.dart';
+import 'package:lecognition/domain/disease/entities/disease.dart';
 import 'package:lecognition/domain/disease/repositories/disease.dart';
 import 'package:lecognition/service_locator.dart';
 
@@ -12,10 +14,17 @@ class DiseaseRepositoryImpl extends DiseaseRepository {
         return Left(error);
       },
       (data) async {
+        final diseases = List.from(data)
+            .map(
+              (item) => DiseaseMapper.toEntity(
+                DiseaseEntity.fromJson(item),
+              ),
+            )
+            .toList();
         // final SharedPreferences sharedPreferences =
         //     await SharedPreferences.getInstance();
         // sharedPreferences.setString('access_token', data['access']);
-        return Right(data);
+        return Right(diseases);
       },
     );
   }

@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:lecognition/common/widgets/appbar.dart';
 import 'package:lecognition/data/dummy_disease.dart';
-import 'package:lecognition/models/disease.dart';
+import 'package:lecognition/domain/disease/entities/disease.dart';
 import 'package:lecognition/presentation/disease/pages/disease.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -19,12 +19,12 @@ class ResultScreen extends StatelessWidget {
   final String diseaseName; // Variable to hold the disease name
   final String diseaseDescription; // Variable to hold the disease description
 
-  Disease ds = diseases[0];
+  DiseaseEntity ds = diseases[0];
   final double percentage = Random().nextDouble();
 
-  Disease _findDisease() {
+  DiseaseEntity _findDisease() {
     for (var disease in diseases) {
-      if (disease.diseaseName == diseaseName) {
+      if (disease.name == diseaseName) {
         ds = disease;
         break;
       }

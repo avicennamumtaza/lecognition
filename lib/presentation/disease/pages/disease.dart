@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lecognition/common/widgets/appbar.dart';
-import 'package:lecognition/models/disease.dart';
+import 'package:lecognition/domain/disease/entities/disease.dart';
 
 class DiseaseScreen extends StatelessWidget {
   DiseaseScreen({
@@ -8,13 +8,13 @@ class DiseaseScreen extends StatelessWidget {
     required this.disease,
   });
 
-  final Disease disease;
+  final DiseaseEntity disease;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(
-        title: disease.diseaseName,
+        title: disease.name.toString(),
       ),
       body: ListView(
         padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
@@ -30,7 +30,7 @@ class DiseaseScreen extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height / 3.5,
             child: Hero(
-              tag: "photo_${disease.diseaseId}",
+              tag: "photo_${disease.id}",
               child: Image.network(
                 "https://halosehat.com/wp-content/uploads/2019/05/manfaat-daun-mangga-696x395.jpg",
                 fit: BoxFit.cover,
@@ -47,14 +47,14 @@ class DiseaseScreen extends StatelessWidget {
             alignment: Alignment.topLeft,
             child: ListTile(
               title: Text(
-                disease.diseaseName, // Display the passed disease name
+                disease.name.toString(), // Display the passed disease name
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               subtitle: Text(
-                disease.description, // Display the passed disease description
+                disease.desc.toString(), // Display the passed disease description
                 style: const TextStyle(
                   fontSize: 15,
                 ),

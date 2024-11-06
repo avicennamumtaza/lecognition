@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lecognition/models/diagnosis.dart';
-import 'package:lecognition/models/disease.dart';
+import 'package:lecognition/domain/disease/entities/disease.dart';
 
 class DiagnosisCard extends StatelessWidget {
   const DiagnosisCard({required this.disease, super.key});
-  final Disease disease;
+  final DiseaseEntity disease;
 
   @override
   Widget build(BuildContext context) {
@@ -52,13 +51,13 @@ class DiagnosisCard extends StatelessWidget {
                     height: 45.0,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: disease.diseaseId != 0
+                      color: disease.id != 0
                           ? Colors.green.shade800
                           : Colors.orange.shade800,
                     ),
                     child: Center(
                       child: Text(
-                        disease.diseaseId != 0 ? "Healty" : "Diseased",
+                        disease.id != 0 ? "Healty" : "Diseased",
                         style: const TextStyle(
                           fontSize: 8.0,
                           color: Colors.white,
@@ -88,14 +87,14 @@ class DiagnosisCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        disease.diseaseName,
+                        disease.name.toString(),
                         style: const TextStyle(
                           fontSize: 17.0,
                         ),
                       ),
                     ),
                     Text(
-                      disease.diseaseName,
+                      disease.name.toString(),
                       style: TextStyle(
                         fontSize: 17.0,
                         color: Colors.green.shade300,
@@ -107,7 +106,7 @@ class DiagnosisCard extends StatelessWidget {
                   height: 5.0,
                 ),
                 Text(
-                  disease.description,
+                  disease.desc.toString(),
                   style: const TextStyle(
                     fontSize: 13.0,
                     color: Color(0xFF343434),
@@ -127,7 +126,7 @@ class DiagnosisCard extends StatelessWidget {
                       width: 5.0,
                     ),
                     Text(
-                      disease.diseaseName,
+                      disease.name.toString(),
                       style: const TextStyle(
                         fontSize: 13.0,
                         color: Color(0xFF343434),

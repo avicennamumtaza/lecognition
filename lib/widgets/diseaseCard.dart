@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:lecognition/models/disease.dart';
+import 'package:lecognition/domain/disease/entities/disease.dart';
 import 'package:lecognition/presentation/disease/pages/disease.dart';
 
 class DiseaseCard extends StatefulWidget {
   const DiseaseCard({required this.disease, super.key});
-  final Disease disease;
+  final DiseaseEntity disease;
 
   @override
   State<DiseaseCard> createState() => _DiseaseCardState();
@@ -23,7 +23,7 @@ class _DiseaseCardState extends State<DiseaseCard> {
     }
 
     return Hero(
-      tag: "photo_${widget.disease.diseaseId}",
+      tag: "photo_${widget.disease.id}",
       child: Material(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(22.0),
@@ -53,10 +53,15 @@ class _DiseaseCardState extends State<DiseaseCard> {
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(18.0),
-                            image: const DecorationImage(
+                            image: DecorationImage(
                               fit: BoxFit.cover,
                               image: NetworkImage(
-                                  "https://halosehat.com/wp-content/uploads/2019/05/manfaat-daun-mangga-696x395.jpg"),
+                                "https://akcdn.detik.net.id/community/media/visual/2017/02/13/f4f07441-250d-44a1-a795-d699b2e998bd_169.jpg",
+                              ),
+                              onError: (exception, stackTrace) {
+                                // Handle error here
+                                print('Error loading image: $exception');
+                              },
                             ),
                           ),
                         ),
@@ -84,7 +89,9 @@ class _DiseaseCardState extends State<DiseaseCard> {
                                     );
                                   },
                                   child: Icon(
-                                    isFavorite ? Icons.bookmark_outlined : Icons.bookmark_border_outlined,
+                                    isFavorite
+                                        ? Icons.bookmark_outlined
+                                        : Icons.bookmark_border_outlined,
                                     key: ValueKey(
                                       isFavorite,
                                     ),
@@ -146,16 +153,17 @@ class _DiseaseCardState extends State<DiseaseCard> {
                           children: [
                             Expanded(
                               child: Text(
-                                widget.disease.diseaseName,
+                                widget.disease.name.toString(),
                                 style: TextStyle(
                                   fontSize: 17.0,
-                                  color:
-                                  Theme.of(context).colorScheme.onPrimaryContainer,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onPrimaryContainer,
                                 ),
                               ),
                             ),
                             Text(
-                              widget.disease.diseaseName,
+                              widget.disease.name.toString(),
                               style: TextStyle(
                                 fontSize: 17.0,
                                 color: Theme.of(context)
@@ -170,10 +178,12 @@ class _DiseaseCardState extends State<DiseaseCard> {
                           height: 5.0,
                         ),
                         Text(
-                          widget.disease.description,
+                          widget.disease.desc.toString(),
                           style: TextStyle(
                             fontSize: 13.0,
-                            color: Theme.of(context).colorScheme.onPrimaryContainer,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onPrimaryContainer,
                           ),
                         ),
                         const SizedBox(
@@ -190,10 +200,12 @@ class _DiseaseCardState extends State<DiseaseCard> {
                               width: 5.0,
                             ),
                             Text(
-                              widget.disease.diseaseName,
+                              widget.disease.name.toString(),
                               style: TextStyle(
                                 fontSize: 13.0,
-                                color: Theme.of(context).colorScheme.onPrimaryContainer,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimaryContainer,
                               ),
                             ),
                           ],

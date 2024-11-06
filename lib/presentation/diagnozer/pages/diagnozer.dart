@@ -97,10 +97,10 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
     final randomDiagnosis = diagnosises[randomIndex];
     final diseaseId = randomDiagnosis.diseaseId;
     final matchingDisease =
-    diseases.firstWhere((disease) => disease.diseaseId == diseaseId);
+    diseases.firstWhere((disease) => disease.id == diseaseId);
 
-    final diseaseName = matchingDisease.diseaseName;
-    final diseaseDescription = matchingDisease.description;
+    final diseaseName = matchingDisease.name;
+    final diseaseDescription = matchingDisease.desc;
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String>? savedImages = prefs.getStringList('diagnosis_images') ?? [];
@@ -109,8 +109,8 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
         prefs.getStringList('diagnosis_descriptions') ?? [];
 
     savedImages.add(image.path);
-    savedNames.add(diseaseName);
-    savedDescriptions.add(diseaseDescription);
+    savedNames.add(diseaseName!);
+    savedDescriptions.add(diseaseDescription!);
 
     await prefs.setStringList('diagnosis_images', savedImages);
     await prefs.setStringList('diagnosis_names', savedNames);
