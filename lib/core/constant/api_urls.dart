@@ -25,11 +25,12 @@ class ApiUrls {
   // Auth-related URLs
   static const login = "login";
   static const register = "register";
+  static const refreshToken = "token/refresh/";
 
   // User-related URLs
-  static const getUserById = "user/"; // You’ll append the user ID when calling
+  static const getUserById = "user"; // You’ll append the user ID when calling
   static const getAllUsers =
-      "user"; // This will be used for both POST (register) and GET all users
+      "user/all"; // This will be used for both POST (register) and GET all users
 
   // Scan-related URLs
   static const getScanById = "scan/"; // Append scan ID when calling

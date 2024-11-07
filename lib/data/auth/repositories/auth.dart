@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:lecognition/data/auth/models/refresh_token_params.dart';
 import 'package:lecognition/data/auth/models/signin_req_params.dart';
 import 'package:lecognition/data/auth/models/signup_req_params.dart';
 import 'package:lecognition/data/auth/sources/auth_api_service.dart';
@@ -39,20 +40,37 @@ class AuthRepositoryImpl extends AuthRepository {
         final SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
         sharedPreferences.setString('access_token', data['access']);
+        sharedPreferences.setString('refresh', data['refresh']);
         return Right(data);
       },
     );
   }
 
   @override
-  Future<bool> isSignedIn() async {
+  Future<bool> isSignedIn(RefreshTokenParams params) async {
+    try {
+      var data = await sl<AuthService>().refreshToken(params);
+
+final bool returned = await data.fold(
+  (error) {
+    print('Refresh token request error: $error');
+    return false;
+  },
+  (data) async {
     final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
-    var token = sharedPreferences.getString('access_token');
-    if (token == null) {
+    sharedPreferences.setString('access_token', data['access']);
+    sharedPreferences.setString('refresh', data['refresh']);
+    return true;
+  },
+);
+
+
+      return returned;
+    } catch (e) {
+      // Log the unexpected error and return false
+      print("Unexpected error in isSignedIn: $e");
       return false;
-    } else {
-      return true;
     }
   }
 }
