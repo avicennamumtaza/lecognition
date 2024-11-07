@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lecognition/common/widgets/appbar.dart';
+import 'package:lecognition/core/configs/assets/app_images.dart';
 import 'package:lecognition/domain/disease/entities/disease.dart';
 
 class DiseaseScreen extends StatelessWidget {
@@ -31,9 +32,22 @@ class DiseaseScreen extends StatelessWidget {
             height: MediaQuery.of(context).size.height / 3.5,
             child: Hero(
               tag: "photo_${disease.id}",
-              child: Image.network(
-                "https://halosehat.com/wp-content/uploads/2019/05/manfaat-daun-mangga-696x395.jpg",
-                fit: BoxFit.cover,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(18.0),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage(
+                      AppImages.basePathDisease +
+                          disease.id.toString() +
+                          ".jpg",
+                    ),
+                    onError: (exception, stackTrace) {
+                      print('Error loading image: $exception');
+                      print('Error loading image: $exception');
+                    },
+                  ),
+                ),
               ),
             ),
           ),
@@ -54,7 +68,8 @@ class DiseaseScreen extends StatelessWidget {
                 ),
               ),
               subtitle: Text(
-                disease.desc.toString(), // Display the passed disease description
+                disease.desc
+                    .toString(), // Display the passed disease description
                 style: const TextStyle(
                   fontSize: 15,
                 ),
@@ -82,12 +97,12 @@ class DiseaseScreen extends StatelessWidget {
                   fontSize: 17,
                 ),
                 'Pengobatan penyakit ini dapat dilakukan dengan cara:\n'
-                    '1. Menyemprotkan pestisida\n'
-                    '2. Pangkas bagian yang terinfeksi\n'
-                    '3. Pengelolaan lingkungan\n'
-                    '4. Penggunaan pestisida organik\n'
-                    '5. Peningkatan nutrisi tanaman\n'
-                    '6. Pemantauan rutin\n',
+                '1. Menyemprotkan pestisida\n'
+                '2. Pangkas bagian yang terinfeksi\n'
+                '3. Pengelolaan lingkungan\n'
+                '4. Penggunaan pestisida organik\n'
+                '5. Peningkatan nutrisi tanaman\n'
+                '6. Pemantauan rutin\n',
               ),
             ),
           ),
@@ -112,13 +127,13 @@ class DiseaseScreen extends StatelessWidget {
                   fontSize: 17,
                 ),
                 'Pencegahan penyakit ini dapat dilakukan dengan cara:\n'
-                    '1. Menjaga kebersihan tanaman\n'
-                    '2. Menyemprotkan pestisida\n'
-                    '3. Menyiram tanaman secara teratur\n'
-                    '4. Menyediakan nutrisi yang cukup untuk tanaman\n'
-                    '5. Menyediakan cahaya yang cukup untuk tanaman\n'
-                    '6. Menyediakan air yang cukup untuk tanaman\n'
-                    '7. Menyediakan udara yang cukup untuk tanaman\n',
+                '1. Menjaga kebersihan tanaman\n'
+                '2. Menyemprotkan pestisida\n'
+                '3. Menyiram tanaman secara teratur\n'
+                '4. Menyediakan nutrisi yang cukup untuk tanaman\n'
+                '5. Menyediakan cahaya yang cukup untuk tanaman\n'
+                '6. Menyediakan air yang cukup untuk tanaman\n'
+                '7. Menyediakan udara yang cukup untuk tanaman\n',
               ),
             ),
           ),
@@ -144,8 +159,8 @@ class DiseaseScreen extends StatelessWidget {
                   fontSize: 17,
                 ),
                 'Pantau tanaman secara rutin setelah pengobatan pertama. Jika gejala tidak berkurang, '
-                    'pertimbangkan untuk mengaplikasikan fungisida sistemik dengan bahan aktif berbeda atau '
-                    'konsultasi dengan ahli pertanian setempat',
+                'pertimbangkan untuk mengaplikasikan fungisida sistemik dengan bahan aktif berbeda atau '
+                'konsultasi dengan ahli pertanian setempat',
               ),
             ),
           ),

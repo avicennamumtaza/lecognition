@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lecognition/core/configs/assets/app_images.dart';
 import 'package:lecognition/domain/disease/entities/disease.dart';
 import 'package:lecognition/presentation/disease/pages/disease.dart';
 
@@ -55,11 +56,13 @@ class _DiseaseCardState extends State<DiseaseCard> {
                             borderRadius: BorderRadius.circular(18.0),
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(
-                                "https://akcdn.detik.net.id/community/media/visual/2017/02/13/f4f07441-250d-44a1-a795-d699b2e998bd_169.jpg",
+                              image: AssetImage(
+                                AppImages.basePathDisease +
+                                    widget.disease.id.toString() +
+                                    ".jpg",
                               ),
                               onError: (exception, stackTrace) {
-                                // Handle error here
+                                print('Error loading image: $exception');
                                 print('Error loading image: $exception');
                               },
                             ),
