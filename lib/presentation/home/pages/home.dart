@@ -44,7 +44,8 @@ class HomeScreen extends StatelessWidget {
                   backgroundColor: Colors.transparent,
                   flexibleSpace: FlexibleSpaceBar(
                     background: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Container(
                           width: MediaQuery.of(context).size.width,
@@ -56,92 +57,214 @@ class HomeScreen extends StatelessWidget {
                               bottomRight: Radius.circular(70),
                             ),
                           ),
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 15,
+                            vertical: 0,
+                          ),
+                          // child: Column(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          //   children: [
+                          //     Center(
+                          //       child: AutoSizeText(
+                          //         "Selamat Datang Lukman!",
+                          //         minFontSize: 35,
+                          //         textAlign: TextAlign.center,
+                          //         style: TextStyle(
+                          //             color: Theme.of(context)
+                          //                 .colorScheme
+                          //                 .onPrimary),
+                          //       ),
+                          //     ),
+                          //     Row(
+                          //       mainAxisAlignment:
+                          //           MainAxisAlignment.spaceAround,
+                          //       children: [
+                          //         IconButton(
+                          //           onPressed: () {
+                          //             showDialog(
+                          //               context: context,
+                          //               builder: (BuildContext context) {
+                          //                 return AlertDialog(
+                          //                   title: const Text('Informasi'),
+                          //                   content: const Text(
+                          //                       'Gunakan menu diagnozer untuk mendeteksi penyakit tanaman mangga berdasarkan daunnya.'),
+                          //                   actions: <Widget>[
+                          //                     TextButton(
+                          //                       onPressed: () {
+                          //                         Navigator.of(context).pop();
+                          //                       },
+                          //                       child: const Text('OK'),
+                          //                     ),
+                          //                   ],
+                          //                 );
+                          //               },
+                          //             );
+                          //           },
+                          //           icon: Icon(
+                          //             Icons.info_outline,
+                          //             color: Colors.white,
+                          //             size: 35,
+                          //           ),
+                          //         ),
+                          //         Container(
+                          //           decoration: BoxDecoration(
+                          //             shape: BoxShape.circle,
+                          //             color: Theme.of(context)
+                          //                 .colorScheme
+                          //                 .secondary
+                          //                 .withOpacity(0.3),
+                          //           ),
+                          //           padding: const EdgeInsets.all(0),
+                          //           child: IconButton(
+                          //             onPressed: () {
+                          //               Navigator.pushReplacement(
+                          //                 context,
+                          //                 MaterialPageRoute(
+                          //                   builder: (context) =>
+                          //                       TabsScreen(index: 1),
+                          //                 ),
+                          //               );
+                          //             },
+                          //             icon: Icon(Icons.camera_alt_outlined,
+                          //                 color: Colors.white, size: 50),
+                          //           ),
+                          //         ),
+                          //         IconButton(
+                          //           onPressed: () {
+                          //             Navigator.push(
+                          //               context,
+                          //               MaterialPageRoute(
+                          //                 builder: (context) =>
+                          //                     BookmarkedScreen(),
+                          //               ),
+                          //             );
+                          //           },
+                          //           icon: Icon(
+                          //             Icons.bookmark,
+                          //             color: Colors.white,
+                          //             size: 35,
+                          //           ),
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   ],
+                          // ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Center(
-                                child: AutoSizeText(
-                                  "Selamat Datang Lukman!",
-                                  minFontSize: 35,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimary),
+                              SizedBox(
+                                width: 200,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Selamat Datang Handoko!',
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary,
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 50,
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.rectangle,
+                                        color: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                      width: 200,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        children: [
+                                          IconButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: const Text('Informasi'),
+                                                    content: const Text(
+                                                        'Gunakan menu diagnozer untuk mendeteksi penyakit tanaman mangga berdasarkan daunnya.'),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        child: const Text('OK'),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            icon: Icon(
+                                              Icons.info_outline,
+                                              color: Colors.white,
+                                              size: 30,
+                                            ),
+                                          ),
+                                          IconButton(
+                                            onPressed: () {
+                                              Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      TabsScreen(index: 1),
+                                                ),
+                                              );
+                                            },
+                                            icon: Icon(Icons.camera_alt_outlined,
+                                                color: Colors.white, size: 30),
+                                          ),
+                                          IconButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      BookmarkedScreen(),
+                                                ),
+                                              );
+                                            },
+                                            icon: Icon(
+                                              Icons.bookmark,
+                                              color: Colors.white,
+                                              size: 30,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text('Informasi'),
-                                            content: const Text(
-                                                'Gunakan menu diagnozer untuk mendeteksi penyakit tanaman mangga berdasarkan daunnya.'),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: const Text('OK'),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    },
-                                    icon: Icon(
-                                      Icons.info_outline,
-                                      color: Colors.white,
-                                      size: 35,
-                                    ),
-                                  ),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary
-                                          .withOpacity(0.3),
-                                    ),
-                                    padding: const EdgeInsets.all(0),
-                                    child: IconButton(
-                                      onPressed: () {
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                TabsScreen(index: 1),
-                                          ),
-                                        );
-                                      },
-                                      icon: Icon(Icons.camera_alt_outlined,
-                                          color: Colors.white, size: 50),
-                                    ),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              BookmarkedScreen(),
-                                        ),
-                                      );
-                                    },
-                                    icon: Icon(
-                                      Icons.bookmark,
-                                      color: Colors.white,
-                                      size: 35,
-                                    ),
-                                  ),
-                                ],
+                              // Container(
+                              //   decoration: BoxDecoration(
+                              //     shape: BoxShape.circle,
+                              //     color: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
+                              //   ),
+                              //   height: 160,
+                              //   width: 160,
+                              //   padding: const EdgeInsets.all(0),
+                              //   child: Icon(
+                              //     Icons.person,
+                              //     color: Colors.white,
+                              //     size: 50,
+                              //   ),
+                              // ),
+                              Image(image:
+                                AssetImage('assets/avatars/Avatar_3.png'),
+                                width: 219,
+                                // height: 182,
+                                // fit: BoxFit.contain,
+                                alignment: Alignment.bottomLeft,
                               ),
                             ],
                           ),
