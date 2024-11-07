@@ -22,11 +22,12 @@ class AkunScreen extends StatelessWidget {
                     Hero(
                       tag: 'profile_image',
                       child: CircleAvatar(
-                        radius: 60,
+                        radius: 100,
                         child: Image.asset(
-                          'assets/images/icon.png',
-                          width: 100,
+                          'assets/avatars/Avatar_3.png',
+                          width: 200,
                         ),
+                        backgroundColor: Colors.transparent,
                       ),
                     ),
                     const SizedBox(height: 20),
