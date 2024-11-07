@@ -84,7 +84,7 @@ class DiseaseScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             alignment: Alignment.topLeft,
-            child: const ListTile(
+            child: ListTile(
               title: Text(
                 'Pengobatan',
                 style: TextStyle(
@@ -96,13 +96,7 @@ class DiseaseScreen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 17,
                 ),
-                'Pengobatan penyakit ini dapat dilakukan dengan cara:\n'
-                '1. Menyemprotkan pestisida\n'
-                '2. Pangkas bagian yang terinfeksi\n'
-                '3. Pengelolaan lingkungan\n'
-                '4. Penggunaan pestisida organik\n'
-                '5. Peningkatan nutrisi tanaman\n'
-                '6. Pemantauan rutin\n',
+                disease.detail!.treatment.toString(),
               ),
             ),
           ),
@@ -114,7 +108,7 @@ class DiseaseScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             alignment: Alignment.topLeft,
-            child: const ListTile(
+            child: ListTile(
               title: Text(
                 'Pencegahan',
                 style: TextStyle(
@@ -126,14 +120,7 @@ class DiseaseScreen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 17,
                 ),
-                'Pencegahan penyakit ini dapat dilakukan dengan cara:\n'
-                '1. Menjaga kebersihan tanaman\n'
-                '2. Menyemprotkan pestisida\n'
-                '3. Menyiram tanaman secara teratur\n'
-                '4. Menyediakan nutrisi yang cukup untuk tanaman\n'
-                '5. Menyediakan cahaya yang cukup untuk tanaman\n'
-                '6. Menyediakan air yang cukup untuk tanaman\n'
-                '7. Menyediakan udara yang cukup untuk tanaman\n',
+                disease.detail!.prevention.toString(),
               ),
             ),
           ),
@@ -145,9 +132,9 @@ class DiseaseScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             alignment: Alignment.topLeft,
-            child: const ListTile(
+            child: ListTile(
               title: Text(
-                'Informasi Tambahan',
+                'Level Bahaya',
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -158,9 +145,7 @@ class DiseaseScreen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 17,
                 ),
-                'Pantau tanaman secara rutin setelah pengobatan pertama. Jika gejala tidak berkurang, '
-                'pertimbangkan untuk mengaplikasikan fungisida sistemik dengan bahan aktif berbeda atau '
-                'konsultasi dengan ahli pertanian setempat',
+                disease.detail!.severity.toString(),
               ),
             ),
           ),

@@ -101,48 +101,10 @@ class _DiseaseCardState extends State<DiseaseCard> {
                                   ),
                                 ),
                                 onPressed: onFavorite,
-                                // () {
-                                // final wasAdded = ref
-                                //     .read(favoriteMealsProvider.notifier)
-                                //     .toggleMealFavoriteStatus(meal);
-                                // ScaffoldMessenger.of(context).clearSnackBars();
-                                // ScaffoldMessenger.of(context).showSnackBar(
-                                //   SnackBar(
-                                //     content: Text(wasAdded
-                                //         ? "Meal added as a favorite"
-                                //         : "Meal removed from favorite"),
-                                //   ),
-                                // );
-                                // },
                               ),
                             ),
                           ),
                         ),
-                        // Positioned(
-                        //   bottom: -15.0,
-                        //   left: 10.0,
-                        //   child: Container(
-                        //     width: 45.0,
-                        //     height: 45.0,
-                        //     decoration: BoxDecoration(
-                        //       shape: BoxShape.circle,
-                        //       color: this.disease.diseaseId != 0
-                        //           ? Colors.green.shade800
-                        //           : Colors.orange.shade800,
-                        //     ),
-                        //     child: Center(
-                        //       child: Text(
-                        //         this.disease.diseaseId != 0
-                        //             ? "Healty"
-                        //             : "Diseased",
-                        //         style: const TextStyle(
-                        //           fontSize: 8.0,
-                        //           color: Colors.white,
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ),
-                        // )
                       ],
                     ),
                   ),
@@ -166,7 +128,7 @@ class _DiseaseCardState extends State<DiseaseCard> {
                               ),
                             ),
                             Text(
-                              widget.disease.name.toString(),
+                              widget.disease.detail!.severity,
                               style: TextStyle(
                                 fontSize: 17.0,
                                 color: Theme.of(context)
@@ -203,7 +165,9 @@ class _DiseaseCardState extends State<DiseaseCard> {
                               width: 5.0,
                             ),
                             Text(
-                              widget.disease.name.toString(),
+                              widget.disease.detail!.prevention.length > 45
+                                  ? '${widget.disease.detail!.prevention.substring(0, 45)}...'
+                                  : widget.disease.detail!.prevention,
                               style: TextStyle(
                                 fontSize: 13.0,
                                 color: Theme.of(context)

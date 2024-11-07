@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lecognition/common/widgets/tabs.dart';
+import 'package:lecognition/domain/disease/entities/disease.dart';
+import 'package:lecognition/domain/disease/entities/disease_detail.dart';
 // import 'package:lecognition/models/disease.dart';
 import 'package:lecognition/presentation/bookmark/pages/bookmarked.dart';
 import 'package:lecognition/presentation/home/bloc/disease_cubit.dart';
@@ -15,8 +17,19 @@ import 'package:skeletonizer/skeletonizer.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
+  void linkDiseaseDetails(List<DiseaseEntity> diseases) {
+    for (var disease in diseases) {
+      // Find the matching detail based on id
+      disease.detail = diseaseDetails.firstWhere(
+        (detail) => detail.id == disease.id,
+        orElse: null, // If no detail found, set to null
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    // linkDiseaseDetails(diseases);
     return BlocProvider(
       create: (context) => DiseaseCubit()..getAllDiseases(),
       child: BlocBuilder<DiseaseCubit, DiseaseState>(
@@ -152,6 +165,7 @@ class HomeScreen extends StatelessWidget {
                   SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
+                        linkDiseaseDetails(state.diseases);
                         final disease = state.diseases[index];
                         return Column(
                           children: [
