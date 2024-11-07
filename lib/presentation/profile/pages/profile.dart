@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lecognition/presentation/auth/pages/signin.dart';
 import 'package:lecognition/presentation/profile/pages/account.dart';
 import 'package:lecognition/presentation/history/pages/history.dart';
 
@@ -155,12 +156,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Hero(
             tag: 'profile_image',
             child: CircleAvatar(
-              radius: 70,
+              radius: 100,
               child: Image.asset(
-                'assets/images/icon.png',
-                width: 100,
+                'assets/avatars/Avatar_3.png',
+                fit: BoxFit.cover,
               ),
-              backgroundColor: Theme.of(context).colorScheme.secondary,
+              backgroundColor: Colors.transparent,
             ),
           ),
         ),
@@ -236,7 +237,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SigninPage()
+                          )
+                      );
                     },
                     child: const Text('Keluar'),
                   ),

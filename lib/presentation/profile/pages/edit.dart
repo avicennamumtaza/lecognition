@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:lecognition/common/widgets/appbar.dart';
+import 'package:lecognition/presentation/profile/pages/avatar.dart';
 
 class EditAccount extends StatefulWidget {
   const EditAccount({super.key});
@@ -32,12 +33,41 @@ class _EditAccountState extends State<EditAccount> {
                   children: [
                     Hero(
                       tag: 'profile_image',
-                      child: CircleAvatar(
-                        radius: 60,
-                        child: Image.asset(
-                          'assets/images/icon.png',
-                          width: 100,
-                        ),
+                      child: Stack(
+                        children: [
+                          CircleAvatar(
+                            radius: 100,
+                            child: Image.asset(
+                              'assets/avatars/Avatar_3.png',
+                              width: 200,
+                            ),
+                            backgroundColor: Colors.transparent,
+                          ),
+                          Positioned(
+                            right: 0,
+                            bottom: 0,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.primary,
+                                shape: BoxShape.circle,
+                              ),
+                              width: 35,
+                              height: 35,
+                              alignment: Alignment.center,
+                              child: IconButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => EditAvatar(), // Pindah ke layar EditAccount
+                                      ),
+                                    );
+                                  },
+                                  icon: Icon(Icons.edit, color: Colors.white, size: 20),
+                              )
+                            ),
+                          ),
+                        ]
                       ),
                     ),
                     const SizedBox(height: 20),
