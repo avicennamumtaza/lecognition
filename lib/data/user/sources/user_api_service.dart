@@ -14,7 +14,7 @@ class UserApiServiceImpl extends UserApiService {
   @override
   Future<Either> getUserProfile() async {
     try {
-      var response = await sl<DioClient>().userGet(
+      var response = await sl<DioClient>().get(
         ApiUrls.getUserById,
       );
       return Right(response.data);

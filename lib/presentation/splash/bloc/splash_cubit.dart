@@ -13,7 +13,7 @@ class SplashCubit extends Cubit<SplashState> {
       const Duration(seconds: 1),
     );
     final prefs = await SharedPreferences.getInstance();
-    final refreshToken = prefs.getString('refresh') ?? "unknown";
+    final refreshToken = prefs.getString('refresh') ?? "unauthorized";
     print(refreshToken);
     var isSignedIn = await sl<IsSignedInUseCase>().call(
       params: RefreshTokenParams(

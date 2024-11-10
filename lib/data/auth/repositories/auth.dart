@@ -51,20 +51,20 @@ class AuthRepositoryImpl extends AuthRepository {
     try {
       var data = await sl<AuthService>().refreshToken(params);
 
-final bool returned = await data.fold(
-  (error) {
-    print('Refresh token request error: $error');
-    return false;
-  },
-  (data) async {
-    final SharedPreferences sharedPreferences =
-        await SharedPreferences.getInstance();
-    sharedPreferences.setString('access_token', data['access']);
-    sharedPreferences.setString('refresh', data['refresh']);
-    return true;
-  },
-);
-
+      final bool returned = await data.fold(
+        (error) {
+          print('Refresh token request error: $error');
+          return false;
+        },
+        (data) async {
+          final SharedPreferences sharedPreferences =
+              await SharedPreferences.getInstance();
+          sharedPreferences.setString('access_token', data['access']);
+          print(data['access']);
+          sharedPreferences.setString('refresh', data['refresh']);
+          return true;
+        },
+      );
 
       return returned;
     } catch (e) {
