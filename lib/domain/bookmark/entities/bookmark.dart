@@ -6,14 +6,12 @@ class BookmarkEntity {
   UserEntity? user;
   DiseaseEntity? disease;
   int? date;
-  bool? status;
 
   BookmarkEntity({
     this.id,
     this.user,
     this.disease,
     this.date,
-    this.status,
   });
 
   BookmarkEntity.fromJson(Map<String, dynamic> json) {
@@ -22,7 +20,6 @@ class BookmarkEntity {
     disease =
         json['disease'] != null ? new DiseaseEntity.fromJson(json['disease']) : null;
     date = json['date'];
-    status = json['status'];
   }
 
   Map<String, dynamic> toJson() {
@@ -35,7 +32,6 @@ class BookmarkEntity {
       data['disease'] = this.disease!.toJson();
     }
     data['date'] = this.date;
-    data['status'] = this.status;
     return data;
   }
 }

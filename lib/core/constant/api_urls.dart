@@ -28,19 +28,17 @@ class ApiUrls {
   static const refreshToken = "token/refresh/";
 
   // User-related URLs
-  static const getUserById = "user"; // You’ll append the user ID when calling
+  static const getUserById = "user"; 
   static const getAllUsers =
       "user/all"; // This will be used for both POST (register) and GET all users
 
   // Scan-related URLs
-  static const getScanById = "scan/"; // Append scan ID when calling
   static const getAllScans = "scan";
 
   // Disease-related URLs
-  static const getDiseaseById = "disease/"; // Append disease ID when calling
   static const getAllDiseases = "disease";
 
   // Bookmark-related URLs
-  static const getBookmarkById = "bookmark/"; // Append bookmark ID when calling
-  static const getAllBookmarks = "bookmark";
+  static const bookmarking = "bookmark";
+  static const bookmarkByUser = "bookmark/user";
 }

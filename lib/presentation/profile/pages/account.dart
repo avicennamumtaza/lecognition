@@ -30,23 +30,6 @@ class AkunScreen extends StatelessWidget {
                         backgroundColor: Colors.transparent,
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Nazwa Ayunda M',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22,
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    const Text(
-                      // 'Frontend & Backend Developer',
-                      '',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey,
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -93,7 +76,8 @@ class AkunScreen extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
@@ -129,7 +113,8 @@ class AkunScreen extends StatelessWidget {
       color: Colors.white,
       shadowColor: Colors.grey,
       child: ListTile(
-        leading: Icon(icon, color: Theme.of(context).colorScheme.primary, size: 30),
+        leading:
+            Icon(icon, color: Theme.of(context).colorScheme.primary, size: 30),
         title: Text(
           title,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),

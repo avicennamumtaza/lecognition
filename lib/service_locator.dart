@@ -2,22 +2,22 @@ import 'package:get_it/get_it.dart';
 import 'package:lecognition/core/network/dio_client.dart';
 import 'package:lecognition/data/auth/repositories/auth.dart';
 import 'package:lecognition/data/auth/sources/auth_api_service.dart';
+import 'package:lecognition/data/bookmark/repositories/bookmark.dart';
+import 'package:lecognition/data/bookmark/sources/bookmark_api_service.dart';
 import 'package:lecognition/data/disease/repositories/disease.dart';
 import 'package:lecognition/data/disease/sources/disease_api_service.dart';
 import 'package:lecognition/data/user/repositories/user.dart';
 import 'package:lecognition/data/user/sources/user_api_service.dart';
-// import 'package:lecognition/data/movie/repositories/movie.dart';
-// import 'package:lecognition/data/movie/sources/movie.dart';
 import 'package:lecognition/domain/auth/repositories/auth.dart';
 import 'package:lecognition/domain/auth/usecases/is_signed_in.dart';
 import 'package:lecognition/domain/auth/usecases/signin.dart';
 import 'package:lecognition/domain/auth/usecases/signup.dart';
+import 'package:lecognition/domain/bookmark/repositories/bookmark.dart';
+import 'package:lecognition/domain/bookmark/usecases/get_bookmarked_diseases.dart';
 import 'package:lecognition/domain/disease/repositories/disease.dart';
 import 'package:lecognition/domain/disease/usecases/get_all_diseases.dart';
 import 'package:lecognition/domain/user/repositories/user.dart';
 import 'package:lecognition/domain/user/usecases/get_user_profile.dart';
-// import 'package:lecognition/domain/movie/repositories/movie.dart';
-// import 'package:lecognition/domain/movie/usecases/get_trending_movies.dart';
 
 final sl = GetIt.instance;
 
@@ -27,11 +27,13 @@ void setupServiceLocator() {
   // Services
   sl.registerSingleton<AuthService>(AuthApiServiceImpl());
   sl.registerSingleton<DiseaseApiService>(DiseaseApiServiceImpl());
+  sl.registerSingleton<BookmarkApiService>(BookmarkApiServiceImpl());
   sl.registerSingleton<UserApiService>(UserApiServiceImpl());
 
   // Repositories
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl());
   sl.registerSingleton<DiseaseRepository>(DiseaseRepositoryImpl());
+  sl.registerSingleton<BookmarkRepository>(BookmarkRepositoryImpl());
   sl.registerSingleton<UserRepository>(UserRepositoryImpl());
 
   // Usecases
@@ -39,5 +41,6 @@ void setupServiceLocator() {
   sl.registerSingleton<SigninUseCase>(SigninUseCase());
   sl.registerSingleton<IsSignedInUseCase>(IsSignedInUseCase());
   sl.registerSingleton<GetAllDiseasesUseCase>(GetAllDiseasesUseCase());
+  sl.registerSingleton<GetBookmarkedDiseasesUseCase>(GetBookmarkedDiseasesUseCase());
   sl.registerSingleton<GetUserProfileUseCase>(GetUserProfileUseCase());
 }

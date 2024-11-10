@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:lecognition/domain/disease/entities/disease.dart';
+import 'package:lecognition/domain/bookmark/entities/bookmark.dart';
 
 class BookmarkedCard extends StatefulWidget {
-  final DiseaseEntity disease;
+  final BookmarkEntity disease;
 
   BookmarkedCard({
     super.key,
@@ -106,7 +106,7 @@ class _BookmarkedCardState extends State<BookmarkedCard> {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   child: Text(
-                    "${widget.disease.name}",
+                    "${widget.disease.disease?.name}",
                     style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.w800,
@@ -121,7 +121,7 @@ class _BookmarkedCardState extends State<BookmarkedCard> {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   child: Text(
-                    "${widget.disease.desc}",
+                    "${widget.disease.user?.username}",
                     style: TextStyle(
                       fontSize: 12.0,
                       fontWeight: FontWeight.w300,

@@ -14,9 +14,10 @@ class UserRepositoryImpl extends UserRepository {
         return Left(error);
       },
       (data) async {
-        print(data['data']);
+        print(data);
+        final Map<String, dynamic> userData = data;
         final user = UserMapper.toEntity(
-          UserEntity.fromJson(data['data'] as Map<String, dynamic>),
+          UserEntity.fromJson(userData),
         );
         print(user);
         // final SharedPreferences sharedPreferences =
