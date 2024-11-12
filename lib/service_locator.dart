@@ -13,7 +13,9 @@ import 'package:lecognition/domain/auth/usecases/is_signed_in.dart';
 import 'package:lecognition/domain/auth/usecases/signin.dart';
 import 'package:lecognition/domain/auth/usecases/signup.dart';
 import 'package:lecognition/domain/bookmark/repositories/bookmark.dart';
+import 'package:lecognition/domain/bookmark/usecases/bookmark_disease.dart';
 import 'package:lecognition/domain/bookmark/usecases/get_bookmarked_diseases.dart';
+import 'package:lecognition/domain/bookmark/usecases/unbookmark_disease.dart';
 import 'package:lecognition/domain/disease/repositories/disease.dart';
 import 'package:lecognition/domain/disease/usecases/get_all_diseases.dart';
 import 'package:lecognition/domain/user/repositories/user.dart';
@@ -43,4 +45,6 @@ void setupServiceLocator() {
   sl.registerSingleton<GetAllDiseasesUseCase>(GetAllDiseasesUseCase());
   sl.registerSingleton<GetBookmarkedDiseasesUseCase>(GetBookmarkedDiseasesUseCase());
   sl.registerSingleton<GetUserProfileUseCase>(GetUserProfileUseCase());
+  sl.registerSingleton<BookmarkDiseaseUseCase>(BookmarkDiseaseUseCase());
+  sl.registerSingleton<UnbookmarkDiseaseUseCase>(UnbookmarkDiseaseUseCase());
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lecognition/core/configs/assets/app_images.dart';
 import 'package:lecognition/domain/bookmark/entities/bookmark.dart';
+import 'package:lecognition/presentation/disease/pages/disease.dart';
 
 class BookmarkedCard extends StatefulWidget {
   final BookmarkEntity disease;
@@ -18,119 +20,77 @@ class _BookmarkedCardState extends State<BookmarkedCard> {
 
   @override
   Widget build(BuildContext context) {
-    onFavorite() {
-      setState(() {
-        isFavorite = !isFavorite;
-      });
-    }
-
+    print(widget.disease.disease?.id);
+    print(AppImages.basePathDisease +
+        widget.disease.disease!.id.toString() +
+        ".jpg");
     return Padding(
-      padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: Container(
         height: MediaQuery.of(context).size.height / 2.5,
         width: MediaQuery.of(context).size.width,
-        child: Card(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-          elevation: 3.0,
-          child: Column(
-            children: <Widget>[
-              Stack(
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DiseaseScreen(
+                  disease: widget.disease.disease!,
+                ),
+              ),
+            );
+          },
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            elevation: 3.0,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Container(
-                    height: MediaQuery.of(context).size.height / 3.5,
-                    width: MediaQuery.of(context).size.width,
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10),
-                        ),
-                        child: Image.network(
-                            "https://halosehat.com/wp-content/uploads/2019/05/manfaat-daun-mangga-696x395.jpg")),
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                    ),
+                    child: Image.asset(
+                      AppImages.basePathDisease +
+                          widget.disease.disease!.id.toString() +
+                          ".jpg",
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        print("Error loading image: $error");
+                        return Icon(Icons.error); // Placeholder for error
+                      },
+                    ),
                   ),
-                  Positioned(
-                    top: 22.0,
-                    right: 6.0,
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100.0)),
-                      child: Padding(
-                        padding: EdgeInsets.all(1.0),
-                        child: Row(
-                          children: <Widget>[
-                            IconButton(
-                              icon: AnimatedSwitcher(
-                                duration: const Duration(
-                                  milliseconds: 300,
-                                ),
-                                transitionBuilder: (child, animation) {
-                                  return ScaleTransition(
-                                    scale: animation,
-                                    child: child,
-                                  );
-                                },
-                                child: Icon(
-                                  isFavorite
-                                      ? Icons.bookmark_outlined
-                                      : Icons.bookmark_border_outlined,
-                                  key: ValueKey(
-                                    isFavorite,
-                                  ),
-                                ),
-                              ),
-                              onPressed: onFavorite,
-                              // () {
-                              // final wasAdded = ref
-                              //     .read(favoriteMealsProvider.notifier)
-                              //     .toggleMealFavoriteStatus(meal);
-                              // ScaffoldMessenger.of(context).clearSnackBars();
-                              // ScaffoldMessenger.of(context).showSnackBar(
-                              //   SnackBar(
-                              //     content: Text(wasAdded
-                              //         ? "Meal added as a favorite"
-                              //         : "Meal removed from favorite"),
-                              //   ),
-                              // );
-                              // },
-                            ),
-                          ],
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "${widget.disease.disease?.name ?? 'Unknown Disease'}",
+                          style: TextStyle(
+                            fontSize: 22.0,
+                            fontWeight: FontWeight.w800,
+                          ),
                         ),
-                      ),
+                        SizedBox(height: 5.0),
+                        Text(
+                          "${widget.disease.disease?.detail?.desc ?? 'It must be a disease description'}",
+                          style: TextStyle(
+                            fontSize: 13.0,
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 7.0),
-              Padding(
-                padding: EdgeInsets.only(left: 15.0),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: Text(
-                    "${widget.disease.disease?.name}",
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.w800,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-              ),
-              SizedBox(height: 7.0),
-              Padding(
-                padding: EdgeInsets.only(left: 15.0),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: Text(
-                    "${widget.disease.user?.username}",
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10.0),
-            ],
+            ),
           ),
         ),
       ),

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:lecognition/common/helper/message/display_message.dart';
 import 'package:lecognition/core/configs/assets/app_images.dart';
+import 'package:lecognition/data/bookmark/models/bookmark_disease_params.dart';
+import 'package:lecognition/domain/bookmark/usecases/bookmark_disease.dart';
 import 'package:lecognition/domain/disease/entities/disease.dart';
 import 'package:lecognition/presentation/disease/pages/disease.dart';
+import 'package:lecognition/service_locator.dart';
 
 class DiseaseCard extends StatefulWidget {
   const DiseaseCard({required this.disease, super.key});
@@ -16,13 +20,6 @@ class _DiseaseCardState extends State<DiseaseCard> {
 
   @override
   Widget build(BuildContext context) {
-    // final favoriteMeals = ref.watch(favoriteMealsProvider);
-    onFavorite() {
-      setState(() {
-        isFavorite = !isFavorite;
-      });
-    }
-
     return Hero(
       tag: "photo_${widget.disease.id}",
       child: Material(
@@ -68,43 +65,22 @@ class _DiseaseCardState extends State<DiseaseCard> {
                             ),
                           ),
                         ),
-                        Positioned(
-                          top: 10.0,
-                          right: 10.0,
-                          child: InkWell(
-                            onTap: () {},
-                            child: Container(
-                              width: 45.0,
-                              height: 45.0,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Theme.of(context).colorScheme.surface,
-                              ),
-                              child: IconButton(
-                                icon: AnimatedSwitcher(
-                                  duration: const Duration(
-                                    milliseconds: 300,
-                                  ),
-                                  transitionBuilder: (child, animation) {
-                                    return ScaleTransition(
-                                      scale: animation,
-                                      child: child,
-                                    );
-                                  },
-                                  child: Icon(
-                                    isFavorite
-                                        ? Icons.bookmark_outlined
-                                        : Icons.bookmark_border_outlined,
-                                    key: ValueKey(
-                                      isFavorite,
-                                    ),
-                                  ),
-                                ),
-                                onPressed: onFavorite,
-                              ),
-                            ),
-                          ),
-                        ),
+                        // Positioned(
+                        //   top: 10.0,
+                        //   right: 10.0,
+                        //   child: InkWell(
+                        //     onTap: () {},
+                        //     child: Container(
+                        //       width: 45.0,
+                        //       height: 45.0,
+                        //       decoration: BoxDecoration(
+                        //         shape: BoxShape.circle,
+                        //         color: Theme.of(context).colorScheme.surface,
+                        //       ),
+                        //       child: bookmarkIcon(context, widget.disease.id!),
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
@@ -186,6 +162,49 @@ class _DiseaseCardState extends State<DiseaseCard> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget bookmarkIcon(BuildContext context, int diseaseId) {
+    return IconButton(
+      icon: AnimatedSwitcher(
+        duration: const Duration(
+          milliseconds: 300,
+        ),
+        transitionBuilder: (child, animation) {
+          return ScaleTransition(
+            scale: animation,
+            child: child,
+          );
+        },
+        child: Icon(
+          isFavorite ? Icons.bookmark_outlined : Icons.bookmark_border_outlined,
+          key: ValueKey(
+            isFavorite,
+          ),
+        ),
+      ),
+      onPressed: () async {
+        try {
+          final result = await sl<BookmarkDiseaseUseCase>().call(
+            params: BookmarkDiseaseParams(
+              diseaseId: diseaseId,
+              date: DateTime.now(),
+              // isFavorite: isFavorite,
+            ),
+          );
+          result.fold(
+            (failure) {
+              DisplayMessage.errorMessage(context, failure.toString());
+            },
+            (success) {
+              DisplayMessage.errorMessage(context, success.toString());
+            },
+          );
+        } catch (error) {
+          print(error);          
+        }
+      },
     );
   }
 }

@@ -1,35 +1,28 @@
-// import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lecognition/common/widgets/tabs.dart';
 import 'package:lecognition/domain/disease/entities/disease.dart';
 import 'package:lecognition/domain/disease/entities/disease_detail.dart';
-// import 'package:lecognition/models/disease.dart';
 import 'package:lecognition/presentation/bookmark/pages/bookmarked.dart';
 import 'package:lecognition/presentation/home/bloc/disease_cubit.dart';
 import 'package:lecognition/presentation/home/bloc/disease_state.dart';
 import 'package:lecognition/widgets/diseaseCard.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-// import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   void linkDiseaseDetails(List<DiseaseEntity> diseases) {
     for (var disease in diseases) {
-      // Find the matching detail based on id
       disease.detail = diseaseDetails.firstWhere(
         (detail) => detail.id == disease.id,
-        orElse: null, // If no detail found, set to null
+        orElse: null,
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // linkDiseaseDetails(diseases);
     return BlocProvider(
       create: (context) => DiseaseCubit()..getAllDiseases(),
       child: BlocBuilder<DiseaseCubit, DiseaseState>(
@@ -61,94 +54,6 @@ class HomeScreen extends StatelessWidget {
                             horizontal: 15,
                             vertical: 0,
                           ),
-                          // child: Column(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          //   children: [
-                          //     Center(
-                          //       child: AutoSizeText(
-                          //         "Selamat Datang Lukman!",
-                          //         minFontSize: 35,
-                          //         textAlign: TextAlign.center,
-                          //         style: TextStyle(
-                          //             color: Theme.of(context)
-                          //                 .colorScheme
-                          //                 .onPrimary),
-                          //       ),
-                          //     ),
-                          //     Row(
-                          //       mainAxisAlignment:
-                          //           MainAxisAlignment.spaceAround,
-                          //       children: [
-                          //         IconButton(
-                          //           onPressed: () {
-                          //             showDialog(
-                          //               context: context,
-                          //               builder: (BuildContext context) {
-                          //                 return AlertDialog(
-                          //                   title: const Text('Informasi'),
-                          //                   content: const Text(
-                          //                       'Gunakan menu diagnozer untuk mendeteksi penyakit tanaman mangga berdasarkan daunnya.'),
-                          //                   actions: <Widget>[
-                          //                     TextButton(
-                          //                       onPressed: () {
-                          //                         Navigator.of(context).pop();
-                          //                       },
-                          //                       child: const Text('OK'),
-                          //                     ),
-                          //                   ],
-                          //                 );
-                          //               },
-                          //             );
-                          //           },
-                          //           icon: Icon(
-                          //             Icons.info_outline,
-                          //             color: Colors.white,
-                          //             size: 35,
-                          //           ),
-                          //         ),
-                          //         Container(
-                          //           decoration: BoxDecoration(
-                          //             shape: BoxShape.circle,
-                          //             color: Theme.of(context)
-                          //                 .colorScheme
-                          //                 .secondary
-                          //                 .withOpacity(0.3),
-                          //           ),
-                          //           padding: const EdgeInsets.all(0),
-                          //           child: IconButton(
-                          //             onPressed: () {
-                          //               Navigator.pushReplacement(
-                          //                 context,
-                          //                 MaterialPageRoute(
-                          //                   builder: (context) =>
-                          //                       TabsScreen(index: 1),
-                          //                 ),
-                          //               );
-                          //             },
-                          //             icon: Icon(Icons.camera_alt_outlined,
-                          //                 color: Colors.white, size: 50),
-                          //           ),
-                          //         ),
-                          //         IconButton(
-                          //           onPressed: () {
-                          //             Navigator.push(
-                          //               context,
-                          //               MaterialPageRoute(
-                          //                 builder: (context) =>
-                          //                     BookmarkedScreen(),
-                          //               ),
-                          //             );
-                          //           },
-                          //           icon: Icon(
-                          //             Icons.bookmark,
-                          //             color: Colors.white,
-                          //             size: 35,
-                          //           ),
-                          //         ),
-                          //       ],
-                          //     ),
-                          //   ],
-                          // ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.end,
@@ -245,20 +150,6 @@ class HomeScreen extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              // Container(
-                              //   decoration: BoxDecoration(
-                              //     shape: BoxShape.circle,
-                              //     color: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
-                              //   ),
-                              //   height: 160,
-                              //   width: 160,
-                              //   padding: const EdgeInsets.all(0),
-                              //   child: Icon(
-                              //     Icons.person,
-                              //     color: Colors.white,
-                              //     size: 50,
-                              //   ),
-                              // ),
                               Image(image:
                                 AssetImage('assets/avatars/Avatar_3.png'),
                                 width: 219,

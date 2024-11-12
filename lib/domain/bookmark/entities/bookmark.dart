@@ -1,4 +1,5 @@
 import 'package:lecognition/domain/disease/entities/disease.dart';
+// import 'package:lecognition/domain/disease/entities/disease_detail.dart';
 import 'package:lecognition/domain/user/entities/user.dart';
 
 class BookmarkEntity {
@@ -6,6 +7,7 @@ class BookmarkEntity {
   UserEntity? user;
   DiseaseEntity? disease;
   int? date;
+  // DiseaseDetail? detail;  // Add this field to hold extra details
 
   BookmarkEntity({
     this.id,

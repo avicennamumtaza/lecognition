@@ -13,6 +13,9 @@ class DiseaseScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(disease);
+    print(disease.detail);
+    print(disease.detail?.treatment);
     return Scaffold(
       appBar: AppBarWidget(
         title: disease.name.toString(),
@@ -71,7 +74,7 @@ class DiseaseScreen extends StatelessWidget {
                 disease.desc
                     .toString(), // Display the passed disease description
                 style: const TextStyle(
-                  fontSize: 15,
+                  fontSize: 17,
                 ),
               ),
             ),

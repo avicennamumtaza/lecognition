@@ -1,12 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lecognition/common/widgets/appbar.dart';
+import 'package:lecognition/domain/bookmark/entities/bookmark.dart';
+import 'package:lecognition/domain/disease/entities/disease_detail.dart';
 import 'package:lecognition/presentation/bookmark/bloc/bookmark_cubit.dart';
 import 'package:lecognition/presentation/bookmark/bloc/bookmark_state.dart';
 import 'package:lecognition/widgets/bookmarkedCard.dart';
 
 class BookmarkedScreen extends StatelessWidget {
   const BookmarkedScreen({super.key});
+
+  void linkDiseaseDetails(List<BookmarkEntity> bookmarkedDiseases) {
+    print(bookmarkedDiseases);
+    for (var bookmarkedDisease in bookmarkedDiseases) {
+      // print(bookmarkedDisease);
+      // print(bookmarkedDisease.disease);
+      // print(bookmarkedDisease.disease?.detail);
+      bookmarkedDisease.disease?.detail = diseaseDetails.firstWhere(
+        (detail) => detail.id == bookmarkedDisease.disease?.id,
+        orElse: null,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -15,7 +31,7 @@ class BookmarkedScreen extends StatelessWidget {
         builder: (context, state) {
           if (state is BookmarkedDiseasesLoading) {
             return Scaffold(
-              appBar: AppBarWidget(title: 'Penyakit Favorit'),
+              appBar: AppBarWidget(title: 'Penyakit Tersimpan 🔖'),
               body: Center(
                 child: CircularProgressIndicator(),
               ),
@@ -23,7 +39,7 @@ class BookmarkedScreen extends StatelessWidget {
           }
           if (state is BookmarkedDiseasesFailureLoad) {
             return Scaffold(
-              appBar: AppBarWidget(title: 'Penyakit Favorit'),
+              appBar: AppBarWidget(title: 'Penyakit Tersimpan 🔖'),
               body: Center(
                 child: Text(state.errorMessage),
               ),
@@ -33,12 +49,12 @@ class BookmarkedScreen extends StatelessWidget {
             final diseases = state.bookmarkedDiseases;
             if (diseases.isEmpty) {
               return Scaffold(
-                appBar: AppBarWidget(title: 'Penyakit Favorit'),
+                appBar: AppBarWidget(title: 'Penyakit Tersimpan 🔖'),
                 body: Text('Tidak ada penyakit favorit'),
               );
             }
             return Scaffold(
-              appBar: AppBarWidget(title: 'Penyakit Favorit'),
+              appBar: AppBarWidget(title: 'Penyakit Tersimpan 🔖'),
               body: Padding(
                 padding: EdgeInsets.symmetric(
                   vertical: 0,
@@ -54,6 +70,7 @@ class BookmarkedScreen extends StatelessWidget {
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: diseases.length,
                       itemBuilder: (BuildContext context, int index) {
+                        linkDiseaseDetails(diseases);
                         final eachDisease = diseases[index];
                         return BookmarkedCard(disease: eachDisease);
                       },
