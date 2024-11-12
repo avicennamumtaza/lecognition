@@ -27,7 +27,7 @@ class _BookmarkedCardState extends State<BookmarkedCard> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: Container(
-        height: MediaQuery.of(context).size.height / 2.5,
+        height: MediaQuery.of(context).size.height / 3.5,
         width: MediaQuery.of(context).size.width,
         child: InkWell(
           onTap: () {
@@ -46,59 +46,56 @@ class _BookmarkedCardState extends State<BookmarkedCard> {
             ),
             elevation: 3.0,
             child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10),
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 5.0, right: 5.0, top: 5.0, bottom: 0.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
                     ),
-                    child: Hero(
-                      tag: "photo_${widget.disease.disease?.id}",
-                      child: Image.asset(
-                        AppImages.basePathDisease +
-                            widget.disease.disease!.id.toString() +
-                            ".jpg",
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: MediaQuery.of(context).size.height / 3.5,
-                        errorBuilder: (context, error, stackTrace) {
-                          print("Error loading image: $error");
-                          return Icon(Icons.error); // Placeholder for error
-                        },
+                    child: Image.asset(
+                      AppImages.basePathDisease +
+                          widget.disease.disease!.id.toString() +
+                          ".jpg",
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height / 7,
+                      errorBuilder: (context, error, stackTrace) {
+                        print("Error loading image: $error");
+                        return Icon(Icons.error);
+                      },
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "${widget.disease.disease?.name ?? 'Unknown Disease'}",
+                        style: TextStyle(
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "${widget.disease.disease?.name ?? 'Unknown Disease'}",
-                          style: TextStyle(
-                            fontSize: 22.0,
-                            fontWeight: FontWeight.w800,
-                          ),
+                      SizedBox(height: 5.0),
+                      Text(
+                        "${widget.disease.disease?.detail?.desc ?? 'It must be a disease description'}",
+                        style: TextStyle(
+                          fontSize: 13.0,
+                          fontWeight: FontWeight.w300,
                         ),
-                        SizedBox(height: 5.0),
-                        Text(
-                          "${widget.disease.disease?.detail?.desc ?? 'It must be a disease description'}",
-                          style: TextStyle(
-                            fontSize: 13.0,
-                            fontWeight: FontWeight.w300,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
-
+      ),
     );
   }
 }

@@ -110,103 +110,12 @@ class HomeScreen extends StatelessWidget {
                                           ),
                                         ),
                                         SizedBox(height: 0),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.rectangle,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .secondary
-                                                .withOpacity(0.5),
-                                            borderRadius:
-                                                BorderRadius.circular(30),
-                                          ),
-                                          width: 200,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              IconButton(
-                                                onPressed: () {
-                                                  showDialog(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return AlertDialog(
-                                                        title: const Text(
-                                                            'Informasi'),
-                                                        content: const Text(
-                                                            'Gunakan menu diagnozer untuk mendeteksi penyakit tanaman mangga berdasarkan daunnya.'),
-                                                        actions: <Widget>[
-                                                          TextButton(
-                                                            onPressed: () {
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop();
-                                                            },
-                                                            child: const Text(
-                                                                'OK'),
-                                                          ),
-                                                        ],
-                                                      );
-                                                    },
-                                                  );
-                                                },
-                                                icon: Icon(
-                                                  Icons.info_outline,
-                                                  color: Colors.white,
-                                                  size: 30,
-                                                ),
-                                              ),
-                                              IconButton(
-                                                onPressed: () {
-                                                  Navigator.pushReplacement(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          TabsScreen(index: 1),
-                                                    ),
-                                                  );
-                                                },
-                                                icon: Icon(
-                                                    Icons.camera_alt_outlined,
-                                                    color: Colors.white,
-                                                    size: 30),
-                                              ),
-                                              IconButton(
-                                                onPressed: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          BookmarkedScreen(),
-                                                    ),
-                                                  );
-                                                },
-                                                icon: Icon(
-                                                  Icons.bookmark,
-                                                  color: Colors.white,
-                                                  size: 30,
-                                                ),
-                                              );
-                                            },
-                                            icon: Icon(
-                                              Icons.bookmark_outline,
-                                              color: Colors.white,
-                                              size: 30,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Image(image:
-                                AssetImage('assets/avatars/Avatar_3.png'),
-                                width: MediaQuery.of(context).size.width / 2.5,
-                                // height: 182,
-                                // fit: BoxFit.contain,
-                                alignment: Alignment.bottomLeft,
+                                        _shortCutButton(context)
+                                      ],
+                                    ),
+                                  ),
+                                  _showAvatar(context)
+                                ],
                               ),
                             ),
                           ],
@@ -214,7 +123,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     if (diseaseState is DiseasesFailureLoad ||
-                        bookmarkState is BookmarkedDiseasesFailureLoad)
+                      bookmarkState is BookmarkedDiseasesFailureLoad)
                       SliverFillRemaining(
                         child: Center(
                           child: Text(
@@ -231,20 +140,6 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                    // if (diseaseState is DiseasesFailureLoad ||
-                    //     bookmarkState is BookmarkedDiseasesFailureLoad)
-                    //   SliverFillRemaining(
-                    //     child: Center(
-                    //       child: Text(
-                    //         diseaseState is DiseasesFailureLoad
-                    //             ? diseaseState.errorMessage
-                    //             : bookmarkState.errorMessage,
-                    //         style: TextStyle(
-                    //           color: Theme.of(context).colorScheme.error,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
                     if (diseaseState is DiseasesLoaded)
                       SliverList(
                         delegate: SliverChildBuilderDelegate(
@@ -282,6 +177,96 @@ class HomeScreen extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+
+  Widget _shortCutButton(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.rectangle,
+        color: Theme
+            .of(context)
+            .colorScheme
+            .secondary
+            .withOpacity(0.5),
+        borderRadius:
+        BorderRadius.circular(30),
+      ),
+      width: 200,
+      child: Row(
+        mainAxisAlignment:
+        MainAxisAlignment.spaceAround,
+        children: [
+          IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder:
+                    (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text(
+                        'Informasi'),
+                    content: const Text(
+                        'Gunakan menu diagnozer untuk mendeteksi penyakit tanaman mangga berdasarkan daunnya.'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            icon: Icon(
+              Icons.info_outline,
+              color: Colors.white,
+              size: 30,
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      TabsScreen(index: 1),
+                ),
+              );
+            },
+            icon: Icon(
+                Icons.camera_alt_outlined,
+                color: Colors.white,
+                size: 30),
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                    BookmarkedScreen(),
+                ),
+              );
+            },
+            icon: Icon(
+              Icons.bookmark_outline,
+              color: Colors.white,
+              size: 30,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _showAvatar(BuildContext context) {
+    return Image(image:
+    AssetImage('assets/avatars/Avatar_3.png'),
+      width: MediaQuery.of(context).size.width / 2.5,
+      alignment: Alignment.bottomLeft,
     );
   }
 }
