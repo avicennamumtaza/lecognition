@@ -13,7 +13,7 @@ class DiseaseScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(disease);
+    print(disease.isBookmarked);
     print(disease.detail);
     print(disease.detail?.treatment);
     return Scaffold(
