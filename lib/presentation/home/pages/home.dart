@@ -75,7 +75,7 @@ class HomeScreen extends StatelessWidget {
                                       ),
                                     ),
                                     SizedBox(
-                                      height: 50,
+                                      // height: 50,
                                     ),
                                     Container(
                                       decoration: BoxDecoration(
@@ -139,7 +139,7 @@ class HomeScreen extends StatelessWidget {
                                               );
                                             },
                                             icon: Icon(
-                                              Icons.bookmark,
+                                              Icons.bookmark_outline,
                                               color: Colors.white,
                                               size: 30,
                                             ),
@@ -152,7 +152,7 @@ class HomeScreen extends StatelessWidget {
                               ),
                               Image(image:
                                 AssetImage('assets/avatars/Avatar_3.png'),
-                                width: 219,
+                                width: MediaQuery.of(context).size.width / 2.5,
                                 // height: 182,
                                 // fit: BoxFit.contain,
                                 alignment: Alignment.bottomLeft,
