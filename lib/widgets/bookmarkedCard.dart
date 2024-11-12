@@ -45,28 +45,33 @@ class _BookmarkedCardState extends State<BookmarkedCard> {
               borderRadius: BorderRadius.circular(10.0),
             ),
             elevation: 3.0,
-            child: SingleChildScrollView(
-              child: Column(
+            child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   ClipRRect(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10),
                     ),
-                    child: Image.asset(
-                      AppImages.basePathDisease +
-                          widget.disease.disease!.id.toString() +
-                          ".jpg",
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        print("Error loading image: $error");
-                        return Icon(Icons.error); // Placeholder for error
-                      },
+                    child: Hero(
+                      tag: "photo_${widget.disease.disease?.id}",
+                      child: Image.asset(
+                        AppImages.basePathDisease +
+                            widget.disease.disease!.id.toString() +
+                            ".jpg",
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: MediaQuery.of(context).size.height / 3.5,
+                        errorBuilder: (context, error, stackTrace) {
+                          print("Error loading image: $error");
+                          return Icon(Icons.error); // Placeholder for error
+                        },
+                      ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(15.0),
+                    padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -93,7 +98,7 @@ class _BookmarkedCardState extends State<BookmarkedCard> {
             ),
           ),
         ),
-      ),
+
     );
   }
 }

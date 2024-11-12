@@ -109,7 +109,7 @@ class HomeScreen extends StatelessWidget {
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                        SizedBox(height: 50),
+                                        SizedBox(height: 0),
                                         Container(
                                           decoration: BoxDecoration(
                                             shape: BoxShape.rectangle,
@@ -187,20 +187,26 @@ class HomeScreen extends StatelessWidget {
                                                   color: Colors.white,
                                                   size: 30,
                                                 ),
-                                              ),
-                                            ],
+                                              );
+                                            },
+                                            icon: Icon(
+                                              Icons.bookmark_outline,
+                                              color: Colors.white,
+                                              size: 30,
+                                            ),
                                           ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  Image(
-                                    image: AssetImage(
-                                        'assets/avatars/Avatar_3.png'),
-                                    width: 219,
-                                    alignment: Alignment.bottomLeft,
-                                  ),
-                                ],
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Image(image:
+                                AssetImage('assets/avatars/Avatar_3.png'),
+                                width: MediaQuery.of(context).size.width / 2.5,
+                                // height: 182,
+                                // fit: BoxFit.contain,
+                                alignment: Alignment.bottomLeft,
                               ),
                             ),
                           ],
