@@ -87,7 +87,9 @@ class AkunScreen extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => EditAccount(),
+                                builder: (context) => EditAccount(
+                                  userData: state.user,
+                                ),
                               ),
                             );
                           },

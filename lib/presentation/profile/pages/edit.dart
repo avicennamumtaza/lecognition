@@ -5,13 +5,16 @@ import 'package:lecognition/common/helper/message/display_message.dart';
 import 'package:lecognition/common/helper/navigation/app_navigator.dart';
 import 'package:lecognition/common/widgets/appbar.dart';
 import 'package:lecognition/data/user/models/update_user_profile_params.dart';
+import 'package:lecognition/domain/user/entities/user.dart';
 import 'package:lecognition/domain/user/usecases/update_user_profile.dart';
 import 'package:lecognition/presentation/profile/pages/account.dart';
 import 'package:lecognition/presentation/profile/pages/avatar.dart';
-import 'package:lecognition/presentation/profile/pages/profile.dart';
 import 'package:lecognition/service_locator.dart';
 
 class EditAccount extends StatefulWidget {
+  EditAccount({required this.userData});
+  final UserEntity userData;
+
   @override
   _EditAccountState createState() => _EditAccountState();
 }
@@ -23,6 +26,14 @@ class _EditAccountState extends State<EditAccount> {
   final _confirmPasswordController = TextEditingController();
   final _formKey = GlobalKey<FormBuilderState>();
   bool _isSubmitting = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize controllers with existing user data
+    _emailController.text = widget.userData.email ?? '';
+    _usernameController.text = widget.userData.username ?? '';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,30 +111,56 @@ class _EditAccountState extends State<EditAccount> {
       child: Column(
         children: [
           _buildTextField(
-              'e-mail', 'E-mail', 'old e-mail', Icons.email, _emailController, [
-            FormBuilderValidators.required(),
-            FormBuilderValidators.email()
-          ]),
-          const SizedBox(height: 20),
-          _buildTextField('username', 'Username', 'old username', Icons.person,
-              _usernameController, [FormBuilderValidators.required()]),
+            'e-mail',
+            'E-mail',
+            widget.userData.email ?? 'Enter e-mail', // Updated hintText
+            Icons.email,
+            _emailController,
+            [
+              FormBuilderValidators.required(),
+              FormBuilderValidators.email(),
+            ],
+          ),
           const SizedBox(height: 20),
           _buildTextField(
-              'password', 'Password', '', Icons.lock, _passwordController, [
-            FormBuilderValidators.required(),
-            FormBuilderValidators.minLength(6)
-          ]),
+            'username',
+            'Username',
+            widget.userData.username ?? 'Enter username', // Updated hintText
+            Icons.person,
+            _usernameController,
+            [
+              FormBuilderValidators.required(),
+            ],
+          ),
           const SizedBox(height: 20),
-          _buildTextField('confPassword', 'Confirm Password', '', Icons.lock,
-              _confirmPasswordController, [
-            FormBuilderValidators.required(),
-            (val) {
-              if (val != _passwordController.text) {
-                return 'Passwords do not match';
-              }
-              return null;
-            }
-          ]),
+          _buildTextField(
+            'password',
+            'Password',
+            'Enter new password', // Default hintText for password
+            Icons.lock,
+            _passwordController,
+            [
+              FormBuilderValidators.required(),
+              FormBuilderValidators.minLength(6),
+            ],
+          ),
+          const SizedBox(height: 20),
+          _buildTextField(
+            'confPassword',
+            'Confirm Password',
+            'Re-enter new password', // Default hintText for confirm password
+            Icons.lock,
+            _confirmPasswordController,
+            [
+              FormBuilderValidators.required(),
+              (val) {
+                if (val != _passwordController.text) {
+                  return 'Passwords do not match';
+                }
+                return null;
+              },
+            ],
+          ),
         ],
       ),
     );
@@ -181,7 +218,6 @@ class _EditAccountState extends State<EditAccount> {
                 DisplayMessage.errorMessage(context, failure.toString());
               },
               (success) {
-                // AppNavigator.pushAndRemove(context, const ProfileScreen());
                 AppNavigator.pushAndRemove(context, const AkunScreen());
                 DisplayMessage.errorMessage(context, success.toString());
               },
