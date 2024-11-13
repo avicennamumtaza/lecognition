@@ -70,7 +70,27 @@ class DiseaseScreen extends StatelessWidget {
           // Pencegahan
           _descriptionCard(title: 'Pencegahan', subtitle: disease.detail!.prevention.toString(), context: context),
           // Level Bahaya
-          _descriptionCard(title: 'Level Bahaya', subtitle: disease.detail!.severity.toString(), context: context)
+          _descriptionCard(title: 'Level Bahaya', subtitle: disease.detail!.severity.toString(), context: context),
+          // Tombol Bookmark
+          ElevatedButton(
+            onPressed: () {
+              print('Bookmark');
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: disease.isBookmarked ? Colors.red : Theme.of(context).colorScheme.primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            child: Text(
+              disease.isBookmarked ? 'Hapus Bookmark' : 'Tambah Bookmark',
+              style: TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
         ],
       ),
     );
