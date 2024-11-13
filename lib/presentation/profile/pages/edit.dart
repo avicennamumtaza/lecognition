@@ -181,6 +181,7 @@ class _EditAccountState extends State<EditAccount> {
                 DisplayMessage.errorMessage(context, failure.toString());
               },
               (success) {
+                // AppNavigator.pushAndRemove(context, const ProfileScreen());
                 AppNavigator.pushAndRemove(context, const AkunScreen());
                 DisplayMessage.errorMessage(context, success.toString());
               },

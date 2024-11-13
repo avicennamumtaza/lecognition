@@ -10,16 +10,6 @@ class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
   final bool _isDark = false;
 
-  // Future<void> _toggleDarkMode() async {
-  //   try {
-  //     setState(() {
-  //       _isDark = !_isDark;
-  //     });
-  //   } catch (e) {
-  //     print('Dark mode toggle Error: $e');
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

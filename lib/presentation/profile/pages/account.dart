@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lecognition/common/widgets/appbar.dart';
+import 'package:lecognition/presentation/profile/bloc/user_cubit.dart';
+import 'package:lecognition/presentation/profile/bloc/user_state.dart';
 import 'package:lecognition/presentation/profile/pages/edit.dart';
 
 class AkunScreen extends StatelessWidget {
@@ -9,88 +12,110 @@ class AkunScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(title: 'Akun Saya'),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 20),
-              Center(
-                child: Column(
-                  children: [
-                    Hero(
-                      tag: 'profile_image',
-                      child: CircleAvatar(
-                        radius: 100,
-                        child: Image.asset(
-                          'assets/avatars/Avatar_3.png',
-                          width: 200,
+      body: BlocProvider(
+        create: (context) => UserCubit()..getUserProfile(),
+        child: BlocBuilder<UserCubit, UserState>(
+          builder: (context, state) {
+            if (state is UserLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (state is UserFailureLoad) {
+              return Center(
+                child: Text(state.errorMessage),
+              );
+            }
+            if (state is UserLoaded) {
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 20),
+                      Center(
+                        child: Column(
+                          children: [
+                            Hero(
+                              tag: 'profile_image',
+                              child: CircleAvatar(
+                                radius: 100,
+                                child: Image.asset(
+                                  'assets/avatars/Avatar_3.png',
+                                  width: 200,
+                                ),
+                                backgroundColor: Colors.transparent,
+                              ),
+                            ),
+                          ],
                         ),
-                        backgroundColor: Colors.transparent,
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 30),
-              // Bagian informasi akun
-              const Text(
-                'Informasi Akun',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: Colors.black,
-                ),
-              ),
-              const SizedBox(height: 20),
-              _buildInfoCard(
-                icon: Icons.person,
-                title: 'Username',
-                subtitle: 'Nazwa Ayunda M',
-                context: context,
-              ),
-              _buildInfoCard(
-                icon: Icons.email,
-                title: 'Email',
-                subtitle: 'nazwam@example.com',
-                context: context,
-              ),
-              // _buildInfoCard(
-              //   icon: Icons.phone,
-              //   title: 'Nomor Telepon',
-              //   subtitle: '+6281234567890',
-              // ),
-              const SizedBox(height: 20),
-              Center(
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    // Tambahkan aksi jika perlu
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => EditAccount(),
+                      const SizedBox(height: 30),
+                      // Bagian informasi akun
+                      const Text(
+                        'Informasi Akun',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black,
+                        ),
                       ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  icon: const Icon(Icons.edit),
-                  label: const Text(
-                    'Edit Akun',
-                    style: TextStyle(fontSize: 16),
+                      const SizedBox(height: 20),
+                      _buildInfoCard(
+                        icon: Icons.person,
+                        title: 'Username',
+                        subtitle: state.user.username!,
+                        context: context,
+                      ),
+                      _buildInfoCard(
+                        icon: Icons.email,
+                        title: 'Email',
+                        subtitle: state.user.email!,
+                        context: context,
+                      ),
+                      // _buildInfoCard(
+                      //   icon: Icons.phone,
+                      //   title: 'Nomor Telepon',
+                      //   subtitle: '+6281234567890',
+                      // ),
+                      const SizedBox(height: 20),
+                      Center(
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            // Tambahkan aksi jika perlu
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditAccount(),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            foregroundColor:
+                                Theme.of(context).colorScheme.onPrimary,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 30, vertical: 15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                          icon: const Icon(Icons.edit),
+                          label: const Text(
+                            'Edit Akun',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-            ],
-          ),
+              );
+            }
+            return Container();
+          },
         ),
       ),
     );
