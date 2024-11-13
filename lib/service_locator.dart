@@ -20,6 +20,7 @@ import 'package:lecognition/domain/disease/repositories/disease.dart';
 import 'package:lecognition/domain/disease/usecases/get_all_diseases.dart';
 import 'package:lecognition/domain/user/repositories/user.dart';
 import 'package:lecognition/domain/user/usecases/get_user_profile.dart';
+import 'package:lecognition/domain/user/usecases/update_user_profile.dart';
 
 final sl = GetIt.instance;
 
@@ -45,6 +46,7 @@ void setupServiceLocator() {
   sl.registerSingleton<GetAllDiseasesUseCase>(GetAllDiseasesUseCase());
   sl.registerSingleton<GetBookmarkedDiseasesUseCase>(GetBookmarkedDiseasesUseCase());
   sl.registerSingleton<GetUserProfileUseCase>(GetUserProfileUseCase());
+  sl.registerSingleton<UpdateUserProfileUseCase>(UpdateUserProfileUseCase());
   sl.registerSingleton<BookmarkDiseaseUseCase>(BookmarkDiseaseUseCase());
   sl.registerSingleton<UnbookmarkDiseaseUseCase>(UnbookmarkDiseaseUseCase());
 }
