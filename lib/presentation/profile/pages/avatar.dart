@@ -72,8 +72,11 @@ class EditAvatar extends StatelessWidget {
         height: 100,
       ),
       style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+        shape: CircleBorder(
+          side: BorderSide(
+            color: Theme.of(context).colorScheme.secondary,
+            width: 2,
+          ),
         ),
         backgroundColor: Theme.of(context).colorScheme.secondary,
         padding: const EdgeInsets.all(10),

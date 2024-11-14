@@ -59,6 +59,33 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
     }
   }
 
+  Future<void> _confirm() async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Konfirmasi'),
+          content: const Text('Apakah Anda yakin ingin mengambil gambar?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Batal'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _takePicture();
+              },
+              child: const Text('Ya'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> _toggleFlashlight() async {
     try {
       if (_isTorchOn) {
@@ -129,7 +156,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
       });
       final savedImage = await _saveImageLocally(_selectedImage!);
       await _saveDiagnosis(savedImage);
-      _navigateToResultScreen(); // Navigate to result screen if image is selected
+      _navigateToResultScreen();
     } catch (e) {
       _showErrorDialog('Failed to pick image from gallery: ${e.toString()}');
     }
@@ -145,7 +172,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
 
     try {
       // Ambil gambar dari kamera dan simpan dalam file sementara
-      await cameraController?.setFocusMode(FocusMode.auto); // Fokus otomatis
+      await cameraController?.setFocusMode(FocusMode.auto);
       final XFile image = await cameraController!.takePicture();
       _isTorchOn = false;
       await cameraController?.setFlashMode(FlashMode.off);
@@ -253,7 +280,8 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
                       ),
                     ),
                     child: IconButton(
-                      onPressed: _takePicture, // Mengambil gambar langsung
+                      onPressed:
+                        _confirm,
                       icon: const Icon(Icons.camera,
                           size: 50, color: Colors.white),
                     ),
