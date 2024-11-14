@@ -4,8 +4,8 @@ class DiseaseEntity {
   int? id;
   String? name;
   String? desc;
-  DiseaseDetail? detail;  // Add this field to hold extra details
-  bool isBookmarked = false;
+  DiseaseDetail? detail; // Add this field to hold extra details
+  bool? isBookmarked;
 
   DiseaseEntity({this.id, this.name, this.desc});
 

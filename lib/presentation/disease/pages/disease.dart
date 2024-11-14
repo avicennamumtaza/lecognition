@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:lecognition/common/helper/message/display_message.dart';
+import 'package:lecognition/common/helper/navigation/app_navigator.dart';
 import 'package:lecognition/common/widgets/appbar.dart';
 import 'package:lecognition/core/configs/assets/app_images.dart';
+import 'package:lecognition/data/bookmark/models/bookmark_disease_params.dart';
+import 'package:lecognition/data/bookmark/models/unbookmark_disease_params.dart';
+import 'package:lecognition/domain/bookmark/usecases/bookmark_disease.dart';
+import 'package:lecognition/domain/bookmark/usecases/unbookmark_disease.dart';
 import 'package:lecognition/domain/disease/entities/disease.dart';
+import 'package:lecognition/presentation/bookmark/pages/bookmarked.dart';
+import 'package:lecognition/presentation/home/pages/home.dart';
+import 'package:lecognition/service_locator.dart';
 
-class DiseaseScreen extends StatelessWidget {
+class DiseaseScreen extends StatefulWidget {
   DiseaseScreen({
     super.key,
     required this.disease,
@@ -12,13 +21,18 @@ class DiseaseScreen extends StatelessWidget {
   final DiseaseEntity disease;
 
   @override
+  State<DiseaseScreen> createState() => _DiseaseScreenState();
+}
+
+class _DiseaseScreenState extends State<DiseaseScreen> {
+  @override
   Widget build(BuildContext context) {
-    print(disease.isBookmarked);
-    print(disease.detail);
-    print(disease.detail?.treatment);
+    print(widget.disease.isBookmarked);
+    print(widget.disease.detail);
+    print(widget.disease.detail?.treatment);
     return Scaffold(
       appBar: AppBarWidget(
-        title: disease.name.toString(),
+        title: widget.disease.name.toString(),
       ),
       body: ListView(
         padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
@@ -42,7 +56,7 @@ class DiseaseScreen extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height / 3.5,
               child: Hero(
-                tag: "photo_${disease.id}",
+                tag: "photo_${widget.disease.id}",
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
@@ -50,7 +64,7 @@ class DiseaseScreen extends StatelessWidget {
                       fit: BoxFit.cover,
                       image: AssetImage(
                         AppImages.basePathDisease +
-                            disease.id.toString() +
+                            widget.disease.id.toString() +
                             ".jpg",
                       ),
                       onError: (exception, stackTrace) {
@@ -64,26 +78,90 @@ class DiseaseScreen extends StatelessWidget {
             ),
           ),
           // Deskripsi Penyakit
-          _descriptionCard(title: disease.name.toString(), subtitle: disease.desc.toString(), context: context),
+          _descriptionCard(
+              title: widget.disease.name.toString(),
+              subtitle: widget.disease.desc.toString(),
+              context: context),
           // Pengobatan
-          _descriptionCard(title: 'Pengobatan', subtitle: disease.detail!.treatment.toString(), context: context),
+          _descriptionCard(
+              title: 'Pengobatan',
+              subtitle: widget.disease.detail!.treatment.toString(),
+              context: context),
           // Pencegahan
-          _descriptionCard(title: 'Pencegahan', subtitle: disease.detail!.prevention.toString(), context: context),
+          _descriptionCard(
+              title: 'Pencegahan',
+              subtitle: widget.disease.detail!.prevention.toString(),
+              context: context),
           // Level Bahaya
-          _descriptionCard(title: 'Level Bahaya', subtitle: disease.detail!.severity.toString(), context: context),
+          _descriptionCard(
+              title: 'Level Bahaya',
+              subtitle: widget.disease.detail!.severity.toString(),
+              context: context),
           // Tombol Bookmark
           ElevatedButton(
-            onPressed: () {
-              print('Bookmark');
+            onPressed: () async {
+              if (widget.disease.isBookmarked == true) {
+                try {
+                  final result = await sl<UnbookmarkDiseaseUseCase>().call(
+                    params:
+                        UnbookmarkDiseaseParams(bookmarkId: widget.disease.id!),
+                  );
+                  result.fold(
+                    (failure) {
+                      DisplayMessage.errorMessage(context, failure.toString());
+                    },
+                    (success) {
+                      DisplayMessage.errorMessage(context, 'Berhasil dihapus');
+                      // AppNavigator.push(
+                      //   context,
+                      //   const BookmarkedScreen(),
+                      // );
+                    },
+                  );
+                  setState(() {
+                    widget.disease.isBookmarked = false;
+                  });
+                  // AppNavigator.pushAndRemove(context, BookmarkedScreen());
+                } catch (error) {
+                  DisplayMessage.errorMessage(context, error.toString());
+                }
+              } else {
+                try {
+                  final result = await sl<BookmarkDiseaseUseCase>().call(
+                    params: BookmarkDiseaseParams(
+                      diseaseId: widget.disease.id!,
+                      date: 123456,
+                    ),
+                  );
+                  result.fold(
+                    (failure) {
+                      DisplayMessage.errorMessage(context, failure.toString());
+                    },
+                    (success) {
+                      DisplayMessage.errorMessage(context, 'Berhasil disimpan');
+                    },
+                  );
+                  setState(() {
+                    widget.disease.isBookmarked = true;
+                  });
+                  // AppNavigator.pushAndRemove(context, BookmarkedScreen());
+                } catch (error) {
+                  DisplayMessage.errorMessage(context, error.toString());
+                }
+              }
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: disease.isBookmarked ? Colors.red : Theme.of(context).colorScheme.primary,
+              backgroundColor: widget.disease.isBookmarked!
+                  ? Colors.red
+                  : Theme.of(context).colorScheme.primary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
             child: Text(
-              disease.isBookmarked ? 'Hapus Bookmark' : 'Tambah Bookmark',
+              widget.disease.isBookmarked!
+                  ? 'Hapus Bookmark'
+                  : 'Tambah Bookmark',
               style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
@@ -137,9 +215,7 @@ class DiseaseScreen extends StatelessWidget {
           image: DecorationImage(
             fit: BoxFit.cover,
             image: AssetImage(
-              AppImages.basePathDisease +
-                  disease.id.toString() +
-                  ".jpg",
+              AppImages.basePathDisease + widget.disease.id.toString() + ".jpg",
             ),
             onError: (exception, stackTrace) {
               print('Error loading image: $exception');

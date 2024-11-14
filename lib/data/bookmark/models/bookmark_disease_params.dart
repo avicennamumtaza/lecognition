@@ -5,7 +5,7 @@ class BookmarkDiseaseParams {
     // required this.password,
   });
   final int diseaseId;
-  final DateTime date;
+  final int date;
   // final String password;
 
   Map<String, dynamic> toMap() {

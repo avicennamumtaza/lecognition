@@ -5,7 +5,7 @@ import 'package:lecognition/domain/bookmark/entities/bookmark.dart';
 import 'package:lecognition/domain/disease/entities/disease_detail.dart';
 import 'package:lecognition/presentation/bookmark/bloc/bookmark_cubit.dart';
 import 'package:lecognition/presentation/bookmark/bloc/bookmark_state.dart';
-import 'package:lecognition/widgets/bookmarkedCard.dart';
+import 'package:lecognition/widgets/bookmarked_card.dart';
 
 class BookmarkedScreen extends StatelessWidget {
   const BookmarkedScreen({super.key});
@@ -13,13 +13,18 @@ class BookmarkedScreen extends StatelessWidget {
   void linkDiseaseDetails(List<BookmarkEntity> bookmarkedDiseases) {
     print(bookmarkedDiseases);
     for (var bookmarkedDisease in bookmarkedDiseases) {
-      // print(bookmarkedDisease);
-      // print(bookmarkedDisease.disease);
-      // print(bookmarkedDisease.disease?.detail);
+      print(bookmarkedDisease);
+      print(bookmarkedDisease.disease);
+      print(bookmarkedDisease.disease?.detail);
       bookmarkedDisease.disease?.detail = diseaseDetails.firstWhere(
         (detail) => detail.id == bookmarkedDisease.disease?.id,
         orElse: null,
       );
+      // bookmarkedDisease.disease?.detail = diseaseDetails.firstWhere(
+      //   (detail) => detail.id == bookmarkedDisease.disease?.id,
+      //   orElse: null,
+      // );
+      bookmarkedDisease.disease?.isBookmarked = true;
     }
   }
 
@@ -50,9 +55,10 @@ class BookmarkedScreen extends StatelessWidget {
             if (diseases.isEmpty) {
               return Scaffold(
                 appBar: AppBarWidget(title: 'Penyakit Tersimpan 🔖'),
-                body: Text('Tidak ada penyakit favorit'),
+                body: Center(child: Text('Tidak ada penyakit tersimpan')),
               );
             }
+            // print(diseases);
             return Scaffold(
               appBar: AppBarWidget(title: 'Penyakit Tersimpan 🔖'),
               body: Padding(
@@ -72,6 +78,7 @@ class BookmarkedScreen extends StatelessWidget {
                       itemBuilder: (BuildContext context, int index) {
                         linkDiseaseDetails(diseases);
                         final eachDisease = diseases[index];
+                        // print(eachDisease);
                         return BookmarkedCard(disease: eachDisease);
                       },
                     ),
