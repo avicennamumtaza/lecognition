@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lecognition/common/helper/navigation/app_navigator.dart';
 import 'package:lecognition/presentation/auth/pages/signin.dart';
 import 'package:lecognition/presentation/profile/pages/account.dart';
 import 'package:lecognition/presentation/history/pages/history.dart';
@@ -124,11 +125,9 @@ class ProfileScreen extends StatelessWidget {
                             ),
                             TextButton(
                               onPressed: () {
-                                Navigator.push(
+                                AppNavigator.pushReplacement(
                                   context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SigninPage(),
-                                  ),
+                                  SigninPage(),
                                 );
                               },
                               child: const Text('Keluar'),

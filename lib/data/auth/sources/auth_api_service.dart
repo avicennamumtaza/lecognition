@@ -41,6 +41,10 @@ class AuthApiServiceImpl extends AuthService {
       return Right(response.data);
     } on DioException catch (error) {
       print(error.response?.data["email"].toString());
+      final statusCode = error.response?.statusCode;
+      if (statusCode == 404) {
+        return Left("Email/Password is incorrect");
+      }
       return Left(error.response?.data["email"] != null
           ? error.response?.data["password"]?.toString() ??
               "An unknown error occurred"
@@ -108,11 +112,11 @@ class AuthApiServiceImpl extends AuthService {
       // Tangkap semua jenis Exception lain yang tidak diharapkan
       print("Unhandled exception in refreshToken: $e");
       return Left("An unexpected error occurred");
-    // } finally {
-    //   // Pastikan operasi dibatalkan jika tidak diperlukan
-    //   if (!cancelToken.isCancelled) {
-    //     cancelToken.cancel();
-    //   }
+      // } finally {
+      //   // Pastikan operasi dibatalkan jika tidak diperlukan
+      //   if (!cancelToken.isCancelled) {
+      //     cancelToken.cancel();
+      //   }
     }
   }
 }
