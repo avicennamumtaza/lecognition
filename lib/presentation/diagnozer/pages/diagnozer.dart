@@ -65,7 +65,8 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Konfirmasi'),
-          content: const Text('Apakah Anda yakin ingin mengambil gambar?'),
+          content: Image(
+              image: _selectedImage != null ? FileImage(_selectedImage!) : AssetImage('assets/avatars/Avatar_3.png')),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -76,7 +77,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                _takePicture();
+                _navigateToResultScreen();
               },
               child: const Text('Ya'),
             ),
@@ -185,7 +186,8 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
       await _saveDiagnosis(savedImage);
 
       // Navigasi ke layar hasil (ResultScreen)
-      _navigateToResultScreen();
+      // _navigateToResultScreen();
+      _confirm();
     } catch (e) {
       _showErrorDialog('Error saat mengambil gambar: $e');
     }
@@ -281,7 +283,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
                     ),
                     child: IconButton(
                       onPressed:
-                        _confirm,
+                        _takePicture,
                       icon: const Icon(Icons.camera,
                           size: 50, color: Colors.white),
                     ),
