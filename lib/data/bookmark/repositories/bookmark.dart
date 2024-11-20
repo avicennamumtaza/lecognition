@@ -23,13 +23,20 @@ class BookmarkRepositoryImpl extends BookmarkRepository {
 
   @override
   Future<Either> bookmarkDisease(BookmarkDiseaseParams params) async {
-    var data = await sl<BookmarkApiService>().bookmarkDisease(params);
-    return data.fold(
+    var data = await sl<BookmarkApiService>()
+        .bookmarkDisease(params); // Tunggu hasil dari API
+    var resolvedData = await data; // Tunggu resolusi Future
+    return resolvedData.fold(
       (error) {
         return Left(error);
       },
       (data) async {
-        return Right(data);
+        print("Resulting $data");
+        final bookmarked = BookmarkMapper.toEntityWithoutForeign(
+          BookmarkEntityWithoutForeign.fromJson(data),
+        );
+        print("Resultingggg $bookmarked");
+        return Right(bookmarked);
       },
     );
   }
@@ -37,19 +44,21 @@ class BookmarkRepositoryImpl extends BookmarkRepository {
   @override
   Future<Either> getBookmarkedDiseases() async {
     var data = await sl<BookmarkApiService>().getBookmarkedDiseases();
+    print(data);
     return data.fold(
       (error) {
         return Left(error);
       },
       (data) async {
-        final diseases = List.from(data)
+        final bookmarkedDiseases = List.from(data)
             .map(
               (item) => BookmarkMapper.toEntity(
                 BookmarkEntity.fromJson(item),
               ),
             )
             .toList();
-        return Right(diseases);
+        print(bookmarkedDiseases);
+        return Right(bookmarkedDiseases);
       },
     );
   }

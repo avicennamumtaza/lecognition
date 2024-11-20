@@ -32,6 +32,11 @@ class HomeScreen extends StatelessWidget {
       disease.isBookmarked = bookmarkedDiseases.any(
         (bookmark) => bookmark.disease?.id == disease.id,
       );
+      if (disease.isBookmarked == true) {
+        disease.idBookmarked = bookmarkedDiseases
+            .firstWhere((bookmark) => bookmark.disease?.id == disease.id)
+            .id;
+      }
     }
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lecognition/common/helper/mapper/bookmark_mapper.dart';
 import 'package:lecognition/common/helper/message/display_message.dart';
 import 'package:lecognition/common/helper/navigation/app_navigator.dart';
 import 'package:lecognition/common/widgets/appbar.dart';
@@ -100,15 +101,19 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
           // Tombol Bookmark
           ElevatedButton(
             onPressed: () async {
-              if (widget.disease.isBookmarked == true) {
+              print(widget.disease.isBookmarked!);
+              if (widget.disease.isBookmarked != null &&
+                  widget.disease.isBookmarked!) {
                 try {
+                  // print(widget.disease.idBookmarked!);
                   final result = await sl<UnbookmarkDiseaseUseCase>().call(
-                    params:
-                        UnbookmarkDiseaseParams(bookmarkId: widget.disease.id!),
+                    params: UnbookmarkDiseaseParams(
+                        bookmarkId: widget.disease.idBookmarked!),
                   );
                   result.fold(
                     (failure) {
                       DisplayMessage.errorMessage(context, failure.toString());
+                      print(failure);
                     },
                     (success) {
                       DisplayMessage.errorMessage(context, 'Berhasil dihapus');
@@ -116,36 +121,50 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
                       //   context,
                       //   const BookmarkedScreen(),
                       // );
+                      print(success);
+                      setState(() {
+                        widget.disease.isBookmarked = false;
+                        widget.disease.idBookmarked = null;
+                      });
                     },
                   );
-                  setState(() {
-                    widget.disease.isBookmarked = false;
-                  });
+                  AppNavigator.pushReplacement(context, BookmarkedScreen());
                   // AppNavigator.pushAndRemove(context, BookmarkedScreen());
                 } catch (error) {
                   DisplayMessage.errorMessage(context, error.toString());
+                  print(error);
                 }
               } else {
                 try {
+                  // print(widget.disease.idBookmarked!);
                   final result = await sl<BookmarkDiseaseUseCase>().call(
                     params: BookmarkDiseaseParams(
                       diseaseId: widget.disease.id!,
                       date: 123456,
                     ),
                   );
+        
+                  print("HTTP Response ${result}");
                   result.fold(
                     (failure) {
                       DisplayMessage.errorMessage(context, failure.toString());
+                      print(failure);
                     },
                     (success) {
+                      print('Success: ${success}');
+                      final bookmarkData = BookmarkMapper.toEntityWithoutForeign(success);
+                      print('Response data: ${bookmarkData}');
                       DisplayMessage.errorMessage(context, 'Berhasil disimpan');
+                      print('Response data id: ${bookmarkData.id}');
+                      setState(() {
+                        widget.disease.isBookmarked = true;
+                        widget.disease.idBookmarked = bookmarkData.id;
+                      });
+                      AppNavigator.pushReplacement(context, BookmarkedScreen());
                     },
                   );
-                  setState(() {
-                    widget.disease.isBookmarked = true;
-                  });
-                  // AppNavigator.pushAndRemove(context, BookmarkedScreen());
                 } catch (error) {
+                  print(error);
                   DisplayMessage.errorMessage(context, error.toString());
                 }
               }

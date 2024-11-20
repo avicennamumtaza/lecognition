@@ -20,13 +20,50 @@ class BookmarkedScreen extends StatelessWidget {
         (detail) => detail.id == bookmarkedDisease.disease?.id,
         orElse: null,
       );
-      // bookmarkedDisease.disease?.detail = diseaseDetails.firstWhere(
-      //   (detail) => detail.id == bookmarkedDisease.disease?.id,
-      //   orElse: null,
-      // );
+      bookmarkedDisease.disease?.idBookmarked = bookmarkedDisease.id;
       bookmarkedDisease.disease?.isBookmarked = true;
     }
   }
+
+  
+  // List<DiseaseEntity> linkDiseaseDetails(
+  //     List<BookmarkEntity> bookmarkedDiseases) {
+  //   print(bookmarkedDiseases);
+  //   final returnedDiseases = <DiseaseEntity>[];
+  //   for (var bookmarkedDisease in bookmarkedDiseases) {
+  //     print(bookmarkedDisease);
+  //     DiseaseEntity eachBookmarkedDiseases =
+  //         DiseaseEntity(id: bookmarkedDisease.disease);
+  //     eachBookmarkedDiseases.name = diseaseDetails
+  //         .firstWhere(
+  //           (detail) => detail.id == bookmarkedDisease.disease,
+  //           orElse: null,
+  //         )
+  //         .name;
+  //     eachBookmarkedDiseases.desc = diseaseDetails
+  //         .firstWhere(
+  //           (detail) => detail.id == bookmarkedDisease.disease,
+  //           orElse: null,
+  //         )
+  //         .desc;
+  //     eachBookmarkedDiseases.detail = diseaseDetails.firstWhere(
+  //       (detail) => detail.id == bookmarkedDisease.disease,
+  //       orElse: null,
+  //     );
+  //     eachBookmarkedDiseases.idBookmarked = bookmarkedDisease.id;
+  //     eachBookmarkedDiseases.isBookmarked = true;
+  //     returnedDiseases.add(eachBookmarkedDiseases);
+  //     // print(bookmarkedDisease.disease);
+  //     // print(bookmarkedDisease.disease?.detail);
+  //     // bookmarkedDisease.disease?.detail = diseaseDetails.firstWhere(
+  //     //   (detail) => detail.id == bookmarkedDisease.disease?.id,
+  //     //   orElse: null,
+  //     // );
+  //     // bookmarkedDisease.disease?.idBookmarked = bookmarkedDisease.id;
+  //     // bookmarkedDisease.disease?.isBookmarked = true;
+  //   }
+  //   return returnedDiseases;
+  // }
 
   @override
   Widget build(BuildContext context) {

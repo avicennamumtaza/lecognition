@@ -8,6 +8,7 @@ class BookmarkCubit extends Cubit<BookmarkState> {
 
   void getAllBookmarkedDiseases() async {
     final returnedData = await sl<GetBookmarkedDiseasesUseCase>().call();
+    print(returnedData);
     returnedData.fold(
       (error) => emit(BookmarkedDiseasesFailureLoad(errorMessage: error.toString())),
       (bookmarkedDiseases) => emit(BookmarkedDiseasesLoaded(bookmarkedDiseases: bookmarkedDiseases)),
