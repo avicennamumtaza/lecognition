@@ -41,7 +41,6 @@ class _DiseaseCardState extends State<DiseaseCard> {
             padding: const EdgeInsets.all(8.0),
             child: SizedBox(
               height: MediaQuery.of(context).size.height / 4,
-              // width: MediaQuery.of(context).size.width / - 20,
               child: Column(
                 children: [
                   Expanded(
@@ -65,22 +64,6 @@ class _DiseaseCardState extends State<DiseaseCard> {
                             ),
                           ),
                         ),
-                        // Positioned(
-                        //   top: 10.0,
-                        //   right: 10.0,
-                        //   child: InkWell(
-                        //     onTap: () {},
-                        //     child: Container(
-                        //       width: 45.0,
-                        //       height: 45.0,
-                        //       decoration: BoxDecoration(
-                        //         shape: BoxShape.circle,
-                        //         color: Theme.of(context).colorScheme.surface,
-                        //       ),
-                        //       child: bookmarkIcon(context, widget.disease.id!),
-                        //     ),
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),
@@ -92,19 +75,17 @@ class _DiseaseCardState extends State<DiseaseCard> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Expanded(
-                              child: Text(
-                                widget.disease.name.toString(),
-                                style: TextStyle(
-                                  fontSize: 17.0,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onPrimaryContainer,
-                                ),
+                            Text(
+                              widget.disease.name.toString(),
+                              style: TextStyle(
+                                fontSize: 17.0,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimaryContainer,
                               ),
                             ),
                             Text(
-                              widget.disease.detail!.severity,
+                              widget.disease.detail?.severity ?? 'Tidak diketahui',
                               style: TextStyle(
                                 fontSize: 17.0,
                                 color: Theme.of(context)
@@ -130,29 +111,7 @@ class _DiseaseCardState extends State<DiseaseCard> {
                         const SizedBox(
                           height: 5.0,
                         ),
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.align_horizontal_left_sharp,
-                              size: 15.0,
-                              color: Color.fromRGBO(255, 136, 0, 1),
-                            ),
-                            const SizedBox(
-                              width: 5.0,
-                            ),
-                            Text(
-                              widget.disease.detail!.prevention.length > 45
-                                  ? '${widget.disease.detail!.prevention.substring(0, 45)}...'
-                                  : widget.disease.detail!.prevention,
-                              style: TextStyle(
-                                fontSize: 13.0,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onPrimaryContainer,
-                              ),
-                            ),
-                          ],
-                        ),
+                        preventionText(widget.disease.detail?.prevention ?? 'Pencegahan belum tersedia'),
                       ],
                     ),
                   )
@@ -205,6 +164,32 @@ class _DiseaseCardState extends State<DiseaseCard> {
           print(error);          
         }
       },
+    );
+  }
+
+  Widget preventionText(String prevention) {
+    return Row(
+      children: [
+        const Icon(
+          Icons.align_horizontal_left_sharp,
+          size: 15.0,
+          color: Color.fromRGBO(255, 136, 0, 1),
+        ),
+        const SizedBox(
+          width: 5.0,
+        ),
+        Text(
+          prevention.length > 45
+              ? '${prevention.substring(0, 45)}...'
+              : prevention,
+          style: TextStyle(
+            fontSize: 13.0,
+            color: Theme.of(context)
+                .colorScheme
+                .onPrimaryContainer,
+          ),
+        ),
+      ],
     );
   }
 }
