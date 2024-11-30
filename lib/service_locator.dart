@@ -4,6 +4,8 @@ import 'package:lecognition/data/auth/repositories/auth.dart';
 import 'package:lecognition/data/auth/sources/auth_api_service.dart';
 import 'package:lecognition/data/bookmark/repositories/bookmark.dart';
 import 'package:lecognition/data/bookmark/sources/bookmark_api_service.dart';
+import 'package:lecognition/data/diagnozer/repositories/diagnozer.dart';
+import 'package:lecognition/data/diagnozer/sources/diagnozer_api_service.dart';
 import 'package:lecognition/data/disease/repositories/disease.dart';
 import 'package:lecognition/data/disease/sources/disease_api_service.dart';
 import 'package:lecognition/data/user/repositories/user.dart';
@@ -16,6 +18,8 @@ import 'package:lecognition/domain/bookmark/repositories/bookmark.dart';
 import 'package:lecognition/domain/bookmark/usecases/bookmark_disease.dart';
 import 'package:lecognition/domain/bookmark/usecases/get_bookmarked_diseases.dart';
 import 'package:lecognition/domain/bookmark/usecases/unbookmark_disease.dart';
+import 'package:lecognition/domain/diagnozer/repositories/diagnozer.dart';
+import 'package:lecognition/domain/diagnozer/usecases/get_diagnoze_result.dart';
 import 'package:lecognition/domain/disease/repositories/disease.dart';
 import 'package:lecognition/domain/disease/usecases/get_all_diseases.dart';
 import 'package:lecognition/domain/user/repositories/user.dart';
@@ -32,12 +36,14 @@ void setupServiceLocator() {
   sl.registerSingleton<DiseaseApiService>(DiseaseApiServiceImpl());
   sl.registerSingleton<BookmarkApiService>(BookmarkApiServiceImpl());
   sl.registerSingleton<UserApiService>(UserApiServiceImpl());
+  sl.registerSingleton<DiagnozerApiService>(DiagnozerApiServiceImpl());
 
   // Repositories
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl());
   sl.registerSingleton<DiseaseRepository>(DiseaseRepositoryImpl());
   sl.registerSingleton<BookmarkRepository>(BookmarkRepositoryImpl());
   sl.registerSingleton<UserRepository>(UserRepositoryImpl());
+  sl.registerSingleton<DiagnozerRepository>(DiagnozerRepositoryImpl());
 
   // Usecases
   sl.registerSingleton<SignupUseCase>(SignupUseCase());
@@ -49,4 +55,5 @@ void setupServiceLocator() {
   sl.registerSingleton<UpdateUserProfileUseCase>(UpdateUserProfileUseCase());
   sl.registerSingleton<BookmarkDiseaseUseCase>(BookmarkDiseaseUseCase());
   sl.registerSingleton<UnbookmarkDiseaseUseCase>(UnbookmarkDiseaseUseCase());
+  sl.registerSingleton<GetDiagnosisUseCase>(GetDiagnosisUseCase());
 }

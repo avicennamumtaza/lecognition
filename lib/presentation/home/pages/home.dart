@@ -65,7 +65,6 @@ class HomeScreen extends StatelessWidget {
             builder: (context, diseaseState) {
               return BlocBuilder<BookmarkCubit, BookmarkState>(
                 builder: (context, bookmarkState) {
-                  // Memastikan `bookmarkedDiseases` hanya diakses ketika BookmarkCubit berhasil memuat data
                   List<BookmarkEntity> bookmarkedDiseases = [];
                   if (bookmarkState is BookmarkedDiseasesLoaded &&
                       diseaseState is DiseasesLoaded &&

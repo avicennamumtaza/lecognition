@@ -25,8 +25,8 @@ class _HistoriScreenState extends State<HistoriScreen> {
   Future<void> _loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String>? savedImages = prefs.getStringList('diagnosis_images') ?? [];
-    List<String>? savedNames = prefs.getStringList('diagnosis_names') ?? [];
-    List<String>? savedDescriptions = prefs.getStringList('diagnosis_descriptions') ?? [];
+    List<String>? savedNames = prefs.getStringList('plant_names') ?? [];
+    List<String>? savedDescriptions = prefs.getStringList('disease_id') ?? [];
 
     setState(() {
       _imagePaths = savedImages;

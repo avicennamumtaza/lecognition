@@ -23,7 +23,7 @@ class ApiUrls {
       "user/all"; // This will be used for both POST (register) and GET all users
 
   // Scan-related URLs
-  static const getAllScans = "scan";
+  static const scan = "scan";
 
   // Disease-related URLs
   static const getAllDiseases = "disease";

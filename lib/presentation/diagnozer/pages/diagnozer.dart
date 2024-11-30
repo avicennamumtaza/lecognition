@@ -6,9 +6,9 @@ import 'package:lecognition/presentation/diagnozer/pages/result.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:lecognition/data/dummy_diagnosis.dart';
-import 'package:lecognition/data/dummy_disease.dart';
-import 'dart:math'; // Untuk randomizer
+// import 'package:lecognition/data/dummy_diagnosis.dart';
+// import 'package:lecognition/data/dummy_disease.dart';
+// import 'dart:math';
 
 class DiagnozerScreen extends StatefulWidget {
   const DiagnozerScreen({super.key});
@@ -29,29 +29,15 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
     _setupCameraController();
   }
 
-  // Future<void> _saveImagePathToPreferences(String imagePath) async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   List<String>? savedImages = prefs.getStringList('diagnosis_images');
-
-  //   // Jika belum ada daftar gambar, buat list baru
-  //   if (savedImages == null) {
-  //     savedImages = [];
-  //   }
-
-  //   // Tambahkan path gambar ke dalam daftar
-  //   savedImages.add(imagePath);
-
-  //   // Simpan kembali daftar gambar
-  //   await prefs.setStringList('diagnosis_images', savedImages);
-  // }
-
   Future<void> _setupCameraController() async {
     List<CameraDescription> cameraList = await availableCameras();
     if (cameraList.isNotEmpty) {
       setState(() {
         cameras = cameraList;
-        cameraController =
-            CameraController(cameraList.first, ResolutionPreset.high);
+        cameraController = CameraController(
+          cameraList.first,
+          ResolutionPreset.high,
+        );
       });
       cameraController?.initialize().then((_) {
         setState(() {});
@@ -66,7 +52,12 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
         return AlertDialog(
           title: const Text('Konfirmasi'),
           content: Image(
-              image: _selectedImage != null ? FileImage(_selectedImage!) : AssetImage('assets/avatars/Avatar_3.png')),
+            image: _selectedImage != null
+                ? FileImage(_selectedImage!)
+                : AssetImage(
+                    'assets/avatars/Avatar_3.png',
+                  ),
+          ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -77,6 +68,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
+                _saveDiagnosis(_selectedImage!);
                 _navigateToResultScreen();
               },
               child: const Text('Ya'),
@@ -104,14 +96,9 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
 
   Future<File> _saveImageLocally(File imageFile) async {
     try {
-      // Mendapatkan direktori lokal aplikasi
       final directory = await getApplicationDocumentsDirectory();
-
-      // Membuat path baru untuk gambar
       final fileName = imageFile.path.split('/').last;
       final newImagePath = '${directory.path}/$fileName';
-
-      // Menyalin gambar ke direktori lokal
       final newImage = await imageFile.copy(newImagePath);
 
       return newImage;
@@ -121,34 +108,36 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
   }
 
   Future<void> _saveDiagnosis(File image) async {
-    final randomIndex = Random().nextInt(diagnosises.length);
-    final randomDiagnosis = diagnosises[randomIndex];
-    final diseaseId = randomDiagnosis.diseaseId;
-    final matchingDisease =
-    diseases.firstWhere((disease) => disease.id == diseaseId);
+    // final randomIndex = Random().nextInt(diagnosises.length);
+    // final randomDiagnosis = diagnosises[randomIndex];
+    // final diseaseId = randomDiagnosis.diseaseId;
+    // final matchingDisease = diseases.firstWhere(
+    //   (disease) => disease.id == diseaseId,
+    // );
 
-    final diseaseName = matchingDisease.name;
-    final diseaseDescription = matchingDisease.desc;
+    final plantName = "mangga bukan manggis";
+    // final diseaseId = "1";
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String>? savedImages = prefs.getStringList('diagnosis_images') ?? [];
-    List<String>? savedNames = prefs.getStringList('diagnosis_names') ?? [];
-    List<String>? savedDescriptions =
-        prefs.getStringList('diagnosis_descriptions') ?? [];
+    List<String>? savedPlantNames = prefs.getStringList('plant_names') ?? [];
+    // List<String>? savedDiseaseId =
+    //     prefs.getStringList('disease_id') ?? [];
 
     savedImages.add(image.path);
-    savedNames.add(diseaseName!);
-    savedDescriptions.add(diseaseDescription!);
+    savedPlantNames.add(plantName);
+    // savedDiseaseId.add(diseaseId);
 
     await prefs.setStringList('diagnosis_images', savedImages);
-    await prefs.setStringList('diagnosis_names', savedNames);
-    await prefs.setStringList('diagnosis_descriptions', savedDescriptions);
+    await prefs.setStringList('plant_names', savedPlantNames);
+    // await prefs.setStringList('disease_id', savedDiseaseId);
   }
 
   Future _pickImageGallery() async {
     try {
-      final returnedImage =
-      await ImagePicker().pickImage(source: ImageSource.gallery);
+      final returnedImage = await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+      );
       if (returnedImage == null) {
         throw Exception('No image selected');
       }
@@ -184,9 +173,6 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
 
       final savedImage = await _saveImageLocally(_selectedImage!);
       await _saveDiagnosis(savedImage);
-
-      // Navigasi ke layar hasil (ResultScreen)
-      // _navigateToResultScreen();
       _confirm();
     } catch (e) {
       _showErrorDialog('Error saat mengambil gambar: $e');
@@ -197,22 +183,28 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
     if (_selectedImage != null) {
       // Retrieve the disease name and description from the preferences
       SharedPreferences.getInstance().then((prefs) {
-        List<String>? savedNames = prefs.getStringList('diagnosis_names') ?? [];
-        List<String>? savedDescriptions =
-            prefs.getStringList('diagnosis_descriptions') ?? [];
+        List<String>? savedPlantNames =
+            prefs.getStringList('plant_names') ?? [];
+        // List<String>? savedDiseaseId =
+        //     prefs.getStringList('disease_id') ?? [];
 
         // Assuming the last saved entry corresponds to the current image
-        String diseaseName =
-        savedNames.isNotEmpty ? savedNames.last : 'Unknown Disease';
-        String diseaseDescription = savedDescriptions.isNotEmpty
-            ? savedDescriptions.last
-            : 'No description available';
+        String diseaseName = savedPlantNames.isNotEmpty
+            ? savedPlantNames.last
+            : 'Unknown Disease';
+        // String diseaseDescription = savedDiseaseId.isNotEmpty
+        //     ? savedDiseaseId.last
+        //     : 'No description available';
 
-        Navigator.of(context).push(MaterialPageRoute(
+        Navigator.of(context).push(
+          MaterialPageRoute(
             builder: (context) => ResultScreen(
-                photo: _selectedImage!,
-                diseaseName: diseaseName,
-                diseaseDescription: diseaseDescription)));
+              photo: XFile(_selectedImage!.path),
+              plantName: diseaseName,
+              // diseaseDescription: diseaseDescription,
+            ),
+          ),
+        );
       });
     }
   }
@@ -269,7 +261,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
                   IconButton(
                     onPressed: _pickImageGallery,
                     icon:
-                    const Icon(Icons.image, size: 35, color: Colors.white),
+                        const Icon(Icons.image, size: 35, color: Colors.white),
                   ),
                   Container(
                     decoration: const BoxDecoration(
@@ -282,8 +274,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
                       ),
                     ),
                     child: IconButton(
-                      onPressed:
-                        _takePicture,
+                      onPressed: _takePicture,
                       icon: const Icon(Icons.camera,
                           size: 50, color: Colors.white),
                     ),

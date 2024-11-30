@@ -9,6 +9,7 @@ import 'package:lecognition/domain/user/entities/user.dart';
 import 'package:lecognition/domain/user/usecases/update_user_profile.dart';
 import 'package:lecognition/presentation/profile/pages/account.dart';
 import 'package:lecognition/presentation/profile/pages/avatar.dart';
+import 'package:lecognition/presentation/profile/pages/profile.dart';
 import 'package:lecognition/service_locator.dart';
 
 class EditAccount extends StatefulWidget {
@@ -37,6 +38,7 @@ class _EditAccountState extends State<EditAccount> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.userData.avatar);
     return Scaffold(
       appBar: AppBarWidget(title: 'Edit Account'),
       body: SingleChildScrollView(
@@ -54,8 +56,9 @@ class _EditAccountState extends State<EditAccount> {
                       child: Stack(children: [
                         CircleAvatar(
                           radius: 100,
-                          backgroundImage:
-                              AssetImage('assets/avatars/Avatar_3.png'),
+                          backgroundImage: AssetImage(
+                            'assets/avatars/Avatar_${widget.userData.avatar}.png',
+                          ),
                           backgroundColor: Colors.transparent,
                         ),
                         Positioned(
@@ -97,7 +100,11 @@ class _EditAccountState extends State<EditAccount> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => EditAvatar()),
+            MaterialPageRoute(
+              builder: (context) => EditAvatar(
+                userData: widget.userData,
+              ),
+            ),
           );
         },
         icon: Icon(Icons.edit, color: Colors.white, size: 20),
@@ -218,7 +225,8 @@ class _EditAccountState extends State<EditAccount> {
                 DisplayMessage.errorMessage(context, failure.toString());
               },
               (success) {
-                AppNavigator.pushAndRemove(context, const AkunScreen());
+                // AppNavigator.pushReplacement(context, const ProfileScreen());
+                Navigator.pop(context);
                 DisplayMessage.errorMessage(context, success.toString());
               },
             );
