@@ -16,6 +16,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+  static List<DiseaseEntity> localDiseasesData = [];
 
   void linkDiseaseDetails(List<DiseaseEntity> diseases) {
     for (var disease in diseases) {
@@ -27,7 +28,9 @@ class HomeScreen extends StatelessWidget {
   }
 
   void linkDiseaseBookmarkStatus(
-      List<DiseaseEntity> diseases, List<BookmarkEntity> bookmarkedDiseases) {
+    List<DiseaseEntity> diseases,
+    List<BookmarkEntity> bookmarkedDiseases,
+  ) {
     for (var disease in diseases) {
       disease.isBookmarked = bookmarkedDiseases.any(
         (bookmark) => bookmark.disease?.id == disease.id,
@@ -37,6 +40,8 @@ class HomeScreen extends StatelessWidget {
             .firstWhere((bookmark) => bookmark.disease?.id == disease.id)
             .id;
       }
+      localDiseasesData.add(disease);
+      print(localDiseasesData);
     }
   }
 
@@ -89,35 +94,37 @@ class HomeScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  height: MediaQuery.of(context).size.width / 2,
-                                  decoration: BoxDecoration(
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                    borderRadius: const BorderRadius.only(
-                                      bottomLeft: Radius.circular(70),
-                                      bottomRight: Radius.circular(70),
+                                if (userState is UserLoaded)
+                                  Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height:
+                                        MediaQuery.of(context).size.width / 2,
+                                    decoration: BoxDecoration(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                      borderRadius: const BorderRadius.only(
+                                        bottomLeft: Radius.circular(70),
+                                        bottomRight: Radius.circular(70),
+                                      ),
                                     ),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 15,
-                                    vertical: 0,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      SizedBox(
-                                        width: 200,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            if (userState is UserLoaded)
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 15,
+                                      vertical: 0,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        SizedBox(
+                                          width: 200,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
                                               Text(
                                                 'Hai ${userState.user.username!.toUpperCase()} Apa Kabar?',
                                                 style: TextStyle(
@@ -128,15 +135,18 @@ class HomeScreen extends StatelessWidget {
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
-                                            SizedBox(height: 0),
-                                            _shortCutButton(context)
-                                          ],
+                                              SizedBox(height: 0),
+                                              _shortCutButton(context)
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      _showAvatar(context)
-                                    ],
+                                        _showAvatar(
+                                          context,
+                                          userState.user.avatar!,
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
                               ],
                             ),
                           ),
@@ -262,7 +272,10 @@ class HomeScreen extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) => BookmarkedScreen(),
                 ),
-              );
+              ).then((_) {
+                BlocProvider.of<BookmarkCubit>(context)
+                    .getAllBookmarkedDiseases();
+              });
             },
             icon: Icon(
               Icons.bookmark_outline,
@@ -275,9 +288,9 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _showAvatar(BuildContext context) {
+  Widget _showAvatar(BuildContext context, int idAvatar) {
     return Image(
-      image: AssetImage('assets/avatars/Avatar_3.png'),
+      image: AssetImage('assets/avatars/Avatar_$idAvatar.png'),
       width: MediaQuery.of(context).size.width / 2.5,
       alignment: Alignment.bottomLeft,
     );

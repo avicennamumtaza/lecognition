@@ -13,3 +13,18 @@ class BookmarkedDiseasesFailureLoad extends BookmarkState {
   final String errorMessage;
   BookmarkedDiseasesFailureLoad({required this.errorMessage});
 }
+
+class BookmarkActionLoading extends BookmarkState {}
+
+class BookmarkActionSuccess extends BookmarkState {
+  final bool isBookmarked;
+  final int? idBookmarked;
+
+  BookmarkActionSuccess({required this.isBookmarked, this.idBookmarked});
+}
+
+class BookmarkActionFailure extends BookmarkState {
+  final String errorMessage;
+
+  BookmarkActionFailure({required this.errorMessage});
+}

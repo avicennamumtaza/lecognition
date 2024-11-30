@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lecognition/common/helper/message/display_message.dart';
 import 'package:lecognition/core/configs/assets/app_images.dart';
 import 'package:lecognition/data/bookmark/models/bookmark_disease_params.dart';
 import 'package:lecognition/domain/bookmark/usecases/bookmark_disease.dart';
 import 'package:lecognition/domain/disease/entities/disease.dart';
+import 'package:lecognition/presentation/bookmark/bloc/bookmark_cubit.dart';
 import 'package:lecognition/presentation/disease/pages/disease.dart';
 import 'package:lecognition/service_locator.dart';
 
@@ -31,11 +33,12 @@ class _DiseaseCardState extends State<DiseaseCard> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => DiseaseScreen(
-                  disease: widget.disease,
-                ),
+                builder: (context) => DiseaseScreen(disease: widget.disease),
               ),
-            );
+            ).then((_) {
+              BlocProvider.of<BookmarkCubit>(context)
+                  .getAllBookmarkedDiseases();
+            });
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -85,7 +88,8 @@ class _DiseaseCardState extends State<DiseaseCard> {
                               ),
                             ),
                             Text(
-                              widget.disease.detail?.severity ?? 'Tidak diketahui',
+                              widget.disease.detail?.severity ??
+                                  'Tidak diketahui',
                               style: TextStyle(
                                 fontSize: 17.0,
                                 color: Theme.of(context)
@@ -111,7 +115,8 @@ class _DiseaseCardState extends State<DiseaseCard> {
                         const SizedBox(
                           height: 5.0,
                         ),
-                        preventionText(widget.disease.detail?.prevention ?? 'Pencegahan belum tersedia'),
+                        preventionText(widget.disease.detail?.prevention ??
+                            'Pencegahan belum tersedia'),
                       ],
                     ),
                   )
@@ -161,7 +166,7 @@ class _DiseaseCardState extends State<DiseaseCard> {
             },
           );
         } catch (error) {
-          print(error);          
+          print(error);
         }
       },
     );
@@ -184,9 +189,7 @@ class _DiseaseCardState extends State<DiseaseCard> {
               : prevention,
           style: TextStyle(
             fontSize: 13.0,
-            color: Theme.of(context)
-                .colorScheme
-                .onPrimaryContainer,
+            color: Theme.of(context).colorScheme.onPrimaryContainer,
           ),
         ),
       ],
