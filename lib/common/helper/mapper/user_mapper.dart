@@ -7,6 +7,7 @@ class UserMapper {
       username: data.username,
       email: data.email,
       password: data.password,
+      avatar: data.avatar,
     );
   }
 }

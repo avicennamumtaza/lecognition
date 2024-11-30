@@ -38,7 +38,7 @@ class ProfileScreen extends StatelessWidget {
                     child: CircleAvatar(
                       radius: 100,
                       child: Image.asset(
-                        'assets/avatars/Avatar_3.png',
+                        'assets/avatars/Avatar_${state.user.avatar}.png',
                         fit: BoxFit.cover,
                       ),
                       backgroundColor: Colors.transparent,
@@ -70,6 +70,9 @@ class ProfileScreen extends StatelessWidget {
                         builder: (context) =>
                             const AkunScreen(), // Pindah ke layar AkunScreen
                       ),
+                    ).then(
+                      (value) =>
+                          BlocProvider.of<UserCubit>(context).getUserProfile(),
                     );
                   },
                 ),

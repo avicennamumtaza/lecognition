@@ -42,7 +42,7 @@ class AkunScreen extends StatelessWidget {
                               child: CircleAvatar(
                                 radius: 100,
                                 child: Image.asset(
-                                  'assets/avatars/Avatar_3.png',
+                                  'assets/avatars/Avatar_${state.user.avatar}.png',
                                   width: 200,
                                 ),
                                 backgroundColor: Colors.transparent,
@@ -91,7 +91,9 @@ class AkunScreen extends StatelessWidget {
                                   userData: state.user,
                                 ),
                               ),
-                            );
+                            ).then((_) {
+                              context.read<UserCubit>().getUserProfile();
+                            });
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
