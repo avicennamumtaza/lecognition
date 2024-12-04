@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lecognition/common/helper/navigation/app_navigator.dart';
 import 'package:lecognition/presentation/auth/pages/signin.dart';
+import 'package:lecognition/presentation/bookmark/bloc/bookmark_cubit.dart';
+import 'package:lecognition/presentation/bookmark/pages/bookmarked.dart';
 import 'package:lecognition/presentation/profile/pages/account.dart';
 import 'package:lecognition/presentation/history/pages/history.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -105,6 +107,22 @@ class ProfileScreen extends StatelessWidget {
                   activeColor: Theme.of(context).colorScheme.primary,
                   inactiveThumbColor: Colors.grey,
                   inactiveTrackColor: Colors.grey.shade300,
+                ),
+                _buildMenuItem(
+                  icon: Icons.bookmark,
+                  title: "Penyakit Tersimpan",
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const BookmarkedScreen(),
+                      ),
+                    ).then((_) {
+                      BlocProvider.of<BookmarkCubit>(context)
+                          .getAllBookmarkedDiseases();
+                    });
+                  },
+                  context: context,
                 ),
                 _buildMenuItem(
                   context: context,
