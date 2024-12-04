@@ -24,6 +24,17 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
   bool _isTorchOn = false;
 
   @override
+  void dispose() {
+    if (_isTorchOn) {
+      cameraController?.setFlashMode(FlashMode.off);
+    }
+    if (cameraController != null && cameraController!.value.isInitialized) {
+      cameraController?.dispose();
+    }
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     _setupCameraController();
@@ -68,6 +79,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
+                _saveImageLocally(_selectedImage!);
                 _saveDiagnosis(_selectedImage!);
                 _navigateToResultScreen();
               },
@@ -115,7 +127,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
     //   (disease) => disease.id == diseaseId,
     // );
 
-    final plantName = "mangga bukan manggis";
+    final plantName = "nama mangga";
     // final diseaseId = "1";
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -127,6 +139,8 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
     savedImages.add(image.path);
     savedPlantNames.add(plantName);
     // savedDiseaseId.add(diseaseId);
+    print("savedPlantNames: $savedPlantNames");
+    print("savedImages: $savedImages");
 
     await prefs.setStringList('diagnosis_images', savedImages);
     await prefs.setStringList('plant_names', savedPlantNames);
@@ -144,8 +158,8 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
       setState(() {
         _selectedImage = File(returnedImage.path);
       });
-      final savedImage = await _saveImageLocally(_selectedImage!);
-      await _saveDiagnosis(savedImage);
+      // await _saveImageLocally(_selectedImage!);
+      // await _saveDiagnosis(savedImage);
       _navigateToResultScreen();
     } catch (e) {
       _showErrorDialog('Failed to pick image from gallery: ${e.toString()}');
@@ -171,41 +185,36 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
         _selectedImage = File(image.path);
       });
 
-      final savedImage = await _saveImageLocally(_selectedImage!);
-      await _saveDiagnosis(savedImage);
+      // await _saveImageLocally(_selectedImage!);
+      // await _saveDiagnosis(savedImage);
       _confirm();
     } catch (e) {
       _showErrorDialog('Error saat mengambil gambar: $e');
     }
   }
 
-  void _navigateToResultScreen() {
+  void _navigateToResultScreen() async {
     if (_selectedImage != null) {
-      // Retrieve the disease name and description from the preferences
-      SharedPreferences.getInstance().then((prefs) {
+      try {
+        final prefs = await SharedPreferences.getInstance();
         List<String>? savedPlantNames =
             prefs.getStringList('plant_names') ?? [];
-        // List<String>? savedDiseaseId =
-        //     prefs.getStringList('disease_id') ?? [];
 
-        // Assuming the last saved entry corresponds to the current image
         String diseaseName = savedPlantNames.isNotEmpty
             ? savedPlantNames.last
             : 'Unknown Disease';
-        // String diseaseDescription = savedDiseaseId.isNotEmpty
-        //     ? savedDiseaseId.last
-        //     : 'No description available';
 
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => ResultScreen(
               photo: XFile(_selectedImage!.path),
               plantName: diseaseName,
-              // diseaseDescription: diseaseDescription,
             ),
           ),
         );
-      });
+      } catch (e) {
+        _showErrorDialog("Failed to navigate to result screen: $e");
+      }
     }
   }
 

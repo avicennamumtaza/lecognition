@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:lecognition/common/widgets/appbar.dart';
-import 'package:lecognition/presentation/history/pages/result.dart';
+import 'package:lecognition/presentation/history/pages/history_detail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HistoriScreen extends StatefulWidget {
@@ -13,8 +13,10 @@ class HistoriScreen extends StatefulWidget {
 
 class _HistoriScreenState extends State<HistoriScreen> {
   List<String> _imagePaths = [];
-  List<String> _diseaseNames = []; // List for disease names
-  List<String> _diseaseDescriptions = []; // List for disease descriptions
+  List<String> _plantNames = [];
+  List<String> _diseaseId = []; // List for disease names
+  List<String> _percentages = []; // List for disease percentages
+  // List<String> _diseaseDescriptions = []; // List for disease descriptions
 
   @override
   void initState() {
@@ -25,14 +27,22 @@ class _HistoriScreenState extends State<HistoriScreen> {
   Future<void> _loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String>? savedImages = prefs.getStringList('diagnosis_images') ?? [];
-    List<String>? savedNames = prefs.getStringList('plant_names') ?? [];
-    List<String>? savedDescriptions = prefs.getStringList('disease_id') ?? [];
+    List<String>? savedPlantNames = prefs.getStringList('plant_names') ?? [];
+    List<String>? savedResults = prefs.getStringList('diagnosis_result') ?? [];
+    List<String>? savedPercentages = prefs.getStringList('diagnosis_percentage') ?? [];
 
     setState(() {
       _imagePaths = savedImages;
-      _diseaseNames = savedNames;
-      _diseaseDescriptions = savedDescriptions;
+      _plantNames = savedPlantNames;
+      _diseaseId = savedResults;
+      _percentages = savedPercentages;
+      // _diseaseDescriptions = savedDescriptions;
     });
+
+    print('Loaded image paths: $_imagePaths');
+    print('Loaded plant names: $_plantNames');
+    print('Loaded resulted disease id: $_diseaseId');
+    print('Loaded resulted disease percentage: $_percentages');
   }
 
   @override
@@ -58,8 +68,9 @@ class _HistoriScreenState extends State<HistoriScreen> {
                   MaterialPageRoute(
                     builder: (context) => ResultHistoryScreen(
                       imagePath: _imagePaths[index],
-                      diseaseName: _diseaseNames[index], // Pass disease name
-                      diseaseDescription: _diseaseDescriptions[index], // Pass disease description
+                      diseaseId: int.parse(_diseaseId[index]),
+                      plantName: _plantNames[index],
+                      percentage: double.parse(_percentages[index]),
                       diagnosisNumber: index,
                     ),
                   ),
@@ -98,7 +109,7 @@ class _HistoriScreenState extends State<HistoriScreen> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      '#${index + 1} ${_diseaseNames[index]}', // Diagnosis name
+                                      '#${index + 1} Disease ke-${_diseaseId[index]}', // Diagnosis name
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16,
@@ -114,10 +125,10 @@ class _HistoriScreenState extends State<HistoriScreen> {
                                   ],
                                 ),
                                 const SizedBox(height: 8),
-                                Text(
-                                  _diseaseDescriptions[index], // Disease description
-                                  style: const TextStyle(fontSize: 14),
-                                ),
+                                // Text(
+                                //   _diseaseDescriptions[index], // Disease description
+                                //   style: const TextStyle(fontSize: 14),
+                                // ),
                               ],
                             ),
                           ),
