@@ -25,6 +25,7 @@ class _DiseaseCardState extends State<DiseaseCard> {
     return Hero(
       tag: "photo_${widget.disease.id}",
       child: Material(
+        color: Theme.of(context).colorScheme.onPrimary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(22.0),
         ),
