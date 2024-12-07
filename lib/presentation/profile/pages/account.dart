@@ -143,7 +143,7 @@ class AkunScreen extends StatelessWidget {
       shadowColor: Colors.grey,
       child: ListTile(
         leading:
-            Icon(icon, color: Theme.of(context).colorScheme.primary, size: 30),
+            Icon(icon, color: Colors.black.withOpacity(0.7), size: 30),
         title: Text(
           title,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),

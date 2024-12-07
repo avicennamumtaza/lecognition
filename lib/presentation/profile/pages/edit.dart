@@ -123,6 +123,7 @@ class _EditAccountState extends State<EditAccount> {
             widget.userData.email ?? 'Enter e-mail', // Updated hintText
             Icons.email,
             _emailController,
+            TextInputType.emailAddress,
             [
               FormBuilderValidators.required(),
               FormBuilderValidators.email(),
@@ -135,6 +136,7 @@ class _EditAccountState extends State<EditAccount> {
             widget.userData.username ?? 'Enter username', // Updated hintText
             Icons.person,
             _usernameController,
+            TextInputType.text,
             [
               FormBuilderValidators.required(),
             ],
@@ -146,6 +148,7 @@ class _EditAccountState extends State<EditAccount> {
             'Enter new password', // Default hintText for password
             Icons.lock,
             _passwordController,
+            TextInputType.text,
             [
               FormBuilderValidators.required(),
               FormBuilderValidators.minLength(6),
@@ -158,6 +161,7 @@ class _EditAccountState extends State<EditAccount> {
             'Re-enter new password', // Default hintText for confirm password
             Icons.lock,
             _confirmPasswordController,
+            TextInputType.text,
             [
               FormBuilderValidators.required(),
               (val) {
@@ -179,6 +183,7 @@ class _EditAccountState extends State<EditAccount> {
       String hintText,
       IconData icon,
       TextEditingController controller,
+      TextInputType textType,
       List<String? Function(String?)> validators) {
     return Container(
       decoration: BoxDecoration(
@@ -202,6 +207,8 @@ class _EditAccountState extends State<EditAccount> {
         ),
         controller: controller,
         validator: FormBuilderValidators.compose(validators),
+        keyboardType: textType,
+        obscureText: name == 'password' || name == 'confPassword',
       ),
     );
   }

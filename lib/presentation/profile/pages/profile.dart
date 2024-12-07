@@ -65,12 +65,10 @@ class ProfileScreen extends StatelessWidget {
                   icon: Icons.account_circle,
                   title: 'Akun',
                   onTap: () {
-                    // Navigasi ke halaman Akun
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            const AkunScreen(), // Pindah ke layar AkunScreen
+                        builder: (context) => const AkunScreen(),
                       ),
                     ).then(
                       (value) =>
@@ -83,7 +81,6 @@ class ProfileScreen extends StatelessWidget {
                   icon: Icons.history,
                   title: 'Histori Diagnosis',
                   onTap: () {
-                    // Navigate to HistoriScreen when tapped
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -92,22 +89,22 @@ class ProfileScreen extends StatelessWidget {
                     );
                   },
                 ),
-                SwitchListTile(
-                  value: _isDark,
-                  onChanged: (value) {
-                    value = !value;
-                  },
-                  title:
-                      const Text('Mode Gelap', style: TextStyle(fontSize: 18)),
-                  secondary: Icon(
-                    Icons.dark_mode,
-                    size: 30,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  activeColor: Theme.of(context).colorScheme.primary,
-                  inactiveThumbColor: Colors.grey,
-                  inactiveTrackColor: Colors.grey.shade300,
-                ),
+                // SwitchListTile(
+                //   value: _isDark,
+                //   onChanged: (value) {
+                //     value = !value;
+                //   },
+                //   title:
+                //       const Text('Mode Gelap', style: TextStyle(fontSize: 18)),
+                //   secondary: Icon(
+                //     Icons.dark_mode,
+                //     size: 30,
+                //     color: Theme.of(context).colorScheme.primary,
+                //   ),
+                //   activeColor: Theme.of(context).colorScheme.primary,
+                //   inactiveThumbColor: Colors.grey,
+                //   inactiveTrackColor: Colors.grey.shade300,
+                // ),
                 _buildMenuItem(
                   icon: Icons.bookmark,
                   title: "Penyakit Tersimpan",
@@ -176,7 +173,7 @@ class ProfileScreen extends StatelessWidget {
       required BuildContext context}) {
     return ListTile(
       leading:
-          Icon(icon, size: 30, color: Theme.of(context).colorScheme.primary),
+          Icon(icon, size: 30, color: Colors.black.withOpacity(0.7)),
       title: Text(title, style: const TextStyle(fontSize: 18)),
       onTap: onTap,
       // minTileHeight: 50,
