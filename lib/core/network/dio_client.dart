@@ -5,14 +5,17 @@ import 'interceptors.dart';
 
 class DioClient {
   late final Dio _dio;
+
   DioClient()
       : _dio = Dio(
           BaseOptions(
             baseUrl: ApiUrls.baseUrl,
-            headers: {'Content-Type': 'application/json'},
+            headers: {
+              'Content-Type': 'application/json',
+            },
             responseType: ResponseType.json,
-            sendTimeout: const Duration(seconds: 10),
-            receiveTimeout: const Duration(seconds: 10),
+            sendTimeout: const Duration(seconds: 30),
+            receiveTimeout: const Duration(seconds: 30),
           ),
         )..interceptors.addAll(
             [
@@ -21,7 +24,6 @@ class DioClient {
             ],
           );
 
-  // GET METHOD
   Future<Response> get(
     String url, {
     Map<String, dynamic>? queryParameters,
@@ -42,13 +44,13 @@ class DioClient {
       rethrow;
     }
   }
-
-  // POST METHOD
+  
   Future<Response> post(
     String url, {
     data,
     Map<String, dynamic>? queryParameters,
     Options? options,
+    CancelToken? cancelToken,
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
@@ -59,6 +61,7 @@ class DioClient {
         options: options,
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
+        cancelToken: cancelToken,
       );
       return response;
     } catch (e) {
@@ -66,8 +69,7 @@ class DioClient {
       rethrow;
     }
   }
-
-  // PUT METHOD
+  
   Future<Response> put(
     String url, {
     dynamic data,
@@ -92,8 +94,7 @@ class DioClient {
       rethrow;
     }
   }
-
-  // DELETE METHOD
+  
   Future<dynamic> delete(
     String url, {
     data,

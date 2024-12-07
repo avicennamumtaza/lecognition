@@ -1,191 +1,317 @@
-// import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lecognition/common/widgets/tabs.dart';
-// import 'package:lecognition/models/disease.dart';
+import 'package:lecognition/domain/bookmark/entities/bookmark.dart';
+import 'package:lecognition/domain/disease/entities/disease.dart';
+import 'package:lecognition/domain/disease/entities/disease_detail.dart';
+import 'package:lecognition/presentation/bookmark/bloc/bookmark_cubit.dart';
+import 'package:lecognition/presentation/bookmark/bloc/bookmark_state.dart';
 import 'package:lecognition/presentation/bookmark/pages/bookmarked.dart';
 import 'package:lecognition/presentation/home/bloc/disease_cubit.dart';
 import 'package:lecognition/presentation/home/bloc/disease_state.dart';
-import 'package:lecognition/widgets/diseaseCard.dart';
+import 'package:lecognition/presentation/profile/bloc/user_cubit.dart';
+import 'package:lecognition/presentation/profile/bloc/user_state.dart';
+import 'package:lecognition/widgets/disease_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-// import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+  static List<DiseaseEntity> localDiseasesData = [];
+
+  void linkDiseaseDetails(List<DiseaseEntity> diseases) {
+    for (var disease in diseases) {
+      disease.detail = diseaseDetails.firstWhere(
+        (detail) => detail.id == disease.id,
+        orElse: null,
+      );
+    }
+  }
+
+  void linkDiseaseBookmarkStatus(
+    List<DiseaseEntity> diseases,
+    List<BookmarkEntity> bookmarkedDiseases,
+  ) {
+    for (var disease in diseases) {
+      disease.isBookmarked = bookmarkedDiseases.any(
+        (bookmark) => bookmark.disease?.id == disease.id,
+      );
+      if (disease.isBookmarked == true) {
+        disease.idBookmarked = bookmarkedDiseases
+            .firstWhere((bookmark) => bookmark.disease?.id == disease.id)
+            .id;
+      }
+      localDiseasesData.add(disease);
+      print(localDiseasesData);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => DiseaseCubit()..getAllDiseases(),
-      child: BlocBuilder<DiseaseCubit, DiseaseState>(
-        builder: (context, state) {
-          return Skeletonizer(
-            enabled: state is DiseasesLoading,
-            child: CustomScrollView(
-              slivers: [
-                SliverAppBar(
-                  expandedHeight: MediaQuery.of(context).size.width / 2.2,
-                  floating: true,
-                  backgroundColor: Colors.transparent,
-                  flexibleSpace: FlexibleSpaceBar(
-                    background: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.width / 2,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.primary,
-                            borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(70),
-                              bottomRight: Radius.circular(70),
-                            ),
-                          ),
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Center(
-                                child: AutoSizeText(
-                                  "Selamat Datang Lukman!",
-                                  minFontSize: 35,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimary),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<DiseaseCubit>(
+          create: (context) => DiseaseCubit()..getAllDiseases(),
+        ),
+        BlocProvider<BookmarkCubit>(
+          create: (context) => BookmarkCubit()..getAllBookmarkedDiseases(),
+        ),
+        BlocProvider<UserCubit>(
+          create: (context) => UserCubit()..getUserProfile(),
+        ),
+      ],
+      child: BlocBuilder<UserCubit, UserState>(
+        builder: (context, userState) {
+          return BlocBuilder<DiseaseCubit, DiseaseState>(
+            builder: (context, diseaseState) {
+              return BlocBuilder<BookmarkCubit, BookmarkState>(
+                builder: (context, bookmarkState) {
+                  List<BookmarkEntity> bookmarkedDiseases = [];
+                  if (bookmarkState is BookmarkedDiseasesLoaded &&
+                      diseaseState is DiseasesLoaded &&
+                      userState is UserLoaded) {
+                    bookmarkedDiseases = bookmarkState.bookmarkedDiseases;
+                    linkDiseaseDetails(diseaseState.diseases);
+                    linkDiseaseBookmarkStatus(
+                      diseaseState.diseases,
+                      bookmarkedDiseases,
+                    );
+                  }
+
+                  return Skeletonizer(
+                    enabled: diseaseState is DiseasesLoading ||
+                        bookmarkState is BookmarkedDiseasesLoading ||
+                        userState is UserLoading,
+                    child: SingleChildScrollView(
+                      child: Container(
+                        child: Column(
+                          children: [
+                            if (userState is UserLoaded)
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 15,
+                                  vertical: 0,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                      RichText(
+                                        text: TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text: "Selamat Datang,\n",
+                                              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white,),
+                                            ),
+                                            TextSpan(
+                                              text: userState.user.username!.toUpperCase(),
+                                              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white, fontWeight: FontWeight.w600,),
+                                            )
+                                          ],
+                                        )
+                                      ),
+                                      _showAvatar(context, userState.user.avatar!),
+                                  ],
                                 ),
                               ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
+                                ),
+                                color: Colors.white,
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 14,
+                                vertical: 20,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text('Informasi'),
-                                            content: const Text(
-                                                'Gunakan menu diagnozer untuk mendeteksi penyakit tanaman mangga berdasarkan daunnya.'),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: const Text('OK'),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    },
-                                    icon: Icon(
-                                      Icons.info_outline,
-                                      color: Colors.white,
-                                      size: 35,
+                                  _actionButton(context),
+                                  SizedBox(height: 10),
+                                  Text(
+                                    'Daftar Penyakit',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary
-                                          .withOpacity(0.3),
-                                    ),
-                                    padding: const EdgeInsets.all(0),
-                                    child: IconButton(
-                                      onPressed: () {
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                TabsScreen(index: 1),
+                                  if (diseaseState is DiseasesFailureLoad || bookmarkState is BookmarkedDiseasesFailureLoad || userState is UserFailureLoad)
+                                    Container(
+                                      child: Center(
+                                        child: Text(
+                                          diseaseState is DiseasesFailureLoad
+                                              ? diseaseState.errorMessage
+                                              : (bookmarkState is BookmarkedDiseasesFailureLoad
+                                              ? bookmarkState.errorMessage
+                                              : userState is UserFailureLoad
+                                              ? userState.errorMessage
+                                              : 'Terjadi kesalahan'),
+                                          style: TextStyle(
+                                            color: Theme.of(context).colorScheme.error,
                                           ),
-                                        );
-                                      },
-                                      icon: Icon(Icons.camera_alt_outlined,
-                                          color: Colors.white, size: 50),
-                                    ),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              BookmarkedScreen(),
                                         ),
-                                      );
-                                    },
-                                    icon: Icon(
-                                      Icons.bookmark,
-                                      color: Colors.white,
-                                      size: 35,
+                                      ),
                                     ),
-                                  ),
+                                  if (diseaseState is DiseasesLoaded)
+                                    for (var disease in diseaseState.diseases)
+                                      Column(
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                              top:  15.0,
+                                              bottom: 10,
+                                            ),
+                                            child: DiseaseCard(
+                                              disease: disease,
+                                            ),
+                                          ),
+                                          Divider(
+                                            color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.5),
+                                            thickness: 1.0,
+                                            height: 1.0,
+                                          ),
+                                        ],
+                                      ),
                                 ],
                               ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                if (state is DiseasesFailureLoad)
-                  SliverFillRemaining(
-                    child: Center(
-                      child: Text(
-                        state.errorMessage,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.error,
+                            )
+                          ],
                         ),
                       ),
-                    ),
-                  ),
-                if (state is DiseasesLoaded)
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final disease = state.diseases[index];
-                        return Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                top: index == 0 ? 25.0 : 15.0,
-                                left: 16.0,
-                                right: 16.0,
-                                bottom: index == 0 ? 10 : 10,
-                              ),
-                              child: DiseaseCard(
-                                disease: disease,
-                              ),
-                            ),
-
-                            // Menambahkan Divider sebagai garis bawah
-                            Divider(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .secondary, // Warna garis bawah
-                              thickness: 1.0, // Ketebalan garis
-                              height: 1.0, // Jarak vertikal garis
-                            ),
-                          ],
-                        );
-                      },
-                      childCount: state.diseases.length,
-                    ),
-                  ),
-              ],
-            ),
+                    )
+                  );
+                },
+              );
+            },
           );
         },
       ),
+    );
+  }
+
+  Widget _actionButton(BuildContext context) {
+    return Container(
+        height: 100,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 10,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            InkWell(
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TabsScreen(index: 1),
+                  ),
+                );
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width / 2.4,
+                height: 70,
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  color: Theme.of(context).colorScheme.secondary,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.camera_alt_outlined,
+                      size: 50,
+                    ),
+                    SizedBox(width: 10),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Diagnosis',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
+                        Text(
+                          'Tanamanmu',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(width: 10),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BookmarkedScreen(),
+                  ),
+                ).then((_) {
+                  BlocProvider.of<BookmarkCubit>(context)
+                      .getAllBookmarkedDiseases();
+                });
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width / 2.4,
+                height: 70,
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  color: Theme.of(context).colorScheme.secondary,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.save_outlined,
+                      size: 50,
+                    ),
+                    SizedBox(width: 10),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Tersimpan',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
+                        Text(
+                          'Penyakit',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+    );
+  }
+
+  Widget _showAvatar(BuildContext context, int idAvatar) {
+    return Image(
+      image: AssetImage('assets/avatars/Avatar_$idAvatar.png'),
+      width: MediaQuery.of(context).size.width / 2,
+      alignment: Alignment.bottomLeft,
     );
   }
 }

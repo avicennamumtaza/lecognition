@@ -1,18 +1,14 @@
-class GetDiagnozeResultParams {
-  GetDiagnozeResultParams({
-    required this.email,
-    required this.username,
-    required this.password,
+import 'package:camera/camera.dart';
+
+class GetDiagnosisParams {
+  GetDiagnosisParams({
+    required this.imageFile,
   });
-  final String email;
-  final String username;
-  final String password;
+  final XFile imageFile;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      "email": email,
-      "username": username,
-      "password": password,
+      "imageFile": imageFile,
     };
   }
 }

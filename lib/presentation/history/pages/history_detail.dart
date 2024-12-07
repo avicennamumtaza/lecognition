@@ -1,44 +1,44 @@
 import 'dart:io';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:lecognition/common/widgets/appbar.dart';
 import 'package:lecognition/domain/disease/entities/disease.dart';
 import 'package:lecognition/presentation/disease/pages/disease.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
-import '../../../data/dummy_disease.dart';
-
 class ResultHistoryScreen extends StatelessWidget {
   final String imagePath;
-  final String diseaseName; // Add a field for disease name
-  final String diseaseDescription; // Add a field for disease description
+  final String plantName;
+  final DiseaseEntity disease;
   final int diagnosisNumber;
+  final double percentage;
 
   ResultHistoryScreen({
     Key? key,
     required this.imagePath,
-    required this.diseaseName,
-    required this.diseaseDescription,
+    required this.plantName,
+    required this.disease,
     required this.diagnosisNumber,
+    required this.percentage,
   }) : super(key: key);
 
-  DiseaseEntity ds = diseases[0];
-  double percentage = Random().nextDouble();
-
-  DiseaseEntity _findDisease() {
-    for (var disease in diseases) {
-      if (disease.name == diseaseName) {
-        ds = disease;
-        break;
-      }
-    }
-    return ds;
-  }
+  // DiseaseEntity ds = HomeScreen.localDiseasesData[0];
+  // DiseaseEntity _findDisease() {
+  //   for (var disease in HomeScreen.localDiseasesData) {
+  //     if (disease.id == diseaseId) {
+  //       ds = disease;
+  //       break;
+  //     }
+  //   }
+  //   return ds;
+  // }
 
   @override
   Widget build(BuildContext context) {
+    // DiseaseEntity disease = _findDisease();
     return Scaffold(
-      appBar: AppBarWidget(title: 'Detail #${diagnosisNumber + 1} / 22-10-2024'),
+      appBar: AppBarWidget(
+        title: 'Diagnosis #${diagnosisNumber + 1} - ${disease.name}',
+      ),
       body: ListView(
         padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
         children: [
@@ -69,18 +69,18 @@ class ResultHistoryScreen extends StatelessWidget {
             alignment: Alignment.topLeft,
             child: ListTile(
               title: Text(
-                diseaseName, // Display the passed disease name
+                "${disease.name}", // Display the passed disease name
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              subtitle: Text(
-                diseaseDescription, // Display the passed disease description
-                style: const TextStyle(
-                  fontSize: 15,
-                ),
-              ),
+              // subtitle: Text(
+              //   diseaseDescription, // Display the passed disease description
+              //   style: const TextStyle(
+              //     fontSize: 15,
+              //   ),
+              // ),
             ),
           ),
 
@@ -131,7 +131,7 @@ class ResultHistoryScreen extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => DiseaseScreen(
-                          disease: _findDisease(),
+                          disease: disease,
                         ),
                       ),
                     );
@@ -144,7 +144,8 @@ class ResultHistoryScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 10),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 16.0, horizontal: 10),
                       child: Center(
                         child: Text(
                           'Detail Penyakit',

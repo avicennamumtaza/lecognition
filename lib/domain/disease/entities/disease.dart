@@ -1,7 +1,12 @@
+import 'package:lecognition/domain/disease/entities/disease_detail.dart';
+
 class DiseaseEntity {
   int? id;
   String? name;
   String? desc;
+  DiseaseDetail? detail; // Add this field to hold extra details
+  bool? isBookmarked;
+  int? idBookmarked;
 
   DiseaseEntity({this.id, this.name, this.desc});
 

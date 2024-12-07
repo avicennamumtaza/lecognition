@@ -6,18 +6,28 @@ import 'package:lecognition/data/diagnozer/models/get_diagnoze_result_params.dar
 import 'package:lecognition/service_locator.dart';
 
 abstract class DiagnozerApiService {
-  Future<Either> getDiagnozeResult(GetDiagnozeResultParams params);
+  Future<Either> getDiagnosis(GetDiagnosisParams params);
 }
 
 class DiagnozerApiServiceImpl extends DiagnozerApiService {
   @override
-  Future<Either> getDiagnozeResult(GetDiagnozeResultParams params) async {
+  Future<Either> getDiagnosis(GetDiagnosisParams params) async {
     try {
-      var response = await sl<DioClient>().get(
-        ApiUrls.getUserById,
-        data: params.toMap(),
-      );
-      return Right(response.data);
+      if (params.imageFile.path.isEmpty) {
+        return Left("Image file is empty");
+      } else {
+        FormData formData = FormData.fromMap({
+          "img": await MultipartFile.fromFile(params.imageFile.path),
+          "datetime": 123456,
+        });
+        print("formData: $formData");
+        var response = await sl<DioClient>().post(
+          ApiUrls.scan,
+          data: formData,
+        );
+        print("RESPONSE DATA ${response.data}");
+        return Right(response.data);
+      }
     } on DioException catch (error) {
       return Left(error.response!.data["message"]);
     }

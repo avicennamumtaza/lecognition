@@ -1,4 +1,3 @@
-import 'package:lecognition/data/disease/models/disease.dart';
 import 'package:lecognition/domain/disease/entities/disease.dart';
 
 class DiseaseMapper {
