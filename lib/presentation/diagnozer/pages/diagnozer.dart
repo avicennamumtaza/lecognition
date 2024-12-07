@@ -248,7 +248,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
         cameraController?.value.isInitialized == false) {
       return const Center(
         child: SpinKitSquareCircle(
-          color: Colors.green,
+          color: Color.fromARGB(255, 255, 131, 23),
           size: 50.0,
         ),
       );
@@ -284,7 +284,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
                     ),
                     child: IconButton(
                       onPressed: _takePicture,
-                      icon: const Icon(Icons.camera,
+                      icon: const Icon(Icons.circle,
                           size: 50, color: Colors.white),
                     ),
                   ),
