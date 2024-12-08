@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lecognition/common/helper/message/display_message.dart';
-import 'package:lecognition/common/helper/navigation/app_navigator.dart';
 import 'package:lecognition/common/widgets/appbar.dart';
 import 'package:lecognition/data/user/models/update_user_profile_params.dart';
 import 'package:lecognition/domain/user/entities/user.dart';
 import 'package:lecognition/domain/user/usecases/update_user_profile.dart';
-import 'package:lecognition/presentation/profile/pages/profile.dart';
 import 'package:lecognition/service_locator.dart';
 
 class EditAvatar extends StatefulWidget {
@@ -47,8 +45,8 @@ class _EditAvatarState extends State<EditAvatar> {
                       backgroundColor: Colors.transparent,
                     ),
                   ),
-                  const Text(
-                    'Nazwa Ayunda M',
+                  Text(
+                    widget.userData.username!,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 22,

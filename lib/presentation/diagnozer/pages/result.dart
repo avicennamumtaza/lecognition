@@ -54,16 +54,18 @@ class _ResultScreenState extends State<ResultScreen> {
     return returnedDisease;
   }
 
-  void saveDiagosisResult(int idResultedDisease, double percentageResultedDisease) async {
+  void saveDiagosisResult(
+      int idResultedDisease, double percentageResultedDisease) async {
     print("Resulted Disease: $idResultedDisease $percentageResultedDisease%");
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    
+
     List<String>? savedResults = prefs.getStringList('diagnosis_result') ?? [];
     savedResults.add(idResultedDisease.toString());
     await prefs.setStringList('diagnosis_result', savedResults);
     print('Saved results: $savedResults');
-    
-    List<String>? savedPercentages = prefs.getStringList('diagnosis_percentage') ?? [];
+
+    List<String>? savedPercentages =
+        prefs.getStringList('diagnosis_percentage') ?? [];
     savedPercentages.add(percentageResultedDisease.toString());
     await prefs.setStringList('diagnosis_percentage', savedPercentages);
     print('Saved percentages: $savedPercentages');
@@ -118,57 +120,56 @@ class _ResultScreenState extends State<ResultScreen> {
             }
             if (state is DiagnosisFailureLoad) {
               return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ListTile(
-                      title: Icon(
-                        Icons.error_outline,
-                        size: 50,
-                        color: Colors.black,
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ListTile(
+                    title: Icon(
+                      Icons.error_outline,
+                      size: 50,
+                      color: Colors.black,
+                    ),
+                    subtitle: Text(
+                      "maaf! proses deteksi gagal :(",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
-                      subtitle: Text(
-                        "maaf! proses deteksi gagal :(",
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        'Ambil Gambar Ulang',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
+                          color: Colors.black,
                         ),
-                        textAlign: TextAlign.center,
                       ),
                     ),
-                    SizedBox(height: 20),
-                    InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.onPrimary,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        child: Text(
-                          'Ambil Gambar Ulang',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                )
-              );
+                  )
+                ],
+              ));
             }
             if (state is DiagnosisLoaded) {
               try {
@@ -183,102 +184,110 @@ class _ResultScreenState extends State<ResultScreen> {
                 );
                 saveDiagosisResult(state.diagnosis.disease!, persentase!);
                 return ListView(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   children: [
-                    Stack(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(10),
-                            image: DecorationImage(
-                              image: FileImage(photoImg),
-                              fit: BoxFit.cover,
-                            ),
+                    Stack(children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                            image: FileImage(photoImg),
+                            fit: BoxFit.cover,
                           ),
-                          margin: const EdgeInsets.only(bottom: 15),
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.width * 1.2,
                         ),
-                        Positioned(
-                          bottom: 30,
-                          right: 20,
-                          child: Column(
-                            children: [
-                              if (isShowPercentage)
-                                AnimatedOpacity(
-                                  opacity: isShowPercentage ? 1.0 : 0.0,
+                        margin: const EdgeInsets.only(bottom: 15),
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.width * 1.2,
+                      ),
+                      Positioned(
+                        bottom: 30,
+                        right: 20,
+                        child: Column(
+                          children: [
+                            if (isShowPercentage)
+                              AnimatedOpacity(
+                                opacity: isShowPercentage ? 1.0 : 0.0,
+                                duration: const Duration(milliseconds: 5000),
+                                child: AnimatedSize(
                                   duration: const Duration(milliseconds: 5000),
-                                  child: AnimatedSize(
-                                    duration: const Duration(milliseconds: 5000),
-                                    curve: Curves.easeInOut,
-                                    child: isShowPercentage
-                                        ? Container(
-                                      padding: const EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onPrimary
-                                            .withOpacity(0.5),
-                                        borderRadius: BorderRadius.circular(100),
-                                      ),
-                                      child: CircularPercentIndicator(
-                                        radius: 45.0,
-                                        lineWidth: 13.0,
-                                        percent: persentase,
-                                        animation: true,
-                                        animationDuration: 1000,
-                                        center: Text(
-                                          "${(persentase * 100).round()}%",
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20.0,
+                                  curve: Curves.easeInOut,
+                                  child: isShowPercentage
+                                      ? Container(
+                                          padding: const EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary
+                                                .withOpacity(0.5),
+                                            borderRadius:
+                                                BorderRadius.circular(100),
                                           ),
-                                        ),
-                                        circularStrokeCap: CircularStrokeCap.round,
-                                        progressColor: Theme.of(context).colorScheme.primary,
-                                      ),
-                                    )
-                                        : SizedBox.shrink(),
-                                  ),
-                                ),
-
-                              SizedBox(height: 10),
-                              InkWell(
-                                onTap: () {
-                                  showPercentage();
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).colorScheme.primary,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "Akurasi",
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                          color: Theme.of(context).colorScheme.onPrimary,
-                                        ),
-                                      ),
-                                      Icon(
-                                        isShowPercentage? Icons.arrow_drop_down : Icons.arrow_drop_up,
-                                        size: 25,
-                                        color: Theme.of(context).colorScheme.onPrimary,
-                                      ),
-                                    ],
-                                  ),
+                                          child: CircularPercentIndicator(
+                                            radius: 45.0,
+                                            lineWidth: 13.0,
+                                            percent: persentase,
+                                            animation: true,
+                                            animationDuration: 1000,
+                                            center: Text(
+                                              "${(persentase * 100).round()}%",
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20.0,
+                                              ),
+                                            ),
+                                            circularStrokeCap:
+                                                CircularStrokeCap.round,
+                                            progressColor: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          ),
+                                        )
+                                      : SizedBox.shrink(),
                                 ),
                               ),
-                            ],
-                          ),
+                            SizedBox(height: 10),
+                            InkWell(
+                              onTap: () {
+                                showPercentage();
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Akurasi",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary,
+                                      ),
+                                    ),
+                                    Icon(
+                                      isShowPercentage
+                                          ? Icons.arrow_drop_down
+                                          : Icons.arrow_drop_up,
+                                      size: 25,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ]
-                    ),
+                      ),
+                    ]),
                     Container(
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.onPrimary,
@@ -294,18 +303,27 @@ class _ResultScreenState extends State<ResultScreen> {
                       ),
                       child: ListTile(
                         title: Text(
-                          state.diagnosis.disease == 1 ? "Tanamanmu Sehat": "Tanamanmu Terkena Penyakit",
+                          state.diagnosis.disease == 1
+                              ? "Tanamanmu Sehat"
+                              : "Tanamanmu Terkena Penyakit",
                           style: const TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        subtitle: Text(
-                          "Disease ${state.diagnosis.disease.toString()}",
-                          style: const TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
+                        subtitle: state.diagnosis.disease == 1
+                            ? Text(
+                                "Tidak ada penyakit terdeteksi",
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                ),
+                              )
+                            : Text(
+                                "Disease ${state.diagnosis.disease.toString()}",
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                ),
+                              ),
                       ),
                     ),
                     SizedBox(height: 20),
@@ -315,8 +333,7 @@ class _ResultScreenState extends State<ResultScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => DiseaseScreen(
-                              disease:
-                              _findDisease(state.diagnosis.disease!),
+                              disease: _findDisease(state.diagnosis.disease!),
                             ),
                           ),
                         );
@@ -330,11 +347,10 @@ class _ResultScreenState extends State<ResultScreen> {
                         ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 16.0, horizontal: 10
-                          ),
+                              vertical: 16.0, horizontal: 10),
                           child: Center(
                             child: Text(
-                              'Detail Penyakit',
+                              'Detail',
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                 fontSize: 18,
