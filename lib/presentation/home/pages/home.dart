@@ -86,32 +86,7 @@ class HomeScreen extends StatelessWidget {
                         child: Column(
                           children: [
                             if (userState is UserLoaded)
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 15,
-                                  vertical: 0,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                      RichText(
-                                        text: TextSpan(
-                                          children: [
-                                            TextSpan(
-                                              text: "Selamat Datang,\n",
-                                              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white,),
-                                            ),
-                                            TextSpan(
-                                              text: userState.user.username!.toUpperCase(),
-                                              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white, fontWeight: FontWeight.w600,),
-                                            )
-                                          ],
-                                        )
-                                      ),
-                                      _showAvatar(context, userState.user.avatar!),
-                                  ],
-                                ),
-                              ),
+                              _sectionWellcome(context, userState.user.username!.toUpperCase(), userState.user.avatar!),
                             Container(
                               width: MediaQuery.of(context).size.width,
                               decoration: BoxDecoration(
@@ -193,124 +168,91 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _actionButton(BuildContext context) {
-    return Container(
-        height: 100,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 10,
+    return InkWell(
+      onTap: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TabsScreen(index: 1),
+          ),
+        );
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: 75,
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          color: Theme.of(context).colorScheme.secondary,
+          borderRadius: BorderRadius.circular(8),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            InkWell(
-              onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TabsScreen(index: 1),
-                  ),
-                );
-              },
-              child: Container(
-                width: MediaQuery.of(context).size.width / 2.4,
-                height: 70,
-                padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  color: Theme.of(context).colorScheme.secondary,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.camera_alt_outlined,
-                      size: 50,
-                    ),
-                    SizedBox(width: 10),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Diagnosis',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        ),
-                        Text(
-                          'Tanamanmu',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
+            Icon(
+              Icons.camera_alt_outlined,
+              size: 50,
             ),
             SizedBox(width: 10),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BookmarkedScreen(),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Diagnosis',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
                   ),
-                ).then((_) {
-                  BlocProvider.of<BookmarkCubit>(context)
-                      .getAllBookmarkedDiseases();
-                });
-              },
-              child: Container(
-                width: MediaQuery.of(context).size.width / 2.4,
-                height: 70,
-                padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  color: Theme.of(context).colorScheme.secondary,
-                  borderRadius: BorderRadius.circular(5),
                 ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.save_outlined,
-                      size: 50,
-                    ),
-                    SizedBox(width: 10),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Tersimpan',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        ),
-                        Text(
-                          'Penyakit',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
+                Text(
+                  'Tanamanmu',
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
                 ),
-              ),
+              ],
             ),
+            SizedBox(width: 95),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _sectionWellcome(BuildContext context, String username, int avatar) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 15,
+        vertical: 0,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: "Selamat Datang,\n",
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white,),
+                  ),
+                  TextSpan(
+                    text: username,
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white, fontWeight: FontWeight.w600,),
+                  )
+                ],
+              )
+          ),
+          _showAvatar(context, avatar),
+        ],
+      ),
     );
   }
 
   Widget _showAvatar(BuildContext context, int idAvatar) {
     return Image(
       image: AssetImage('assets/avatars/Avatar_$idAvatar.png'),
-      width: MediaQuery.of(context).size.width / 2,
+      width: MediaQuery.of(context).size.width * 0.45,
       alignment: Alignment.bottomLeft,
     );
   }

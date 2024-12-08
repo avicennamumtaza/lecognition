@@ -27,7 +27,7 @@ class _BookmarkedCardState extends State<BookmarkedCard> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: Container(
-        height: MediaQuery.of(context).size.height / 3.5,
+        height: MediaQuery.of(context).size.height / 3,
         width: MediaQuery.of(context).size.width,
         child: InkWell(
           onTap: () {
