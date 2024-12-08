@@ -24,7 +24,17 @@ class DiagnozerApiServiceImpl extends DiagnozerApiService {
         var response = await sl<DioClient>().post(
           ApiUrls.scan,
           data: formData,
+          options: Options(
+            validateStatus: (status) {
+              // Mengizinkan semua status code agar tidak dianggap sebagai exception
+              return status != null && status <= 500;
+            },
+          ),
         );
+        print("RESPONSE STATUS CODE ${response.statusCode}");
+        if (response.statusCode == 406) {
+          return Left("Daun tidak terdeteksi.");
+        }
         print("RESPONSE DATA ${response.data}");
         return Right(response.data);
       }

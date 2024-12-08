@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:lecognition/common/helper/message/display_message.dart';
-import 'package:lecognition/common/helper/navigation/app_navigator.dart';
 import 'package:lecognition/common/widgets/appbar.dart';
 import 'package:lecognition/data/user/models/update_user_profile_params.dart';
 import 'package:lecognition/domain/user/entities/user.dart';
 import 'package:lecognition/domain/user/usecases/update_user_profile.dart';
-import 'package:lecognition/presentation/profile/pages/account.dart';
 import 'package:lecognition/presentation/profile/pages/avatar.dart';
-import 'package:lecognition/presentation/profile/pages/profile.dart';
 import 'package:lecognition/service_locator.dart';
 
 class EditAccount extends StatefulWidget {

@@ -1,5 +1,4 @@
 import 'package:lecognition/domain/disease/entities/disease.dart';
-import 'package:lecognition/models/disease.dart';
 
 final diseases = [
   DiseaseEntity(

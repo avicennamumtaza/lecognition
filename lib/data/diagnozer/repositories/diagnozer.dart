@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:lecognition/common/helper/mapper/diagnosis_mapper.dart';
 import 'package:lecognition/data/diagnozer/models/get_diagnoze_result_params.dart';
 import 'package:lecognition/data/diagnozer/sources/diagnozer_api_service.dart';
 import 'package:lecognition/domain/diagnozer/entities/diagnosis.dart';
@@ -13,6 +12,7 @@ class DiagnozerRepositoryImpl extends DiagnozerRepository {
     var resolvedData = await data;
     return resolvedData.fold(
       (error) {
+        print("ERROR DIAGNOZER $error");
         return Left(error);
       },
       (data) async {
