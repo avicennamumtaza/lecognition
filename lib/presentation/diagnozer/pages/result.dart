@@ -8,6 +8,7 @@ import 'package:lecognition/data/diagnozer/models/get_diagnoze_result_params.dar
 import 'package:lecognition/presentation/diagnozer/bloc/diagnosis_state.dart';
 import 'package:lecognition/presentation/diagnozer/bloc/diagnozer_cubit.dart';
 import 'package:lecognition/presentation/home/pages/home.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,6 +34,41 @@ class _ResultScreenState extends State<ResultScreen> {
   // DiseaseEntity ds = diseases[0];
   // final double percentage = Random().nextDouble();
   bool isShowPercentage = false;
+  bool isSaved = false;
+
+  /////////////////////////////////////////////
+  /////////////////////////////////////////////
+  Future<File> _saveImageLocally(File imageFile) async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final fileName = imageFile.path.split('/').last;
+      final newImagePath = '${directory.path}/$fileName';
+      final newImage = await imageFile.copy(newImagePath);
+      print('Image saved locally: $newImagePath');
+      return newImage;
+    } catch (e) {
+      throw Exception('Error saat menyimpan gambar: $e');
+    }
+  }
+
+  Future<void> _saveDiagnosis(File image) async {
+    final plantName = "nama mangga";
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? savedImages = prefs.getStringList('diagnosis_images') ?? [];
+    List<String>? savedPlantNames = prefs.getStringList('plant_names') ?? [];
+
+    savedImages.add(image.path);
+    savedPlantNames.add(plantName);
+
+    print("savedPlantNames: $savedPlantNames");
+    print("savedImages: $savedImages");
+
+    await prefs.setStringList('diagnosis_images', savedImages);
+    await prefs.setStringList('plant_names', savedPlantNames);
+  }
+  /////////////////////////////////////////////
+  /////////////////////////////////////////////
 
   DiseaseEntity _findDisease(int diseaseId) {
     print("Disease ID: $diseaseId");
@@ -55,7 +91,9 @@ class _ResultScreenState extends State<ResultScreen> {
   }
 
   void saveDiagosisResult(
-      int idResultedDisease, double percentageResultedDisease) async {
+    int idResultedDisease,
+    double percentageResultedDisease,
+  ) async {
     print("Resulted Disease: $idResultedDisease $percentageResultedDisease%");
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -100,45 +138,53 @@ class _ResultScreenState extends State<ResultScreen> {
           ),
         child: BlocBuilder<DiagnozerCubit, DiagnosisState>(
           builder: (context, state) {
-            if (state is DiagnosisLoading) {
-              // print("Persentase: $persentase");
-              //   print("Disease: ${state.diagnosis.disease}");
-              print(
-                "Path gambar: ${widget.photo.path}",
-              );
-              print(
-                "Apakah file ada? ${File(
-                  widget.photo.path,
-                ).existsSync()}",
-              );
-              return Center(
-                child: SpinKitSquareCircle(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  size: 50.0,
-                ),
-              );
-            }
+            // if (state is DiagnosisLoading) {
+            // print("Persentase: $persentase");
+            //   print("Disease: ${state.diagnosis.disease}");
+            print(
+              "Path gambar: ${widget.photo.path}",
+            );
+            print(
+              "Apakah file ada? ${File(
+                widget.photo.path,
+              ).existsSync()}",
+            );
+            // }
             if (state is DiagnosisFailureLoad) {
               return Center(
                   child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  ListTile(
-                    title: Icon(
-                      Icons.error_outline,
-                      size: 50,
-                      color: Colors.black,
-                    ),
-                    subtitle: Text(
-                      "maaf! proses deteksi gagal :(",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
+                  // ListTile(
+                  Icon(
+                    Icons.error_outline,
+                    size: 100,
+                    color: Colors.red,
                   ),
+                  SizedBox(height: 10),
+                  Text(
+                    "Proses diagnosis gagal :(",
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red[900],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 5),
+                  state.errorMessage.isNotEmpty
+                      ? Text(
+                          "${state.errorMessage} Silahkan coba lagi dengan lebih fokus ke objek daun atau pilih foto lain.",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red[900],
+                          ),
+                          textAlign: TextAlign.center,
+                        )
+                      : SizedBox.shrink(),
+                  // ),
                   SizedBox(height: 20),
                   InkWell(
                     onTap: () {
@@ -159,7 +205,7 @@ class _ResultScreenState extends State<ResultScreen> {
                         ],
                       ),
                       child: Text(
-                        'Ambil Gambar Ulang',
+                        'Coba lagi',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -182,7 +228,17 @@ class _ResultScreenState extends State<ResultScreen> {
                     widget.photo.path,
                   ).existsSync()}",
                 );
-                saveDiagosisResult(state.diagnosis.disease!, persentase!);
+                if (isSaved == false) {
+                  _saveDiagnosis(photoImg);
+                  _saveImageLocally(photoImg);
+                  saveDiagosisResult(state.diagnosis.disease!, persentase!);
+                  isSaved = true;
+                }
+                // _saveDiagnosis(photoImg);
+                // _saveImageLocally(photoImg);
+                // saveDiagosisResult(state.diagnosis.disease!, persentase!);
+                final DiseaseEntity disease =
+                    _findDisease(state.diagnosis.disease!);
                 return ListView(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -227,7 +283,7 @@ class _ResultScreenState extends State<ResultScreen> {
                                           child: CircularPercentIndicator(
                                             radius: 45.0,
                                             lineWidth: 13.0,
-                                            percent: persentase,
+                                            percent: persentase!,
                                             animation: true,
                                             animationDuration: 1000,
                                             center: Text(
@@ -305,7 +361,7 @@ class _ResultScreenState extends State<ResultScreen> {
                         title: Text(
                           state.diagnosis.disease == 1
                               ? "Tanamanmu Sehat"
-                              : "Tanamanmu Terkena Penyakit",
+                              : "Tanamanmu Sedang Sakit :(",
                           style: const TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
@@ -316,12 +372,16 @@ class _ResultScreenState extends State<ResultScreen> {
                                 "Tidak ada penyakit terdeteksi",
                                 style: const TextStyle(
                                   fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.green,
                                 ),
                               )
                             : Text(
-                                "Disease ${state.diagnosis.disease.toString()}",
+                                "Terkena Penyakit ${disease.name}!",
                                 style: const TextStyle(
                                   fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.red,
                                 ),
                               ),
                       ),
@@ -333,7 +393,7 @@ class _ResultScreenState extends State<ResultScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => DiseaseScreen(
-                              disease: _findDisease(state.diagnosis.disease!),
+                              disease: disease,
                             ),
                           ),
                         );
@@ -376,7 +436,12 @@ class _ResultScreenState extends State<ResultScreen> {
                 );
               }
             }
-            return Container();
+            return Center(
+              child: SpinKitSquareCircle(
+                color: Theme.of(context).colorScheme.onPrimary,
+                size: 50.0,
+              ),
+            );
           },
         ),
       ),

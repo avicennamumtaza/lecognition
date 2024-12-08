@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lecognition/presentation/diagnozer/pages/result.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:path_provider/path_provider.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:lecognition/data/dummy_diagnosis.dart';
 // import 'package:lecognition/data/dummy_disease.dart';
 // import 'dart:math';
@@ -63,11 +63,9 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
         return AlertDialog(
           title: const Text('Konfirmasi'),
           content: Image(
-            image: _selectedImage != null
-                ? FileImage(_selectedImage!)
-                : AssetImage(
-                    'assets/avatars/Avatar_3.png',
-                  ),
+            image: FileImage(
+              _selectedImage!,
+            ),
           ),
           actions: <Widget>[
             TextButton(
@@ -79,8 +77,8 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                _saveImageLocally(_selectedImage!);
-                _saveDiagnosis(_selectedImage!);
+                // _saveImageLocally(_selectedImage!);
+                // _saveDiagnosis(_selectedImage!);
                 _navigateToResultScreen();
               },
               child: const Text('Ya'),
@@ -106,46 +104,54 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
     }
   }
 
-  Future<File> _saveImageLocally(File imageFile) async {
-    try {
-      final directory = await getApplicationDocumentsDirectory();
-      final fileName = imageFile.path.split('/').last;
-      final newImagePath = '${directory.path}/$fileName';
-      final newImage = await imageFile.copy(newImagePath);
+  // /////////////////////////////////////////////
+  // /////////////////////////////////////////////
+  // Future<File> _saveImageLocally(File imageFile) async {
+  //   try {
+  //     final directory = await getApplicationDocumentsDirectory();
+  //     final fileName = imageFile.path.split('/').last;
+  //     final newImagePath = '${directory.path}/$fileName';
+  //     final newImage = await imageFile.copy(newImagePath);
 
-      return newImage;
-    } catch (e) {
-      throw Exception('Error saat menyimpan gambar: $e');
-    }
-  }
+  //     return newImage;
+  //   } catch (e) {
+  //     throw Exception('Error saat menyimpan gambar: $e');
+  //   }
+  // }
+  // /////////////////////////////////////////////
+  // /////////////////////////////////////////////
 
-  Future<void> _saveDiagnosis(File image) async {
-    // final randomIndex = Random().nextInt(diagnosises.length);
-    // final randomDiagnosis = diagnosises[randomIndex];
-    // final diseaseId = randomDiagnosis.diseaseId;
-    // final matchingDisease = diseases.firstWhere(
-    //   (disease) => disease.id == diseaseId,
-    // );
+  // /////////////////////////////////////////////
+  // /////////////////////////////////////////////
+  // Future<void> _saveDiagnosis(File image) async {
+  //   // final randomIndex = Random().nextInt(diagnosises.length);
+  //   // final randomDiagnosis = diagnosises[randomIndex];
+  //   // final diseaseId = randomDiagnosis.diseaseId;
+  //   // final matchingDisease = diseases.firstWhere(
+  //   //   (disease) => disease.id == diseaseId,
+  //   // );
 
-    final plantName = "nama mangga";
-    // final diseaseId = "1";
+  //   final plantName = "nama mangga";
+  //   // final diseaseId = "1";
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? savedImages = prefs.getStringList('diagnosis_images') ?? [];
-    List<String>? savedPlantNames = prefs.getStringList('plant_names') ?? [];
-    // List<String>? savedDiseaseId =
-    //     prefs.getStringList('disease_id') ?? [];
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   List<String>? savedImages = prefs.getStringList('diagnosis_images') ?? [];
+  //   List<String>? savedPlantNames = prefs.getStringList('plant_names') ?? [];
+  //   // List<String>? savedDiseaseId =
+  //   //     prefs.getStringList('disease_id') ?? [];
 
-    savedImages.add(image.path);
-    savedPlantNames.add(plantName);
-    // savedDiseaseId.add(diseaseId);
-    print("savedPlantNames: $savedPlantNames");
-    print("savedImages: $savedImages");
+  //   savedImages.add(image.path);
+  //   savedPlantNames.add(plantName);
+  //   // savedDiseaseId.add(diseaseId);
+  //   print("savedPlantNames: $savedPlantNames");
+  //   print("savedImages: $savedImages");
 
-    await prefs.setStringList('diagnosis_images', savedImages);
-    await prefs.setStringList('plant_names', savedPlantNames);
-    // await prefs.setStringList('disease_id', savedDiseaseId);
-  }
+  //   await prefs.setStringList('diagnosis_images', savedImages);
+  //   await prefs.setStringList('plant_names', savedPlantNames);
+  //   // await prefs.setStringList('disease_id', savedDiseaseId);
+  // }
+  // /////////////////////////////////////////////
+  // /////////////////////////////////////////////
 
   Future _pickImageGallery() async {
     try {
@@ -158,8 +164,8 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
       setState(() {
         _selectedImage = File(returnedImage.path);
       });
-      await _saveImageLocally(_selectedImage!);
-      await _saveDiagnosis(_selectedImage!);
+      // await _saveImageLocally(_selectedImage!);
+      // await _saveDiagnosis(_selectedImage!);
       _navigateToResultScreen();
     } catch (e) {
       _showErrorDialog('Failed to pick image from gallery: ${e.toString()}');
@@ -196,19 +202,17 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
   void _navigateToResultScreen() async {
     if (_selectedImage != null) {
       try {
-        final prefs = await SharedPreferences.getInstance();
-        List<String>? savedPlantNames =
-            prefs.getStringList('plant_names') ?? [];
+        // final prefs = await SharedPreferences.getInstance();
+        // List<String>? savedPlantNames =
+        //     prefs.getStringList('plant_names') ?? [];
 
-        String diseaseName = savedPlantNames.isNotEmpty
-            ? savedPlantNames.last
-            : 'Unknown Disease';
+        String plantName = 'Unknown Plant';
 
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => ResultScreen(
               photo: XFile(_selectedImage!.path),
-              plantName: diseaseName,
+              plantName: plantName,
             ),
           ),
         );
