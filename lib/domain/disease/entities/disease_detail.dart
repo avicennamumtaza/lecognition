@@ -2,8 +2,8 @@ class DiseaseDetail {
   final int id;
   final String name;
   final String desc;
-  final String treatment;
-  final String prevention;
+  final List<String> treatment;
+  final List<String> prevention;
   final String severity;
   final List<String> symptoms;
 
@@ -21,78 +21,134 @@ class DiseaseDetail {
 List<DiseaseDetail> diseaseDetails = [
   DiseaseDetail(
     id: 3,
-    name: 'Anthracnose',
-    desc: 'Fungal disease that affects mango leaves and fruits.',
-    treatment: 'Use fungicides and prune affected areas.',
-    prevention: 'Avoid excessive moisture and overcrowding of plants.',
-    severity: 'High',
-    symptoms: ['Dark spots on leaves', 'Fruit rot', 'Dieback'],
+    name: 'Antraknosa',
+    desc: 'Penyakit jamur yang menyerang daun dan buah mangga, menyebabkan bintik-bintik hitam dan pembusukan buah.',
+    treatment: [
+      'Gunakan fungisida untuk mengendalikan infeksi jamur.',
+      'Pangkas area tanaman yang terinfeksi untuk mencegah penyebaran.',
+      'Buang buah dan daun yang sudah terinfeksi dari sekitar tanaman.',
+    ],
+    prevention: [
+      'Hindari kelembapan berlebih pada tanaman.',
+      'Jaga jarak antar tanaman untuk memastikan sirkulasi udara yang baik.',
+      'Rutin membersihkan daun yang gugur di sekitar tanaman.',
+    ],
+    severity: 'Tinggi',
+    symptoms: ['Bintik hitam pada daun', 'Buah membusuk', 'Mati ranting'],
   ),
   DiseaseDetail(
     id: 4,
-    name: 'Bacterial Canker',
-    desc: 'Bacterial infection causing cankers on branches.',
-    treatment: 'Apply copper-based fungicides, prune infected branches.',
-    prevention: 'Ensure good drainage, avoid waterlogging.',
-    severity: 'Moderate',
-    symptoms: ['Oozing from branches', 'Cankers on branches', 'Leaf wilting'],
+    name: 'Kanker Bakteri',
+    desc: 'Infeksi bakteri yang menyebabkan kanker atau luka pada cabang tanaman.',
+    treatment: [
+      'Gunakan fungisida berbasis tembaga untuk mengurangi infeksi bakteri.',
+      'Pangkas dan buang cabang yang terinfeksi untuk mencegah penyebaran.',
+      'Sterilkan alat pemangkasan untuk menghindari penyebaran bakteri.',
+    ],
+    prevention: [
+      'Pastikan drainase tanah yang baik untuk mencegah genangan air.',
+      'Hindari penyiraman langsung pada daun dan cabang tanaman.',
+      'Berikan pupuk yang seimbang untuk meningkatkan daya tahan tanaman.',
+    ],
+    severity: 'Sedang',
+    symptoms: ['Lendir keluar dari cabang', 'Kanker pada cabang', 'Daun layu'],
   ),
   DiseaseDetail(
     id: 5,
-    name: 'Cutting Weevil',
-    desc: 'Insect infestation causing cuts on branches and fruits.',
-    treatment: 'Use insecticides, remove infested branches.',
-    prevention: 'Regularly inspect plants for early signs of infestation.',
-    severity: 'Moderate',
-    symptoms: ['Cuts on branches', 'Damaged fruits', 'Leaf drop'],
+    name: 'Infestasi Kumbang Pemotong',
+    desc: 'Infestasi serangga yang menyebabkan kerusakan berupa potongan pada cabang dan buah.',
+    treatment: [
+      'Gunakan insektisida yang efektif terhadap kumbang pemotong.',
+      'Pangkas dan buang cabang atau buah yang terinfestasi.',
+      'Pasang perangkap serangga untuk mengurangi populasi kumbang.',
+    ],
+    prevention: [
+      'Inspeksi tanaman secara rutin untuk mendeteksi infestasi lebih awal.',
+      'Jaga kebersihan area sekitar tanaman.',
+      'Hindari tumpukan dedaunan yang bisa menjadi sarang serangga.',
+    ],
+    severity: 'Sedang',
+    symptoms: ['Potongan pada cabang', 'Buah rusak', 'Daun rontok'],
   ),
   DiseaseDetail(
     id: 6,
     name: 'Die Back',
-    desc: 'A disease causing drying and death of branches.',
-    treatment: 'Apply fungicides, remove dead branches.',
-    prevention: 'Ensure balanced soil moisture and nutrition.',
-    severity: 'High',
-    symptoms: ['Branch drying', 'Fruit drop', 'Leaf discoloration'],
+    desc: 'Penyakit yang menyebabkan pengeringan dan kematian cabang tanaman.',
+    treatment: [
+      'Gunakan fungisida yang sesuai untuk mengatasi infeksi jamur.',
+      'Pangkas cabang yang kering dan mati.',
+      'Buang bagian tanaman yang terinfeksi jauh dari area kebun.',
+    ],
+    prevention: [
+      'Jaga kelembapan tanah yang seimbang.',
+      'Berikan nutrisi yang cukup untuk menjaga kesehatan tanaman.',
+      'Pantau tanaman secara berkala untuk mendeteksi gejala dini.',
+    ],
+    severity: 'Tinggi',
+    symptoms: ['Cabang mengering', 'Buah rontok', 'Perubahan warna daun'],
   ),
   DiseaseDetail(
     id: 7,
     name: 'Gall Midge',
-    desc: 'Insect larvae forming galls on leaves and stems.',
-    treatment: 'Use systemic insecticides, remove affected areas.',
-    prevention: 'Monitor plants regularly and maintain cleanliness.',
-    severity: 'Low',
-    symptoms: ['Galls on leaves', 'Leaf curling', 'Stunted growth'],
+    desc: 'Larva serangga yang membentuk galls (benjolan) pada daun dan batang.',
+    treatment: [
+      'Gunakan insektisida sistemik untuk membasmi larva.',
+      'Pangkas dan buang bagian tanaman yang terdapat galls.',
+      'Gunakan perangkap untuk mengurangi populasi serangga dewasa.',
+    ],
+    prevention: [
+      'Pantau tanaman secara rutin untuk mendeteksi keberadaan galls.',
+      'Jaga kebersihan area sekitar tanaman.',
+      'Hindari penumpukan dedaunan kering di sekitar tanaman.',
+    ],
+    severity: 'Rendah',
+    symptoms: ['Benjolan pada daun', 'Daun menggulung', 'Pertumbuhan terhambat'],
   ),
   DiseaseDetail(
     id: 8,
-    name: 'Powdery Mildew',
-    desc: 'Fungal disease causing white powder on leaves.',
-    treatment: 'Use sulfur-based fungicides, remove affected leaves.',
-    prevention: 'Avoid overhead watering, ensure good air circulation.',
-    severity: 'Moderate',
-    symptoms: ['White powdery growth', 'Leaf curling', 'Premature leaf drop'],
+    name: 'Embun Tepung',
+    desc: 'Penyakit jamur yang menyebabkan pertumbuhan serbuk putih pada daun.',
+    treatment: [
+      'Gunakan fungisida berbasis sulfur untuk mengendalikan jamur.',
+      'Pangkas dan buang daun yang terinfeksi.',
+      'Semprotkan campuran air dan soda kue sebagai langkah alternatif.',
+    ],
+    prevention: [
+      'Hindari penyiraman dari atas untuk mencegah kelembapan berlebih.',
+      'Pastikan sirkulasi udara yang baik di sekitar tanaman.',
+      'Berikan pupuk yang sesuai untuk meningkatkan daya tahan tanaman.',
+    ],
+    severity: 'Sedang',
+    symptoms: ['Serbuk putih pada daun', 'Daun menggulung', 'Daun rontok sebelum waktunya'],
   ),
   DiseaseDetail(
     id: 2,
-    name: 'Sooty Mould',
-    desc: 'Black fungal coating on leaves due to pest excretions.',
-    treatment: 'Wash leaves with mild soap, control insect population.',
-    prevention: 'Prevent pest infestations by using insect repellents.',
-    severity: 'Low',
-    symptoms: [
-      'Black coating on leaves',
-      'Reduced photosynthesis',
-      'Yellowing leaves'
+    name: 'Jamur Jelaga',
+    desc: 'Lapisan hitam pada daun yang disebabkan oleh ekskresi hama seperti kutu daun.',
+    treatment: [
+      'Cuci daun dengan campuran air dan sabun lembut untuk membersihkan jamur.',
+      'Gunakan insektisida untuk mengendalikan hama penyebab ekskresi.',
+      'Semprotkan air bersih untuk menghilangkan sisa-sisa ekskresi hama.',
     ],
+    prevention: [
+      'Cegah infestasi hama dengan menggunakan insektisida atau pengusir serangga alami.',
+      'Pantau tanaman secara rutin untuk mendeteksi keberadaan hama.',
+      'Jaga kebersihan area sekitar tanaman dari daun yang gugur.',
+    ],
+    severity: 'Rendah',
+    symptoms: ['Lapisan hitam pada daun', 'Fotosintesis terganggu', 'Daun menguning'],
   ),
   DiseaseDetail(
     id: 1,
-    name: 'Healthy',
-    desc: 'A healthy mango plant with no signs of disease.',
-    treatment: 'None needed.',
-    prevention: 'Regular monitoring and proper care.',
-    severity: 'None',
-    symptoms: ['Green leaves', 'Healthy growth', 'Fruit production'],
+    name: 'Sehat',
+    desc: 'Tanaman mangga yang sehat tanpa tanda-tanda penyakit.',
+    treatment: ['Tidak ada.'],
+    prevention: [
+      'Pantau tanaman secara rutin untuk memastikan kondisinya tetap sehat.',
+      'Berikan perawatan yang baik seperti penyiraman dan pemupukan secara teratur.',
+      'Jaga kebersihan lingkungan sekitar tanaman.',
+    ],
+    severity: 'Tidak ada',
+    symptoms: ['Daun hijau', 'Pertumbuhan sehat', 'Produksi buah'],
   ),
 ];

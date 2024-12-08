@@ -116,8 +116,8 @@ class _DiseaseCardState extends State<DiseaseCard> {
                         const SizedBox(
                           height: 5.0,
                         ),
-                        preventionText(widget.disease.detail?.prevention ??
-                            'Pencegahan belum tersedia'),
+                        preventionText(widget.disease.detail?.severity ??
+                            'Level bahaya belum tersedia'),
                       ],
                     ),
                   )
