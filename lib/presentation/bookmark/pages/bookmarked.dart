@@ -33,7 +33,7 @@ class BookmarkedScreen extends StatelessWidget {
         builder: (context, state) {
           if (state is BookmarkedDiseasesLoading) {
             return Scaffold(
-              appBar: AppBarWidget(title: 'Penyakit Tersimpan 🔖'),
+              appBar: AppBarWidget(title: 'Penyakit Tersimpan'),
               body: Center(
                 child: CircularProgressIndicator(),
               ),
@@ -41,7 +41,7 @@ class BookmarkedScreen extends StatelessWidget {
           }
           if (state is BookmarkedDiseasesFailureLoad) {
             return Scaffold(
-              appBar: AppBarWidget(title: 'Penyakit Tersimpan 🔖'),
+              appBar: AppBarWidget(title: 'Penyakit Tersimpan'),
               body: Center(
                 child: Text(state.errorMessage),
               ),
@@ -51,12 +51,12 @@ class BookmarkedScreen extends StatelessWidget {
             final diseases = state.bookmarkedDiseases;
             if (diseases.isEmpty) {
               return Scaffold(
-                appBar: AppBarWidget(title: 'Penyakit Tersimpan 🔖'),
+                appBar: AppBarWidget(title: 'Penyakit Tersimpan'),
                 body: Center(child: Text('Tidak ada penyakit tersimpan')),
               );
             }
             return Scaffold(
-              appBar: AppBarWidget(title: 'Penyakit Tersimpan 🔖'),
+              appBar: AppBarWidget(title: 'Penyakit Tersimpan'),
               body: Padding(
                 padding: EdgeInsets.symmetric(
                   vertical: 0,

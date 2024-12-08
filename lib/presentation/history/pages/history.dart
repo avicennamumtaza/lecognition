@@ -51,7 +51,7 @@ class _HistoriScreenState extends State<HistoriScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarWidget(title: 'Histori Diagnosa'), // Use custom appbar
+      appBar: AppBarWidget(title: 'Riwayat Diagnosis'), // Use custom appbar
       body: _imagePaths.isEmpty
           ? const Center(
               child: Text('Belum ada diagnosis yang tersimpan.'),
@@ -74,7 +74,8 @@ class _HistoriScreenState extends State<HistoriScreen> {
                     return ds;
                   }
 
-                  _findDisease();
+                  ds = _findDisease();
+                  print('Disease: ${ds.name}');
                   return GestureDetector(
                     onTap: () {
                       // Navigate to detail screen when tapped

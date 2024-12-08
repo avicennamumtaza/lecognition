@@ -78,86 +78,98 @@ class HomeScreen extends StatelessWidget {
                   }
 
                   return Skeletonizer(
-                    enabled: diseaseState is DiseasesLoading ||
-                        bookmarkState is BookmarkedDiseasesLoading ||
-                        userState is UserLoading,
-                    child: SingleChildScrollView(
-                      child: Container(
-                        child: Column(
-                          children: [
-                            if (userState is UserLoaded)
-                              _sectionWellcome(context, userState.user.username!.toUpperCase(), userState.user.avatar!),
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  topRight: Radius.circular(20),
-                                ),
-                                color: Colors.white,
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 14,
-                                vertical: 20,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  _actionButton(context),
-                                  SizedBox(height: 10),
-                                  Text(
-                                    'Daftar Penyakit',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                      enabled: diseaseState is DiseasesLoading ||
+                          bookmarkState is BookmarkedDiseasesLoading ||
+                          userState is UserLoading,
+                      child: SingleChildScrollView(
+                        child: Container(
+                          child: Column(
+                            children: [
+                              if (userState is UserLoaded)
+                                _sectionWellcome(
+                                    context,
+                                    userState.user.username!.toUpperCase(),
+                                    userState.user.avatar!),
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20),
                                   ),
-                                  if (diseaseState is DiseasesFailureLoad || bookmarkState is BookmarkedDiseasesFailureLoad || userState is UserFailureLoad)
-                                    Container(
-                                      child: Center(
-                                        child: Text(
-                                          diseaseState is DiseasesFailureLoad
-                                              ? diseaseState.errorMessage
-                                              : (bookmarkState is BookmarkedDiseasesFailureLoad
-                                              ? bookmarkState.errorMessage
-                                              : userState is UserFailureLoad
-                                              ? userState.errorMessage
-                                              : 'Terjadi kesalahan'),
-                                          style: TextStyle(
-                                            color: Theme.of(context).colorScheme.error,
+                                  color: Colors.white,
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 14,
+                                  vertical: 20,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _actionButton(context),
+                                    SizedBox(height: 15),
+                                    Text(
+                                      'Daftar Penyakit',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    if (diseaseState is DiseasesFailureLoad ||
+                                        bookmarkState
+                                            is BookmarkedDiseasesFailureLoad ||
+                                        userState is UserFailureLoad)
+                                      Container(
+                                        child: Center(
+                                          child: Text(
+                                            diseaseState is DiseasesFailureLoad
+                                                ? diseaseState.errorMessage
+                                                : (bookmarkState
+                                                        is BookmarkedDiseasesFailureLoad
+                                                    ? bookmarkState.errorMessage
+                                                    : userState
+                                                            is UserFailureLoad
+                                                        ? userState.errorMessage
+                                                        : 'Terjadi kesalahan'),
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .error,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  if (diseaseState is DiseasesLoaded)
-                                    for (var disease in diseaseState.diseases)
-                                      Column(
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                              top:  15.0,
-                                              bottom: 10,
+                                    if (diseaseState is DiseasesLoaded)
+                                      for (var disease in diseaseState.diseases)
+                                        Column(
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                top: 10.0,
+                                                bottom: 10,
+                                              ),
+                                              child: DiseaseCard(
+                                                disease: disease,
+                                              ),
                                             ),
-                                            child: DiseaseCard(
-                                              disease: disease,
+                                            Divider(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSecondary
+                                                  .withOpacity(0.5),
+                                              thickness: 1.0,
+                                              height: 1.0,
                                             ),
-                                          ),
-                                          Divider(
-                                            color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.5),
-                                            thickness: 1.0,
-                                            height: 1.0,
-                                          ),
-                                        ],
-                                      ),
-                                ],
-                              ),
-                            )
-                          ],
+                                          ],
+                                        ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                    )
-                  );
+                      ));
                 },
               );
             },
@@ -187,13 +199,13 @@ class HomeScreen extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.camera_alt_outlined,
-              size: 50,
-            ),
-            SizedBox(width: 10),
+            // Icon(
+            //   Icons.camera_alt_outlined,
+            //   size: 50,
+            // ),
+            // SizedBox(width: 10),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -213,7 +225,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(width: 95),
+            // SizedBox(width: 95),
           ],
         ),
       ),
@@ -231,18 +243,22 @@ class HomeScreen extends StatelessWidget {
         children: [
           RichText(
               text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: "Selamat Datang,\n",
-                    style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white,),
-                  ),
-                  TextSpan(
-                    text: username,
-                    style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white, fontWeight: FontWeight.w600,),
-                  )
-                ],
+            children: [
+              TextSpan(
+                text: "Selamat Datang,\n",
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: Colors.white,
+                    ),
+              ),
+              TextSpan(
+                text: username,
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
               )
-          ),
+            ],
+          )),
           _showAvatar(context, avatar),
         ],
       ),
