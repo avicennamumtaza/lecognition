@@ -158,8 +158,8 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
       setState(() {
         _selectedImage = File(returnedImage.path);
       });
-      // await _saveImageLocally(_selectedImage!);
-      // await _saveDiagnosis(savedImage);
+      await _saveImageLocally(_selectedImage!);
+      await _saveDiagnosis(_selectedImage!);
       _navigateToResultScreen();
     } catch (e) {
       _showErrorDialog('Failed to pick image from gallery: ${e.toString()}');
