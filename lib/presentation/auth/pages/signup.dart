@@ -33,7 +33,7 @@ class SignupPage extends StatelessWidget {
                 )),
             child: Center(
               child: Image.asset(
-                "assets/images/logojti.png",
+                "assets/images/icon.png",
                 width: 100,
                 fit: BoxFit.contain,
               ),
