@@ -164,6 +164,8 @@ class SigninPage extends StatelessWidget {
       ),
       onPressed: () async {
         try {
+          print("Email: ${_emailController.text}");
+          print("Password: ${_passwordController.text}");
           final result = await sl<SigninUseCase>().call(
             params: SigninReqParams(
               email: _emailController.text,

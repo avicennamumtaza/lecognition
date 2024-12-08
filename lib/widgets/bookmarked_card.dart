@@ -53,7 +53,10 @@ class _BookmarkedCardState extends State<BookmarkedCard> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(
-                      left: 5.0, right: 5.0, top: 5.0, bottom: 0.0),
+                    left: 5.0,
+                    right: 5.0,
+                    top: 5.0,
+                  ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.all(
                       Radius.circular(10.0),
@@ -73,8 +76,11 @@ class _BookmarkedCardState extends State<BookmarkedCard> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 20.0, horizontal: 10.0),
+                  padding: const EdgeInsets.only(
+                    top: 20.0,
+                    left: 10.0,
+                    right: 10.0,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -90,7 +96,7 @@ class _BookmarkedCardState extends State<BookmarkedCard> {
                         "${widget.disease.disease?.detail?.desc ?? 'It must be a disease description'}",
                         style: TextStyle(
                           fontSize: 13.0,
-                          fontWeight: FontWeight.w300,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                     ],

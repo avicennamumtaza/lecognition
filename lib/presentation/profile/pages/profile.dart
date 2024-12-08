@@ -79,7 +79,7 @@ class ProfileScreen extends StatelessWidget {
                 _buildMenuItem(
                   context: context,
                   icon: Icons.history,
-                  title: 'Histori Diagnosis',
+                  title: 'Riwayat Diagnosis',
                   onTap: () {
                     Navigator.push(
                       context,
