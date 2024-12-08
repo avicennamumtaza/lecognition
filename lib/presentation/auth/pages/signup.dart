@@ -88,7 +88,7 @@ class SignupPage extends StatelessWidget {
                 ),
                 children: <TextSpan>[
                   const TextSpan(
-                    text: "Already have an account? ",
+                    text: "Sudah memiliki akun? ",
                   ),
                   TextSpan(
                     text: "Sign In",
@@ -113,27 +113,58 @@ class SignupPage extends StatelessWidget {
   Widget _emailField() {
     return TextField(
       controller: _emailController,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         hintText: "Email",
+        fillColor: Colors.white,
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.grey),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.black54),
+          borderRadius: BorderRadius.circular(10),
+        ),
       ),
+      keyboardType: TextInputType.emailAddress,
     );
   }
 
   Widget _usernameField() {
     return TextField(
       controller: _usernameController,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         hintText: "Username",
+        fillColor: Colors.white,
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.grey),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.black54),
+          borderRadius: BorderRadius.circular(10),
+        ),
       ),
+      keyboardType: TextInputType.text,
     );
   }
 
   Widget _passwordField() {
     return TextField(
       controller: _passwordController,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         hintText: "Password",
+        fillColor: Colors.white,
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.grey),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.black54),
+          borderRadius: BorderRadius.circular(10),
+        ),
       ),
+      obscureText: true,
+      keyboardType: TextInputType.visiblePassword,
     );
   }
 
@@ -166,9 +197,6 @@ class SignupPage extends StatelessWidget {
             );
           },
         );
-        // } catch (error) {
-        //   DisplayMessage.errorMessage(context, error.toString());
-        // }
       },
       child: const Text(
         "Sign Up",
@@ -178,28 +206,6 @@ class SignupPage extends StatelessWidget {
       ),
     );
   }
-
-  // Widget _signupText(BuildContext context) {
-  //   return Text.rich(
-  //     TextSpan(
-  //       children: [
-  //         const TextSpan(
-  //           text: "Don't have an account?",
-  //         ),
-  //         TextSpan(
-  //           text: "  Let's Sign Up here.",
-  //           style: const TextStyle(
-  //             color: Colors.blue,
-  //           ),
-  //           recognizer: TapGestureRecognizer()
-  //             ..onTap = () {
-  //               AppNavigator.push(context, SignupPage());
-  //             },
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {

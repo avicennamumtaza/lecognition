@@ -1,5 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:lecognition/common/helper/message/display_message.dart';
 import 'package:lecognition/common/helper/navigation/app_navigator.dart';
 import 'package:lecognition/common/widgets/tabs.dart';
@@ -33,7 +35,7 @@ class SigninPage extends StatelessWidget {
                 )),
             child: Center(
               child: Image.asset(
-                "assets/images/logojti.png",
+                "assets/images/icon.png",
                 width: 100,
                 fit: BoxFit.contain,
               ),
@@ -52,16 +54,18 @@ class SigninPage extends StatelessWidget {
           ),
           const SizedBox(height: 30),
           // Bagian form login
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30.0),
-            child: Column(children: [
-              _emailField(),
-              const SizedBox(height: 15),
-              _passwordField(),
-              const SizedBox(height: 30),
-              _signinButton(context),
-              const SizedBox(height: 10),
-            ]),
+          FormBuilder(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              child: Column(children: [
+                _emailField(),
+                const SizedBox(height: 15),
+                _passwordField(),
+                const SizedBox(height: 30),
+                _signinButton(context),
+                const SizedBox(height: 10),
+              ]),
+            ),
           ),
           const SizedBox(height: 50),
           // Bagian Sign Up
@@ -86,7 +90,7 @@ class SigninPage extends StatelessWidget {
                 ),
                 children: <TextSpan>[
                   const TextSpan(
-                    text: "Don't have an account? ",
+                    text: "Belum memiliki akun? ",
                   ),
                   TextSpan(
                     text: "Sign Up",
@@ -109,28 +113,54 @@ class SigninPage extends StatelessWidget {
   }
 
   Widget _emailField() {
-    return TextField(
+    return FormBuilderTextField(
       controller: _emailController,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         hintText: "Email",
+        fillColor: Colors.white,
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.grey),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.black54),
+          borderRadius: BorderRadius.circular(10),
+        ),
       ),
+      keyboardType: TextInputType.emailAddress,
+      validator: FormBuilderValidators.compose([
+        FormBuilderValidators.required(),
+        FormBuilderValidators.email(),
+      ]),
+      name: 'email',
     );
   }
 
   Widget _passwordField() {
     return TextField(
       controller: _passwordController,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         hintText: "Password",
+        fillColor: Colors.white,
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.grey),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.black54),
+          borderRadius: BorderRadius.circular(10),
+        ),
       ),
+      obscureText: true,
+      keyboardType: TextInputType.visiblePassword,
     );
   }
 
   Widget _signinButton(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.yellow.shade800, // warna tombol
-        minimumSize: const Size(double.infinity, 50), // ukuran tombol
+        backgroundColor: Colors.yellow.shade800,
+        minimumSize: const Size(double.infinity, 50),
       ),
       onPressed: () async {
         try {
@@ -163,28 +193,6 @@ class SigninPage extends StatelessWidget {
       ),
     );
   }
-
-  // Widget _signupText(BuildContext context) {
-  //   return Text.rich(
-  //     TextSpan(
-  //       children: [
-  //         const TextSpan(
-  //           text: "Don't have an account?",
-  //         ),
-  //         TextSpan(
-  //           text: "  Let's Sign Up here.",
-  //           style: const TextStyle(
-  //             color: Colors.blue,
-  //           ),
-  //           recognizer: TapGestureRecognizer()
-  //             ..onTap = () {
-  //               AppNavigator.push(context, SignupPage());
-  //             },
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
