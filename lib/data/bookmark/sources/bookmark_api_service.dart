@@ -18,7 +18,17 @@ class BookmarkApiServiceImpl extends BookmarkApiService {
     try {
       var response = await sl<DioClient>().get(
         ApiUrls.bookmarkByUser,
+        options: Options(
+          validateStatus: (status) {
+            // Mengizinkan semua status code agar tidak dianggap sebagai exception
+            return status != null && status <= 500;
+          },
+        ),
       );
+      if (response.statusCode! >= 400) {
+        print(response.data);
+        return Left(response.data.toString());
+      }
       return Right(response.data);
     } on DioException catch (error) {
       return Left(error.response!.data["message"]);
@@ -31,7 +41,17 @@ class BookmarkApiServiceImpl extends BookmarkApiService {
       var response = await sl<DioClient>().post(
         ApiUrls.bookmarking,
         data: params.toMap(),
+        options: Options(
+          validateStatus: (status) {
+            // Mengizinkan semua status code agar tidak dianggap sebagai exception
+            return status != null && status <= 500;
+          },
+        ),
       );
+      if (response.statusCode! >= 400) {
+        print(response.data);
+        return Left(response.data.toString());
+      }
       print('Response: ${response.data}');
       if (response.statusCode == 201) {
         return Right(response.data);
@@ -48,7 +68,7 @@ class BookmarkApiServiceImpl extends BookmarkApiService {
   @override
   Future<Either> unbookmarkDisease(UnbookmarkDiseaseParams params) async {
     try {
-      var response = sl<DioClient>().delete(
+      var response = await sl<DioClient>().delete(
         ApiUrls.bookmarking + "/${params.bookmarkId.toString()}",
       );
       print(response);

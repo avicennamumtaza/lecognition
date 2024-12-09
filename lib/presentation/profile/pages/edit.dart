@@ -3,6 +3,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:lecognition/common/helper/message/display_message.dart';
 import 'package:lecognition/common/widgets/appbar.dart';
+import 'package:lecognition/common/widgets/form.dart';
 import 'package:lecognition/data/user/models/update_user_profile_params.dart';
 import 'package:lecognition/domain/user/entities/user.dart';
 import 'package:lecognition/domain/user/usecases/update_user_profile.dart';
@@ -114,7 +115,7 @@ class _EditAccountState extends State<EditAccount> {
       key: _formKey,
       child: Column(
         children: [
-          _buildTextField(
+          FormBoilerplate.buildTextField(
             'e-mail',
             'E-mail',
             widget.userData.email ?? 'Enter e-mail', // Updated hintText
@@ -127,7 +128,7 @@ class _EditAccountState extends State<EditAccount> {
             ],
           ),
           const SizedBox(height: 20),
-          _buildTextField(
+          FormBoilerplate.buildTextField(
             'username',
             'Username',
             widget.userData.username ?? 'Enter username', // Updated hintText
@@ -136,10 +137,11 @@ class _EditAccountState extends State<EditAccount> {
             TextInputType.text,
             [
               FormBuilderValidators.required(),
+              FormBuilderValidators.minLength(6),
             ],
           ),
           const SizedBox(height: 20),
-          _buildTextField(
+          FormBoilerplate.buildTextField(
             'password',
             'Password',
             'Enter new password', // Default hintText for password
@@ -152,7 +154,7 @@ class _EditAccountState extends State<EditAccount> {
             ],
           ),
           const SizedBox(height: 20),
-          _buildTextField(
+          FormBoilerplate.buildTextField(
             'confPassword',
             'Confirm Password',
             'Re-enter new password', // Default hintText for confirm password
@@ -170,42 +172,6 @@ class _EditAccountState extends State<EditAccount> {
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildTextField(
-      String name,
-      String labelText,
-      String hintText,
-      IconData icon,
-      TextEditingController controller,
-      TextInputType textType,
-      List<String? Function(String?)> validators) {
-    return Container(
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: Offset(0, 3),
-          ),
-        ],
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: FormBuilderTextField(
-        name: name,
-        decoration: InputDecoration(
-          labelText: labelText,
-          hintText: hintText,
-          prefixIcon: Icon(icon),
-          fillColor: Colors.white,
-        ),
-        controller: controller,
-        validator: FormBuilderValidators.compose(validators),
-        keyboardType: textType,
-        obscureText: name == 'password' || name == 'confPassword',
       ),
     );
   }

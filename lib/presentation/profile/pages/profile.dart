@@ -8,6 +8,7 @@ import 'package:lecognition/presentation/history/pages/history.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lecognition/presentation/profile/bloc/user_cubit.dart';
 import 'package:lecognition/presentation/profile/bloc/user_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -143,6 +144,10 @@ class ProfileScreen extends StatelessWidget {
                             ),
                             TextButton(
                               onPressed: () {
+                                SharedPreferences.getInstance().then((prefs) {
+                                  prefs.remove('refresh');
+                                  prefs.remove('access_token');
+                                });
                                 AppNavigator.pushReplacement(
                                   context,
                                   SigninPage(),
@@ -172,8 +177,7 @@ class ProfileScreen extends StatelessWidget {
       required Function() onTap,
       required BuildContext context}) {
     return ListTile(
-      leading:
-          Icon(icon, size: 30, color: Colors.black.withOpacity(0.7)),
+      leading: Icon(icon, size: 30, color: Colors.black.withOpacity(0.7)),
       title: Text(title, style: const TextStyle(fontSize: 18)),
       onTap: onTap,
       // minTileHeight: 50,

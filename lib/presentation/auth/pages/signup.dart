@@ -1,16 +1,26 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:lecognition/common/helper/message/display_message.dart';
 import 'package:lecognition/common/helper/navigation/app_navigator.dart';
+import 'package:lecognition/common/widgets/form.dart';
 import 'package:lecognition/data/auth/models/signup_req_params.dart';
 import 'package:lecognition/domain/auth/usecases/signup.dart';
 import 'package:lecognition/presentation/auth/pages/signin.dart';
 import 'package:lecognition/service_locator.dart';
 
-class SignupPage extends StatelessWidget {
+class SignupPage extends StatefulWidget {
+  @override
+  State<SignupPage> createState() => _SignupPageState();
+}
+
+class _SignupPageState extends State<SignupPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormBuilderState>();
+  bool _isSubmitting = false;
 
   Widget _registerUI(BuildContext context) {
     return SingleChildScrollView(
@@ -55,11 +65,7 @@ class SignupPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: Column(children: [
-              _emailField(),
-              const SizedBox(height: 15),
-              _usernameField(),
-              const SizedBox(height: 15),
-              _passwordField(),
+              _buildFormFields(),
               const SizedBox(height: 30),
               _signinButton(context),
               const SizedBox(height: 10),
@@ -110,100 +116,102 @@ class SignupPage extends StatelessWidget {
     );
   }
 
-  Widget _emailField() {
-    return TextField(
-      controller: _emailController,
-      decoration: InputDecoration(
-        hintText: "Email",
-        fillColor: Colors.white,
-        enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.grey),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.black54),
-          borderRadius: BorderRadius.circular(10),
-        ),
+  Widget _buildFormFields() {
+    return FormBuilder(
+      key: _formKey,
+      child: Column(
+        children: [
+          FormBoilerplate.buildTextField(
+            'e-mail',
+            'E-mail',
+            'Enter e-mail',
+            Icons.email,
+            _emailController,
+            TextInputType.emailAddress,
+            [
+              FormBuilderValidators.required(),
+              FormBuilderValidators.email(),
+            ],
+          ),
+          const SizedBox(height: 20),
+          FormBoilerplate.buildTextField(
+            'username',
+            'Username',
+            'Enter username', // Updated hintText
+            Icons.person,
+            _usernameController,
+            TextInputType.text,
+            [
+              FormBuilderValidators.required(),
+              FormBuilderValidators.minLength(6),
+            ],
+          ),
+          const SizedBox(height: 20),
+          FormBoilerplate.buildTextField(
+            'password',
+            'Password',
+            'Enter new password', // Default hintText for password
+            Icons.lock,
+            _passwordController,
+            TextInputType.text,
+            [
+              FormBuilderValidators.required(),
+              FormBuilderValidators.minLength(6),
+            ],
+          ),
+        ],
       ),
-      keyboardType: TextInputType.emailAddress,
-    );
-  }
-
-  Widget _usernameField() {
-    return TextField(
-      controller: _usernameController,
-      decoration: InputDecoration(
-        hintText: "Username",
-        fillColor: Colors.white,
-        enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.grey),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.black54),
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-      keyboardType: TextInputType.text,
-    );
-  }
-
-  Widget _passwordField() {
-    return TextField(
-      controller: _passwordController,
-      decoration: InputDecoration(
-        hintText: "Password",
-        fillColor: Colors.white,
-        enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.grey),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.black54),
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-      obscureText: true,
-      keyboardType: TextInputType.visiblePassword,
     );
   }
 
   Widget _signinButton(BuildContext context) {
     return ElevatedButton(
+      child: _isSubmitting
+          ? CircularProgressIndicator()
+          : const Text(
+              "Sign Up",
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.yellow.shade800, // warna tombol
         minimumSize: const Size(double.infinity, 50), // ukuran tombol
       ),
       onPressed: () async {
-        // try {
-        print(_emailController.text);
-        print(_usernameController.text);
-        print(_passwordController.text);
-        final result = await sl<SignupUseCase>().call(
-          params: SignupReqParams(
-            email: _emailController.text,
-            username: _usernameController.text,
-            password: _passwordController.text,
-          ),
-        );
-        result.fold(
-          (failure) {
-            DisplayMessage.errorMessage(context, failure.toString());
-          },
-          (success) {
-            AppNavigator.pushAndRemove(
-              context,
-              SigninPage(),
+        if (_formKey.currentState?.saveAndValidate() ?? false) {
+          setState(() => _isSubmitting = true);
+          try {
+            print(_emailController.text);
+            print(_usernameController.text);
+            print(_passwordController.text);
+            final result = await sl<SignupUseCase>().call(
+              params: SignupReqParams(
+                email: _emailController.text,
+                username: _usernameController.text,
+                password: _passwordController.text,
+              ),
             );
-          },
-        );
+            print(result);
+            result.fold(
+              (failure) {
+                DisplayMessage.errorMessage(context, failure.toString());
+              },
+              (success) {
+                AppNavigator.pushAndRemove(
+                  context,
+                  SigninPage(),
+                );
+              },
+            );
+          } catch (error) {
+            DisplayMessage.errorMessage(context, error.toString());
+          }
+          finally {
+            setState(() => _isSubmitting = false);
+          }
+        }
       },
-      child: const Text(
-        "Sign Up",
-        style: TextStyle(
-          color: Colors.white,
-        ),
-      ),
     );
   }
 
