@@ -8,6 +8,8 @@ import 'package:lecognition/data/diagnozer/repositories/diagnozer.dart';
 import 'package:lecognition/data/diagnozer/sources/diagnozer_api_service.dart';
 import 'package:lecognition/data/disease/repositories/disease.dart';
 import 'package:lecognition/data/disease/sources/disease_api_service.dart';
+import 'package:lecognition/data/tree/repositories/tree.dart';
+import 'package:lecognition/data/tree/sources/tree_api_service.dart';
 import 'package:lecognition/data/user/repositories/user.dart';
 import 'package:lecognition/data/user/sources/user_api_service.dart';
 import 'package:lecognition/domain/auth/repositories/auth.dart';
@@ -22,6 +24,10 @@ import 'package:lecognition/domain/diagnozer/repositories/diagnozer.dart';
 import 'package:lecognition/domain/diagnozer/usecases/get_diagnoze_result.dart';
 import 'package:lecognition/domain/disease/repositories/disease.dart';
 import 'package:lecognition/domain/disease/usecases/get_all_diseases.dart';
+import 'package:lecognition/domain/tree/repositories/tree.dart';
+import 'package:lecognition/domain/tree/usecases/add_tree.dart';
+import 'package:lecognition/domain/tree/usecases/delete_tree.dart';
+import 'package:lecognition/domain/tree/usecases/get_trees.dart';
 import 'package:lecognition/domain/user/repositories/user.dart';
 import 'package:lecognition/domain/user/usecases/get_user_profile.dart';
 import 'package:lecognition/domain/user/usecases/update_user_profile.dart';
@@ -37,6 +43,7 @@ void setupServiceLocator() {
   sl.registerSingleton<BookmarkApiService>(BookmarkApiServiceImpl());
   sl.registerSingleton<UserApiService>(UserApiServiceImpl());
   sl.registerSingleton<DiagnozerApiService>(DiagnozerApiServiceImpl());
+  sl.registerSingleton<TreeApiService>(TreeApiServiceImpl());
 
   // Repositories
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl());
@@ -44,6 +51,7 @@ void setupServiceLocator() {
   sl.registerSingleton<BookmarkRepository>(BookmarkRepositoryImpl());
   sl.registerSingleton<UserRepository>(UserRepositoryImpl());
   sl.registerSingleton<DiagnozerRepository>(DiagnozerRepositoryImpl());
+  sl.registerSingleton<TreeRepository>(TreeRepositoryImpl());
 
   // Usecases
   sl.registerSingleton<SignupUseCase>(SignupUseCase());
@@ -56,4 +64,7 @@ void setupServiceLocator() {
   sl.registerSingleton<BookmarkDiseaseUseCase>(BookmarkDiseaseUseCase());
   sl.registerSingleton<UnbookmarkDiseaseUseCase>(UnbookmarkDiseaseUseCase());
   sl.registerSingleton<GetDiagnosisUseCase>(GetDiagnosisUseCase());
+  sl.registerSingleton<GetTreesUseCase>(GetTreesUseCase());
+  sl.registerSingleton<AddTreeUseCase>(AddTreeUseCase());
+  sl.registerSingleton<DeleteTreeUseCase>(DeleteTreeUseCase());
 }
