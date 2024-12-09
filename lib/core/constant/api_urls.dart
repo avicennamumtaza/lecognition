@@ -31,4 +31,8 @@ class ApiUrls {
   // Bookmark-related URLs
   static const bookmarking = "bookmark";
   static const bookmarkByUser = "bookmark/user";
+
+  // Tree-related URLs
+  static const tree = "tree";
+  static const scanByTree = "scan/tree";
 }
