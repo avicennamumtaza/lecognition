@@ -16,20 +16,40 @@ class UserApiServiceImpl extends UserApiService {
     try {
       var response = await sl<DioClient>().get(
         ApiUrls.getUserById,
+        options: Options(
+          validateStatus: (status) {
+            // Mengizinkan semua status code agar tidak dianggap sebagai exception
+            return status != null && status <= 500;
+          },
+        ),
       );
+      if (response.statusCode! >= 400) {
+        print(response.data);
+        return Left(response.data.toString());
+      }
       return Right(response.data);
     } on DioException catch (error) {
       return Left(error.response!.data["message"]);
     }
   }
-  
+
   @override
   Future<Either> updateUserProfile(UpdateUserProfileParams params) async {
     try {
       var response = await sl<DioClient>().put(
         ApiUrls.getUserById,
         data: params.toMap(),
+        options: Options(
+          validateStatus: (status) {
+            // Mengizinkan semua status code agar tidak dianggap sebagai exception
+            return status != null && status <= 500;
+          },
+        ),
       );
+      if (response.statusCode! >= 400) {
+        print(response.data);
+        return Left(response.data.toString());
+      }
       return Right(response.data);
     } on DioException catch (error) {
       return Left(error.response!.data["message"]);

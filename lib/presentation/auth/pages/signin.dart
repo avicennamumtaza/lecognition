@@ -4,15 +4,23 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:lecognition/common/helper/message/display_message.dart';
 import 'package:lecognition/common/helper/navigation/app_navigator.dart';
+import 'package:lecognition/common/widgets/form.dart';
 import 'package:lecognition/common/widgets/tabs.dart';
 import 'package:lecognition/data/auth/models/signin_req_params.dart';
 import 'package:lecognition/domain/auth/usecases/signin.dart';
 import 'package:lecognition/presentation/auth/pages/signup.dart';
 import 'package:lecognition/service_locator.dart';
 
-class SigninPage extends StatelessWidget {
+class SigninPage extends StatefulWidget {
+  @override
+  State<SigninPage> createState() => _SigninPageState();
+}
+
+class _SigninPageState extends State<SigninPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormBuilderState>();
+  bool _isSubmitting = false;
 
   Widget _loginUI(BuildContext context) {
     return SingleChildScrollView(
@@ -58,9 +66,7 @@ class SigninPage extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30.0),
               child: Column(children: [
-                _emailField(),
-                const SizedBox(height: 15),
-                _passwordField(),
+                _buildFormFields(),
                 const SizedBox(height: 30),
                 _signinButton(context),
                 const SizedBox(height: 10),
@@ -112,47 +118,38 @@ class SigninPage extends StatelessWidget {
     );
   }
 
-  Widget _emailField() {
-    return FormBuilderTextField(
-      controller: _emailController,
-      decoration: InputDecoration(
-        hintText: "Email",
-        fillColor: Colors.white,
-        enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.grey),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.black54),
-          borderRadius: BorderRadius.circular(10),
-        ),
+  Widget _buildFormFields() {
+    return FormBuilder(
+      key: _formKey,
+      child: Column(
+        children: [
+          FormBoilerplate.buildTextField(
+            'e-mail',
+            'E-mail',
+            'Enter e-mail',
+            Icons.email,
+            _emailController,
+            TextInputType.emailAddress,
+            [
+              FormBuilderValidators.required(),
+              FormBuilderValidators.email(),
+            ],
+          ),
+          const SizedBox(height: 20),
+          FormBoilerplate.buildTextField(
+            'password',
+            'Password',
+            'Enter new password', // Default hintText for password
+            Icons.lock,
+            _passwordController,
+            TextInputType.text,
+            [
+              FormBuilderValidators.required(),
+              FormBuilderValidators.minLength(6),
+            ],
+          ),
+        ],
       ),
-      keyboardType: TextInputType.emailAddress,
-      validator: FormBuilderValidators.compose([
-        FormBuilderValidators.required(),
-        FormBuilderValidators.email(),
-      ]),
-      name: 'email',
-    );
-  }
-
-  Widget _passwordField() {
-    return TextField(
-      controller: _passwordController,
-      decoration: InputDecoration(
-        hintText: "Password",
-        fillColor: Colors.white,
-        enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.grey),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.black54),
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-      obscureText: true,
-      keyboardType: TextInputType.visiblePassword,
     );
   }
 
@@ -163,36 +160,44 @@ class SigninPage extends StatelessWidget {
         minimumSize: const Size(double.infinity, 50),
       ),
       onPressed: () async {
-        try {
-          print("Email: ${_emailController.text}");
-          print("Password: ${_passwordController.text}");
-          final result = await sl<SigninUseCase>().call(
-            params: SigninReqParams(
-              email: _emailController.text,
-              password: _passwordController.text,
-            ),
-          );
-          result.fold(
-            (failure) {
-              DisplayMessage.errorMessage(context, failure.toString());
-            },
-            (success) {
-              AppNavigator.pushAndRemove(
-                context,
-                const TabsScreen(index: 0),
-              );
-            },
-          );
-        } catch (error) {
-          DisplayMessage.errorMessage(context, error.toString());
+        if (_formKey.currentState?.saveAndValidate() ?? false) {
+          setState(() => _isSubmitting = true);
+          try {
+            print("Email: ${_emailController.text}");
+            print("Password: ${_passwordController.text}");
+            final result = await sl<SigninUseCase>().call(
+              params: SigninReqParams(
+                email: _emailController.text,
+                password: _passwordController.text,
+              ),
+            );
+            result.fold(
+              (failure) {
+                DisplayMessage.errorMessage(context, failure.toString());
+              },
+              (success) {
+                AppNavigator.pushAndRemove(
+                  context,
+                  const TabsScreen(index: 0),
+                );
+              },
+            );
+          } catch (error) {
+            DisplayMessage.errorMessage(context, error.toString());
+          }
+          finally {
+            setState(() => _isSubmitting = false);
+          }
         }
       },
-      child: const Text(
-        "Sign In",
-        style: TextStyle(
-          color: Colors.white,
-        ),
-      ),
+      child: _isSubmitting
+          ? CircularProgressIndicator()
+          : const Text(
+              "Sign In",
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
     );
   }
 

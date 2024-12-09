@@ -20,7 +20,17 @@ class AuthApiServiceImpl extends AuthService {
       var response = await sl<DioClient>().post(
         ApiUrls.register,
         data: params.toMap(),
+        options: Options(
+          validateStatus: (status) {
+            // Mengizinkan semua status code agar tidak dianggap sebagai exception
+            return status != null && status <= 500;
+          },
+        ),
       );
+      if (response.statusCode! >= 400) {
+        print(response.data);
+        return Left(response.data.toString());
+      }
       return Right(response.data);
     } on DioException catch (error) {
       print(error.response?.data["email"].toString());
@@ -37,14 +47,27 @@ class AuthApiServiceImpl extends AuthService {
       var response = await sl<DioClient>().post(
         ApiUrls.login,
         data: params.toMap(),
+        options: Options(
+          validateStatus: (status) {
+            // Mengizinkan semua status code agar tidak dianggap sebagai exception
+            return status != null && status <= 500;
+          },
+        ),
       );
-      return Right(response.data);
-    } on DioException catch (error) {
-      print(error.response?.data["email"].toString());
-      final statusCode = error.response?.statusCode;
-      if (statusCode == 404) {
+      if (response.statusCode == 404) {
         return Left("Email/Password is incorrect");
       }
+      if (response.statusCode! >= 400) {
+        print(response.data);
+        return Left(response.data.toString());
+      }
+      return Right(response.data);
+    } on DioException catch (error) {
+      // print(error.response?.data["email"].toString());
+      // final statusCode = error.response?.statusCode;
+      // if (statusCode == 404) {
+      //   return Left("Email/Password is incorrect");
+      // }
       return Left(error.response?.data["email"] != null
           ? error.response?.data["password"]?.toString() ??
               "An unknown error occurred"
@@ -109,14 +132,8 @@ class AuthApiServiceImpl extends AuthService {
         return Left("An unknown error occurred");
       }
     } catch (e) {
-      // Tangkap semua jenis Exception lain yang tidak diharapkan
       print("Unhandled exception in refreshToken: $e");
       return Left("An unexpected error occurred");
-      // } finally {
-      //   // Pastikan operasi dibatalkan jika tidak diperlukan
-      //   if (!cancelToken.isCancelled) {
-      //     cancelToken.cancel();
-      //   }
     }
   }
 }
