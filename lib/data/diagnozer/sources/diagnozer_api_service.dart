@@ -19,6 +19,7 @@ class DiagnozerApiServiceImpl extends DiagnozerApiService {
         FormData formData = FormData.fromMap({
           "img": await MultipartFile.fromFile(params.imageFile.path),
           "datetime": 123456,
+          'tree': params.treeId,
         });
         print("formData: $formData");
         var response = await sl<DioClient>().post(

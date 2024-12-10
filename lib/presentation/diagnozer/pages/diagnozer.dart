@@ -1,9 +1,13 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lecognition/domain/tree/entities/tree.dart';
 import 'package:lecognition/presentation/diagnozer/pages/result.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:lecognition/presentation/tree/bloc/tree_cubit.dart';
+import 'package:lecognition/presentation/tree/bloc/tree_state.dart';
 // import 'package:path_provider/path_provider.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:lecognition/data/dummy_diagnosis.dart';
@@ -22,6 +26,13 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
   CameraController? cameraController;
   File? _selectedImage;
   bool _isTorchOn = false;
+  // File? _selectedImage; // Ganti sesuai implementasi gambar Anda
+  String? _selectedPlantName; // Nilai yang dipilih dari dropdown
+  int? _selectedPlantId; // Nilai yang dipilih dari dropdown
+
+  // Daftar tanaman untuk dropdown
+  List<String> treesName = [];
+  List<int> treesId = [];
 
   @override
   void dispose() {
@@ -56,16 +67,49 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
     }
   }
 
-  Future<void> _confirm() async {
+  Future<void> _confirm(List<TreeEntityWithoutForeign> trees) async {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
+        print(trees);
         return AlertDialog(
           title: const Text('Konfirmasi'),
-          content: Image(
-            image: FileImage(
-              _selectedImage!,
-            ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min, // Supaya kolom tidak terlalu besar
+            children: [
+              Image(
+                height: MediaQuery.of(context).size.height * 0.5,
+                image: FileImage(
+                  _selectedImage!,
+                ),
+              ),
+              const SizedBox(height: 10),
+              DropdownButtonFormField<String>(
+                decoration: const InputDecoration(
+                  labelText: "Pilih Tanaman",
+                  border: OutlineInputBorder(),
+                  fillColor: Colors.white,
+                ),
+                value: _selectedPlantName, // Nilai saat ini
+                items: trees.map((tree) {
+                  final treeName =
+                      tree.desc; // Ganti dengan properti `name` pada TreeEntity
+                  // final treeId =
+                  //     tree.id; // Ganti dengan properti `id` pada TreeEntity
+                  return DropdownMenuItem<String>(
+                    value: treeName,
+                    child: Text(treeName!),
+                  );
+                }).toList(),
+                onChanged: (String? value) {
+                  setState(() {
+                    _selectedPlantName = value;
+                    int index = trees.indexWhere((tree) => tree.desc == value);
+                    _selectedPlantId = trees[index].id;
+                  });
+                },
+              ),
+            ],
           ),
           actions: <Widget>[
             TextButton(
@@ -77,8 +121,6 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                // _saveImageLocally(_selectedImage!);
-                // _saveDiagnosis(_selectedImage!);
                 _navigateToResultScreen();
               },
               child: const Text('Ya'),
@@ -104,56 +146,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
     }
   }
 
-  // /////////////////////////////////////////////
-  // /////////////////////////////////////////////
-  // Future<File> _saveImageLocally(File imageFile) async {
-  //   try {
-  //     final directory = await getApplicationDocumentsDirectory();
-  //     final fileName = imageFile.path.split('/').last;
-  //     final newImagePath = '${directory.path}/$fileName';
-  //     final newImage = await imageFile.copy(newImagePath);
-
-  //     return newImage;
-  //   } catch (e) {
-  //     throw Exception('Error saat menyimpan gambar: $e');
-  //   }
-  // }
-  // /////////////////////////////////////////////
-  // /////////////////////////////////////////////
-
-  // /////////////////////////////////////////////
-  // /////////////////////////////////////////////
-  // Future<void> _saveDiagnosis(File image) async {
-  //   // final randomIndex = Random().nextInt(diagnosises.length);
-  //   // final randomDiagnosis = diagnosises[randomIndex];
-  //   // final diseaseId = randomDiagnosis.diseaseId;
-  //   // final matchingDisease = diseases.firstWhere(
-  //   //   (disease) => disease.id == diseaseId,
-  //   // );
-
-  //   final plantName = "nama mangga";
-  //   // final diseaseId = "1";
-
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   List<String>? savedImages = prefs.getStringList('diagnosis_images') ?? [];
-  //   List<String>? savedPlantNames = prefs.getStringList('plant_names') ?? [];
-  //   // List<String>? savedDiseaseId =
-  //   //     prefs.getStringList('disease_id') ?? [];
-
-  //   savedImages.add(image.path);
-  //   savedPlantNames.add(plantName);
-  //   // savedDiseaseId.add(diseaseId);
-  //   print("savedPlantNames: $savedPlantNames");
-  //   print("savedImages: $savedImages");
-
-  //   await prefs.setStringList('diagnosis_images', savedImages);
-  //   await prefs.setStringList('plant_names', savedPlantNames);
-  //   // await prefs.setStringList('disease_id', savedDiseaseId);
-  // }
-  // /////////////////////////////////////////////
-  // /////////////////////////////////////////////
-
-  Future _pickImageGallery() async {
+  Future _pickImageGallery(List<TreeEntityWithoutForeign> trees) async {
     try {
       final returnedImage = await ImagePicker().pickImage(
         source: ImageSource.gallery,
@@ -166,13 +159,13 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
       });
       // await _saveImageLocally(_selectedImage!);
       // await _saveDiagnosis(_selectedImage!);
-      _navigateToResultScreen();
+      _confirm(trees);
     } catch (e) {
       _showErrorDialog('Failed to pick image from gallery: ${e.toString()}');
     }
   }
 
-  Future<void> _takePicture() async {
+  Future<void> _takePicture(List<TreeEntityWithoutForeign> trees) async {
     if (cameraController == null || !cameraController!.value.isInitialized) {
       _isTorchOn = false;
       await cameraController?.setFlashMode(FlashMode.off);
@@ -193,7 +186,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
 
       // await _saveImageLocally(_selectedImage!);
       // await _saveDiagnosis(savedImage);
-      _confirm();
+      _confirm(trees);
     } catch (e) {
       _showErrorDialog('Error saat mengambil gambar: $e');
     }
@@ -206,13 +199,13 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
         // List<String>? savedPlantNames =
         //     prefs.getStringList('plant_names') ?? [];
 
-        String plantName = 'Unknown Plant';
+        // String plantName = 'Unknown Plant';
 
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => ResultScreen(
               photo: XFile(_selectedImage!.path),
-              plantName: plantName,
+              treeId: _selectedPlantId!,
             ),
           ),
         );
@@ -244,10 +237,32 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return _buildCameraPreview();
+    return BlocProvider<TreeCubit>(
+      create: (context) => TreeCubit()..getAllTrees(),
+      child: BlocBuilder<TreeCubit, TreeState>(
+        builder: (context, state) {
+          if (state is TreeLoaded) {
+            return _buildCameraPreview(state.trees);
+          }
+          if (state is TreeLoading) {
+            return const Center(
+              child: SpinKitSquareCircle(
+                color: Color.fromARGB(255, 255, 131, 23),
+                size: 50.0,
+              ),
+            );
+          }
+          // if (state is TreeFailureLoad) {
+          return const Center(
+            child: Text('Gagal memuat data tanaman'),
+          );
+          // }
+        },
+      ),
+    );
   }
 
-  Widget _buildCameraPreview() {
+  Widget _buildCameraPreview(List<TreeEntityWithoutForeign> trees) {
     if (cameraController == null ||
         cameraController?.value.isInitialized == false) {
       return const Center(
@@ -272,7 +287,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   IconButton(
-                    onPressed: _pickImageGallery,
+                    onPressed: () => _pickImageGallery(trees),
                     icon:
                         const Icon(Icons.image, size: 35, color: Colors.white),
                   ),
@@ -287,7 +302,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
                       ),
                     ),
                     child: IconButton(
-                      onPressed: _takePicture,
+                      onPressed: () => _takePicture(trees),
                       icon: const Icon(Icons.circle,
                           size: 50, color: Colors.white),
                     ),
@@ -296,8 +311,11 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
                     onPressed: () {
                       _toggleFlashlight();
                     },
-                    icon: Icon(_isTorchOn ? Icons.flash_on : Icons.flash_off,
-                        size: 35, color: Colors.white),
+                    icon: Icon(
+                      _isTorchOn ? Icons.flash_on : Icons.flash_off,
+                      size: 35,
+                      color: Colors.white,
+                    ),
                   ),
                 ],
               ),

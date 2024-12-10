@@ -20,12 +20,12 @@ class ResultScreen extends StatefulWidget {
   ResultScreen({
     super.key,
     required this.photo,
-    required this.plantName, // New parameter
+    required this.treeId, // New parameter
     // required this.diseaseDescription, // New parameter
   });
 
   final XFile photo;
-  final String plantName;
+  final int treeId;
   @override
   State<ResultScreen> createState() => _ResultScreenState();
 }
@@ -127,6 +127,7 @@ class _ResultScreenState extends State<ResultScreen> {
         ),
       );
     }
+    print("IIIIIIIIIIIDDDDDDDDDDDDDDD TTTTTTTTTRRRRRRRRRRRREEEEEEEEEEEEEEEEEEEEEEEEEEEEE ${widget.treeId}");
     return Scaffold(
       appBar: AppBarWidget(title: 'Hasil Diagnosis'),
       body: BlocProvider<DiagnozerCubit>(
@@ -134,6 +135,7 @@ class _ResultScreenState extends State<ResultScreen> {
           ..getDiagnosis(
             GetDiagnosisParams(
               imageFile: widget.photo,
+              treeId: widget.treeId,
             ),
           ),
         child: BlocBuilder<DiagnozerCubit, DiagnosisState>(
