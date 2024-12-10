@@ -74,7 +74,7 @@ class TreesScreen extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => AddTreeScreen(),
+                              builder: (context) => AddTreeScreen(image: ''),
                             ),
                           ).then((value) {
                             if (value != null) {
@@ -116,51 +116,28 @@ class TreesScreen extends StatelessWidget {
             }
             return Scaffold(
               appBar: AppBarWidget(title: 'Daftar Tanaman'),
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddTreeScreen(image: ''),
+                    ),
+                  ).then((_) {
+                    BlocProvider.of<TreeCubit>(context).getAllTrees();
+                  });
+                },
+                child: const Icon(Icons.add, color: Colors.white),
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(100),
+                ),
+              ),
               body: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 20),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AddTreeScreen(),
-                          ),
-                        ).then((_) {
-                          BlocProvider.of<TreeCubit>(context).getAllTrees();
-                        });
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primary,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onPrimary
-                                  .withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        child: Text(
-                          '+ Tanaman Baru',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 15),
                     Expanded(
                       child: GridView.builder(
                         padding: const EdgeInsets.symmetric(vertical: 10),
