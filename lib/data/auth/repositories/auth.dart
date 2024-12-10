@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lecognition/data/auth/models/refresh_token_params.dart';
 import 'package:lecognition/data/auth/models/signin_req_params.dart';
 import 'package:lecognition/data/auth/models/signup_req_params.dart';
@@ -21,9 +22,6 @@ class AuthRepositoryImpl extends AuthRepository {
         return Left(error);
       },
       (data) async {
-        // final SharedPreferences sharedPreferences =
-        //     await SharedPreferences.getInstance();
-        // sharedPreferences.setString('access_token', data['access'].toString());
         return Right(data);
       },
     );
@@ -37,6 +35,18 @@ class AuthRepositoryImpl extends AuthRepository {
         return Left(error);
       },
       (data) async {
+        final storage = FlutterSecureStorage();
+        await storage.write(
+          key: '1',
+          value: data['access'],
+        );
+        await storage.write(
+          key: '2',
+          value: data['refresh'],
+        );
+        Map<String, dynamic> valueStorage = await storage.readAll();
+        print(valueStorage);
+        await storage.deleteAll();
         final SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
         sharedPreferences.setString('access_token', data['access']);
@@ -57,6 +67,18 @@ class AuthRepositoryImpl extends AuthRepository {
           return false;
         },
         (data) async {
+          final storage = FlutterSecureStorage();
+          await storage.write(
+            key: '1',
+            value: data['access'],
+          );
+          await storage.write(
+            key: '2',
+            value: data['refresh'],
+          );
+          Map<String, dynamic> valueStorage = await storage.readAll();
+          print(valueStorage);
+          await storage.deleteAll();
           final SharedPreferences sharedPreferences =
               await SharedPreferences.getInstance();
           sharedPreferences.setString('access_token', data['access']);

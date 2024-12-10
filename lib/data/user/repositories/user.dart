@@ -21,9 +21,6 @@ class UserRepositoryImpl extends UserRepository {
           UserEntity.fromJson(userData),
         );
         print(user);
-        // final SharedPreferences sharedPreferences =
-        //     await SharedPreferences.getInstance();
-        // sharedPreferences.setString('access_token', data['access']);
         return Right(user);
       },
     );

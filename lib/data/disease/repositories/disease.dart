@@ -21,9 +21,6 @@ class DiseaseRepositoryImpl extends DiseaseRepository {
               ),
             )
             .toList();
-        // final SharedPreferences sharedPreferences =
-        //     await SharedPreferences.getInstance();
-        // sharedPreferences.setString('access_token', data['access']);
         return Right(diseases);
       },
     );

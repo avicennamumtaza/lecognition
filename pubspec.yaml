@@ -56,6 +56,11 @@ dependencies:
   flutter_svg:
   fan_carousel_image_slider:
   mockito: ^5.4.4
+  flutter_map: ^7.0.2
+  location: ^6.0.2
+  latlong2: ^0.9.1
+  geolocator: ^12.0.0
+  flutter_secure_storage: ^4.3.0
 
 #flutter_native_splash:
 #  # color: "#ffffff" # Set background color of the splash screen
