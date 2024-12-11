@@ -8,11 +8,8 @@ import 'package:lecognition/presentation/diagnozer/pages/result.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:lecognition/presentation/tree/bloc/tree_cubit.dart';
 import 'package:lecognition/presentation/tree/bloc/tree_state.dart';
-// import 'package:path_provider/path_provider.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:lecognition/data/dummy_diagnosis.dart';
-// import 'package:lecognition/data/dummy_disease.dart';
-// import 'dart:math';
+
+import '../../tree/pages/add_tree.dart';
 
 class DiagnozerScreen extends StatefulWidget {
   const DiagnozerScreen({super.key});
@@ -26,11 +23,9 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
   CameraController? cameraController;
   File? _selectedImage;
   bool _isTorchOn = false;
-  // File? _selectedImage; // Ganti sesuai implementasi gambar Anda
-  String? _selectedPlantName; // Nilai yang dipilih dari dropdown
-  int? _selectedPlantId; // Nilai yang dipilih dari dropdown
+  String? _selectedPlantName;
+  int? _selectedPlantId;
 
-  // Daftar tanaman untuk dropdown
   List<String> treesName = [];
   List<int> treesId = [];
 
@@ -75,7 +70,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
         return AlertDialog(
           title: const Text('Konfirmasi'),
           content: Column(
-            mainAxisSize: MainAxisSize.min, // Supaya kolom tidak terlalu besar
+            mainAxisSize: MainAxisSize.min,
             children: [
               Image(
                 height: MediaQuery.of(context).size.height * 0.5,
@@ -85,29 +80,50 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
               ),
               const SizedBox(height: 10),
               DropdownButtonFormField<String>(
-                decoration: const InputDecoration(
-                  labelText: "Pilih Tanaman",
-                  border: OutlineInputBorder(),
-                  fillColor: Colors.white,
-                ),
-                value: _selectedPlantName, // Nilai saat ini
-                items: trees.map((tree) {
-                  final treeName =
-                      tree.name; // Ganti dengan properti `name` pada TreeEntity
-                  // final treeId =
-                  //     tree.id; // Ganti dengan properti `id` pada TreeEntity
-                  return DropdownMenuItem<String>(
-                    value: treeName,
-                    child: Text(treeName!),
-                  );
-                }).toList(),
-                onChanged: (String? value) {
-                  setState(() {
-                    _selectedPlantName = value;
-                    int index = trees.indexWhere((tree) => tree.name == value);
-                    _selectedPlantId = trees[index].id;
-                  });
-                },
+                  decoration: const InputDecoration(
+                    labelText: "Pilih Tanaman",
+                    border: OutlineInputBorder(),
+                    fillColor: Colors.white,
+                  ),
+                  value: _selectedPlantName,
+                  items: [
+                    ...trees.map((tree) {
+                      final treeName = tree.name;
+                      return DropdownMenuItem<String>(
+                        value: treeName,
+                        child: Text(treeName!),
+                      );
+                    }).toList(),
+                    DropdownMenuItem<String>(
+                      value: 'add_plant',
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Icon(Icons.add, color: Colors.blue),
+                          SizedBox(width: 8),
+                          Text('Tambah Tanaman', style: TextStyle(color: Colors.blue)),
+                        ],
+                      ),
+                    ),
+                  ],
+                  onChanged: (String? value) {
+                    if (value == 'add_plant') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddTreeScreen(image: '')
+                        ),
+                      ).then((_) async {
+                        BlocProvider.of<TreeCubit>(context).getAllTrees();
+                      });
+                    } else {
+                      setState(() {
+                        _selectedPlantName = value;
+                        int index = trees.indexWhere((tree) => tree.name == value);
+                        _selectedPlantId = trees[index].id;
+                      });
+                    }
+                  }
               ),
             ],
           ),
@@ -120,6 +136,10 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
             ),
             TextButton(
               onPressed: () {
+                if (_selectedPlantId == null) {
+                  _showErrorDialog("Silakan pilih tanaman terlebih dahulu.");
+                  return;
+                }
                 Navigator.of(context).pop();
                 _navigateToResultScreen();
               },
@@ -157,8 +177,6 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
       setState(() {
         _selectedImage = File(returnedImage.path);
       });
-      // await _saveImageLocally(_selectedImage!);
-      // await _saveDiagnosis(_selectedImage!);
       _confirm(trees);
     } catch (e) {
       _showErrorDialog('Failed to pick image from gallery: ${e.toString()}');
@@ -174,7 +192,6 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
     }
 
     try {
-      // Ambil gambar dari kamera dan simpan dalam file sementara
       await cameraController?.setFocusMode(FocusMode.auto);
       final XFile image = await cameraController!.takePicture();
       _isTorchOn = false;
@@ -184,8 +201,6 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
         _selectedImage = File(image.path);
       });
 
-      // await _saveImageLocally(_selectedImage!);
-      // await _saveDiagnosis(savedImage);
       _confirm(trees);
     } catch (e) {
       _showErrorDialog('Error saat mengambil gambar: $e');
@@ -195,12 +210,6 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
   void _navigateToResultScreen() async {
     if (_selectedImage != null) {
       try {
-        // final prefs = await SharedPreferences.getInstance();
-        // List<String>? savedPlantNames =
-        //     prefs.getStringList('plant_names') ?? [];
-
-        // String plantName = 'Unknown Plant';
-
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => ResultScreen(
@@ -243,20 +252,15 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
         builder: (context, state) {
           if (state is TreesLoaded) {
             return _buildCameraPreview(state.trees);
-          }
-          if (state is TreeLoading) {
+          } else if (state is TreeLoading) {
             return const Center(
-              child: SpinKitSquareCircle(
-                color: Color.fromARGB(255, 255, 131, 23),
-                size: 50.0,
-              ),
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return const Center(
+              child: Text('Gagal memuat data tanaman'),
             );
           }
-          // if (state is TreeFailureLoad) {
-          return const Center(
-            child: Text('Gagal memuat data tanaman'),
-          );
-          // }
         },
       ),
     );
@@ -289,7 +293,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
                   IconButton(
                     onPressed: () => _pickImageGallery(trees),
                     icon:
-                        const Icon(Icons.image, size: 35, color: Colors.white),
+                    const Icon(Icons.image, size: 35, color: Colors.white),
                   ),
                   Container(
                     decoration: const BoxDecoration(
