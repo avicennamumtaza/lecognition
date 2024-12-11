@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lecognition/domain/tree/entities/tree.dart';
-import 'package:lecognition/presentation/tree/pages/detail.dart';
+import 'package:lecognition/presentation/tree/bloc/tree_cubit.dart';
+import 'package:lecognition/presentation/tree/pages/tree.dart';
 
 class TreeCard extends StatelessWidget {
   final TreeEntityWithoutForeign tree;
@@ -12,8 +14,10 @@ class TreeCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return DetailPlantScreen(tree: tree);
-        }));
+          return TreeDetailScreen(tree: tree);
+        })).then((_) {
+          BlocProvider.of<TreeCubit>(context).getAllTrees();
+        });
       },
       child: Card(
         shape: RoundedRectangleBorder(
@@ -34,7 +38,8 @@ class TreeCard extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(10.0),
                 child: Image.network(
-                  tree.image ?? 'https://via.placeholder.com/150', // Default image
+                  tree.image ??
+                      'https://via.placeholder.com/150', // Default image
                   height: 120,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -43,7 +48,7 @@ class TreeCard extends StatelessWidget {
               const SizedBox(height: 10),
               // Title
               Text(
-                tree.desc ?? 'Deskripsi tidak tersedia',
+                tree.name!,
                 style: const TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,
@@ -59,7 +64,8 @@ class TreeCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       '(${tree.latitude?.toStringAsFixed(2)}, ${tree.longitude?.toStringAsFixed(2)})',
-                      style: const TextStyle(fontSize: 14.0, color: Colors.grey),
+                      style:
+                          const TextStyle(fontSize: 14.0, color: Colors.grey),
                     ),
                   ),
                 ],

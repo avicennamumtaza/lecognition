@@ -175,8 +175,8 @@ class _AddTreeScreenState extends State<AddTreeScreen> {
           SizedBox(height: 20),
           FormBoilerplate.buildTextField(
             'desc',
-            'Deskripsi Tanaman',
-            'Deskripsi Tanaman', // Updated hintText
+            'Nama Tanaman',
+            'Nama Tanaman', // Updated hintText
             Icons.title,
             _descController,
             TextInputType.text,
