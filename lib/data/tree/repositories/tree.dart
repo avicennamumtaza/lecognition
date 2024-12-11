@@ -2,6 +2,8 @@ import 'package:dartz/dartz.dart';
 import 'package:lecognition/common/helper/mapper/tree_mapper.dart';
 import 'package:lecognition/data/tree/models/add_tree_params.dart';
 import 'package:lecognition/data/tree/models/delete_tree_params.dart';
+import 'package:lecognition/data/tree/models/get_tree_scans_params.dart';
+import 'package:lecognition/data/tree/models/update_tree_params.dart';
 import 'package:lecognition/data/tree/sources/tree_api_service.dart';
 import 'package:lecognition/domain/tree/entities/tree.dart';
 import 'package:lecognition/domain/tree/repositories/tree.dart';
@@ -58,8 +60,46 @@ class TreeRepositoryImpl extends TreeRepository {
               ),
             )
             .toList();
-        print("userTrees $userTrees");
+        // print("================================");
+        // userTrees.map((e) {
+        //   if (e.lastDiagnosis != null) {
+        //     print(
+        //       "LAST PREDICTED DISEASE NAME ${e.lastDiagnosis.toString()}",
+        //     );
+        //   } else {
+        //     print(
+        //       "No last diagnosis found for tree with ID ${e.id}",
+        //     );
+        //   }
+        // }).toList();
+        // print("userTrees $userTrees");
         return Right(userTrees);
+      },
+    );
+  }
+
+  @override
+  Future<Either> getTreeScans(GetTreeScansParams params) async {
+    var data = await sl<TreeApiService>().getTreeScans(params);
+    return data.fold(
+      (error) {
+        return Left(error);
+      },
+      (data) async {
+        return Right(data);
+      },
+    );
+  }
+
+  @override
+  Future<Either> updateTree(UpdateTreeParams params) async {
+    var data = await sl<TreeApiService>().updateTree(params);
+    return data.fold(
+      (error) {
+        return Left(error);
+      },
+      (data) async {
+        return Right(data);
       },
     );
   }

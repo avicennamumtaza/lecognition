@@ -4,11 +4,15 @@ import 'package:lecognition/core/constant/api_urls.dart';
 import 'package:lecognition/core/network/dio_client.dart';
 import 'package:lecognition/data/tree/models/add_tree_params.dart';
 import 'package:lecognition/data/tree/models/delete_tree_params.dart';
+import 'package:lecognition/data/tree/models/get_tree_scans_params.dart';
+import 'package:lecognition/data/tree/models/update_tree_params.dart';
 import 'package:lecognition/service_locator.dart';
 
 abstract class TreeApiService {
   Future<Either> getTrees();
+  Future<Either> getTreeScans(GetTreeScansParams params);
   Future<Either> addTree(AddTreeParams params);
+  Future<Either> updateTree(UpdateTreeParams params);
   Future<Either> deleteTree(DeleteTreeParams params);
 }
 
@@ -68,6 +72,44 @@ class TreeApiServiceImpl extends TreeApiService {
     try {
       var response = await sl<DioClient>().delete(
         ApiUrls.tree + "/${params.treeId.toString()}",
+      );
+      print(response);
+      return Right(response.toString());
+    } on DioException catch (error) {
+      return Left(error);
+    }
+  }
+
+  @override
+  Future<Either> getTreeScans(GetTreeScansParams params) async {
+    try {
+      var response = sl<DioClient>().get(
+        ApiUrls.scanByTree + "/${params.treeId}",
+        options: Options(
+          validateStatus: (status) {
+            return status != null && status <= 500;
+          },
+        ),
+      );
+      print(response);
+      return Right(response.toString());
+    } on DioException catch (error) {
+      return Left(error);
+    }
+  }
+
+  @override
+  Future<Either> updateTree(UpdateTreeParams params) async {
+    try {
+      print(params.toMap());
+      var response = await sl<DioClient>().put(
+        ApiUrls.tree + "/${params.id}",
+        data: params.toMap(),
+        options: Options(
+          validateStatus: (status) {
+            return status != null && status <= 500;
+          },
+        ),
       );
       print(response);
       return Right(response.toString());

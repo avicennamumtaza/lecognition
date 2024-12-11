@@ -27,7 +27,9 @@ import 'package:lecognition/domain/disease/usecases/get_all_diseases.dart';
 import 'package:lecognition/domain/tree/repositories/tree.dart';
 import 'package:lecognition/domain/tree/usecases/add_tree.dart';
 import 'package:lecognition/domain/tree/usecases/delete_tree.dart';
+import 'package:lecognition/domain/tree/usecases/get_tree_scans.dart';
 import 'package:lecognition/domain/tree/usecases/get_trees.dart';
+import 'package:lecognition/domain/tree/usecases/update_tree.dart';
 import 'package:lecognition/domain/user/repositories/user.dart';
 import 'package:lecognition/domain/user/usecases/get_user_profile.dart';
 import 'package:lecognition/domain/user/usecases/update_user_profile.dart';
@@ -67,4 +69,6 @@ void setupServiceLocator() {
   sl.registerSingleton<GetTreesUseCase>(GetTreesUseCase());
   sl.registerSingleton<AddTreeUseCase>(AddTreeUseCase());
   sl.registerSingleton<DeleteTreeUseCase>(DeleteTreeUseCase());
+  sl.registerSingleton<GetTreeScansUseCase>(GetTreeScansUseCase());
+  sl.registerSingleton<UpdateTreeUseCase>(UpdateTreeUseCase());
 }
