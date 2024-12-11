@@ -22,7 +22,8 @@ List<DiseaseDetail> diseaseDetails = [
   DiseaseDetail(
     id: 3,
     name: 'Antraknosa',
-    desc: 'Penyakit jamur yang menyerang daun dan buah mangga, menyebabkan bintik-bintik hitam dan pembusukan buah.',
+    desc:
+        'Penyakit jamur yang menyerang daun dan buah mangga, menyebabkan bintik-bintik hitam dan pembusukan buah.',
     treatment: [
       'Gunakan fungisida untuk mengendalikan infeksi jamur.',
       'Pangkas area tanaman yang terinfeksi untuk mencegah penyebaran.',
@@ -39,7 +40,8 @@ List<DiseaseDetail> diseaseDetails = [
   DiseaseDetail(
     id: 4,
     name: 'Kanker Bakteri',
-    desc: 'Infeksi bakteri yang menyebabkan kanker atau luka pada cabang tanaman.',
+    desc:
+        'Infeksi bakteri yang menyebabkan kanker atau luka pada cabang tanaman.',
     treatment: [
       'Gunakan fungisida berbasis tembaga untuk mengurangi infeksi bakteri.',
       'Pangkas dan buang cabang yang terinfeksi untuk mencegah penyebaran.',
@@ -56,7 +58,8 @@ List<DiseaseDetail> diseaseDetails = [
   DiseaseDetail(
     id: 5,
     name: 'Infestasi Kumbang Pemotong',
-    desc: 'Infestasi serangga yang menyebabkan kerusakan berupa potongan pada cabang dan buah.',
+    desc:
+        'Infestasi serangga yang menyebabkan kerusakan berupa potongan pada cabang dan buah.',
     treatment: [
       'Gunakan insektisida yang efektif terhadap kumbang pemotong.',
       'Pangkas dan buang cabang atau buah yang terinfestasi.',
@@ -90,7 +93,8 @@ List<DiseaseDetail> diseaseDetails = [
   DiseaseDetail(
     id: 7,
     name: 'Gall Midge',
-    desc: 'Larva serangga yang membentuk galls (benjolan) pada daun dan batang.',
+    desc:
+        'Larva serangga yang membentuk galls (benjolan) pada daun dan batang.',
     treatment: [
       'Gunakan insektisida sistemik untuk membasmi larva.',
       'Pangkas dan buang bagian tanaman yang terdapat galls.',
@@ -102,7 +106,11 @@ List<DiseaseDetail> diseaseDetails = [
       'Hindari penumpukan dedaunan kering di sekitar tanaman.',
     ],
     severity: 'Rendah',
-    symptoms: ['Benjolan pada daun', 'Daun menggulung', 'Pertumbuhan terhambat'],
+    symptoms: [
+      'Benjolan pada daun',
+      'Daun menggulung',
+      'Pertumbuhan terhambat'
+    ],
   ),
   DiseaseDetail(
     id: 8,
@@ -119,12 +127,17 @@ List<DiseaseDetail> diseaseDetails = [
       'Berikan pupuk yang sesuai untuk meningkatkan daya tahan tanaman.',
     ],
     severity: 'Sedang',
-    symptoms: ['Serbuk putih pada daun', 'Daun menggulung', 'Daun rontok sebelum waktunya'],
+    symptoms: [
+      'Serbuk putih pada daun',
+      'Daun menggulung',
+      'Daun rontok sebelum waktunya'
+    ],
   ),
   DiseaseDetail(
     id: 2,
     name: 'Jamur Jelaga',
-    desc: 'Lapisan hitam pada daun yang disebabkan oleh ekskresi hama seperti kutu daun.',
+    desc:
+        'Lapisan hitam pada daun yang disebabkan oleh ekskresi hama seperti kutu daun.',
     treatment: [
       'Cuci daun dengan campuran air dan sabun lembut untuk membersihkan jamur.',
       'Gunakan insektisida untuk mengendalikan hama penyebab ekskresi.',
@@ -136,18 +149,18 @@ List<DiseaseDetail> diseaseDetails = [
       'Jaga kebersihan area sekitar tanaman dari daun yang gugur.',
     ],
     severity: 'Rendah',
-    symptoms: ['Lapisan hitam pada daun', 'Fotosintesis terganggu', 'Daun menguning'],
+    symptoms: [
+      'Lapisan hitam pada daun',
+      'Fotosintesis terganggu',
+      'Daun menguning'
+    ],
   ),
   DiseaseDetail(
     id: 1,
     name: 'Sehat',
     desc: 'Tanaman mangga yang sehat tanpa tanda-tanda penyakit.',
     treatment: ['Tidak ada.'],
-    prevention: [
-      'Pantau tanaman secara rutin untuk memastikan kondisinya tetap sehat.',
-      'Berikan perawatan yang baik seperti penyiraman dan pemupukan secara teratur.',
-      'Jaga kebersihan lingkungan sekitar tanaman.',
-    ],
+    prevention: ['Tidak ada.'],
     severity: 'Tidak ada',
     symptoms: ['Daun hijau', 'Pertumbuhan sehat', 'Produksi buah'],
   ),

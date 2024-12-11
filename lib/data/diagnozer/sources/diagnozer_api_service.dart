@@ -34,7 +34,7 @@ class DiagnozerApiServiceImpl extends DiagnozerApiService {
         );
         print("RESPONSE STATUS CODE ${response.statusCode}");
         if (response.statusCode == 406) {
-          return Left("Daun tidak terdeteksi.");
+          return Left("Daun mangga tidak terdeteksi.");
         }
         print("RESPONSE DATA ${response.data}");
         return Right(response.data);

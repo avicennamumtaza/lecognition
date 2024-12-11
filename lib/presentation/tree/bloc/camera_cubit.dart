@@ -1,8 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lecognition/domain/tree/usecases/get_trees.dart';
 import 'package:lecognition/presentation/tree/bloc/camera_state.dart';
-import 'package:lecognition/service_locator.dart';
 
 class CameraCubit extends Cubit<CameraPhotoState> {
   CameraCubit() : super(CameraPhotoLoading());

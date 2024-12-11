@@ -93,7 +93,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
                 value: _selectedPlantName, // Nilai saat ini
                 items: trees.map((tree) {
                   final treeName =
-                      tree.desc; // Ganti dengan properti `name` pada TreeEntity
+                      tree.name; // Ganti dengan properti `name` pada TreeEntity
                   // final treeId =
                   //     tree.id; // Ganti dengan properti `id` pada TreeEntity
                   return DropdownMenuItem<String>(
@@ -104,7 +104,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
                 onChanged: (String? value) {
                   setState(() {
                     _selectedPlantName = value;
-                    int index = trees.indexWhere((tree) => tree.desc == value);
+                    int index = trees.indexWhere((tree) => tree.name == value);
                     _selectedPlantId = trees[index].id;
                   });
                 },

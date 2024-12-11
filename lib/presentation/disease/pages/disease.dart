@@ -51,10 +51,8 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
             }
 
             return ListView(
-              padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
+              // padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
               children: [
-                // Detail konten penyakit...
-                // Tombol Bookmark
                 InkWell(
                   onTap: () {
                     showDialog(
@@ -65,19 +63,19 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
                     );
                   },
                   child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    margin: const EdgeInsets.only(bottom: 15),
+                    // padding: const EdgeInsets.all(10),
+                    // decoration: BoxDecoration(
+                    //   color: Colors.grey[300],
+                    //   borderRadius: BorderRadius.circular(10),
+                    // ),
+                    // margin: const EdgeInsets.only(bottom: 15),
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height / 3.5,
                     child: Hero(
                       tag: "photo_${widget.disease.id}",
                       child: Container(
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
+                          // borderRadius: BorderRadius.circular(10.0),
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: AssetImage(
@@ -95,55 +93,110 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
                     ),
                   ),
                 ),
-                // Deskripsi Penyakit
-                _descriptionCard(
-                    title: widget.disease.name!,
-                    subtitles: [widget.disease.desc!],
-                    context: context),
+                // Informasi Penyakit
+                Container(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.vertical(
+                      bottom: Radius.circular(
+                        20,
+                      ),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.disease.name.toString(),
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.disease.desc.toString(),
+                            style: const TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
                 // Level Bahaya
                 _descriptionCard(
                     title: 'Level Bahaya',
                     subtitles: [widget.disease.detail!.severity],
                     context: context),
+                Divider(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSecondary
+                      .withOpacity(0.5),
+                  thickness: 1.0,
+                  height: 1.0,
+                ),
                 // Pengobatan
                 _descriptionCard(
                     title: 'Pengobatan',
                     subtitles: widget.disease.detail!.treatment,
                     context: context),
+                Divider(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSecondary
+                      .withOpacity(0.5),
+                  thickness: 1.0,
+                  height: 1.0,
+                ),
                 // Pencegahan
                 _descriptionCard(
                     title: 'Pencegahan',
                     subtitles: widget.disease.detail!.prevention,
                     context: context),
-                ElevatedButton(
-                  onPressed: () {
-                    if (isBookmarked) {
-                      context
-                          .read<BookmarkCubit>()
-                          .unbookmarkDisease(idBookmarked!);
-                    } else {
-                      context
-                          .read<BookmarkCubit>()
-                          .bookmarkDisease(widget.disease.id!);
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: isBookmarked
-                        ? Colors.red
-                        : Theme.of(context).colorScheme.primary,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (isBookmarked) {
+                        context
+                            .read<BookmarkCubit>()
+                            .unbookmarkDisease(idBookmarked!);
+                      } else {
+                        context
+                            .read<BookmarkCubit>()
+                            .bookmarkDisease(widget.disease.id!);
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: isBookmarked
+                          ? Colors.red
+                          : Theme.of(context).colorScheme.primary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                  ),
-                  child: Text(
-                    isBookmarked ? 'Batal Simpan' : 'Simpan Penyakit',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                    child: Text(
+                      isBookmarked ? 'Batal Simpan' : 'Simpan Penyakit',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
+                SizedBox(height: 20),
               ],
             );
           },
@@ -158,10 +211,10 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
     required BuildContext context,
   }) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 15),
+      margin: const EdgeInsets.only(bottom: 5, left: 10, right: 10),
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
