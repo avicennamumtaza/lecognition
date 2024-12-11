@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:lecognition/domain/tree/entities/tree.dart';
+import 'package:flutter_map/flutter_map.dart';
 
 import '../../../common/helper/message/display_message.dart';
 import '../../../common/widgets/appbar.dart';
@@ -20,6 +22,17 @@ class DetailPlantScreen extends StatefulWidget {
 }
 
 class _DetailPlantScreenState extends State<DetailPlantScreen> {
+  late LatLng currentLocation;
+
+  @override
+  void initState() {
+    super.initState();
+    currentLocation = LatLng(
+      widget.tree.latitude ?? 0,
+      widget.tree.longitude ?? 0,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,15 +122,47 @@ class _DetailPlantScreenState extends State<DetailPlantScreen> {
               margin: const EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                 color: widget.tree.longitude != null && widget.tree.latitude != null ? Colors.greenAccent : Colors.grey[350],
-                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
               ),
               child: Stack(
                 children: [
-                  Center(
-                    child: Icon(
-                      Icons.location_pin,
-                      size: 50,
-                      color: widget.tree.longitude != null && widget.tree.latitude != null ? Colors.red : Colors.grey
+                  GestureDetector(
+                    onScaleStart: (_) {},
+                    onScaleUpdate: (_) {},
+                    child: FlutterMap(
+                      options: MapOptions(
+                        initialCenter: currentLocation,
+                        interactionOptions: InteractionOptions(
+                          flags: 2,
+                          pinchMoveThreshold: 1.0,
+                          pinchMoveWinGestures: 1,
+                          pinchZoomThreshold: 1.0,
+                          pinchZoomWinGestures: 1,
+                        ),
+                        initialZoom: 13.0,
+                        maxZoom: 13.0,
+                        minZoom: 13.0,
+                      ),
+                      children: [
+                        TileLayer(
+                          urlTemplate:
+                          "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                        ),
+                        Center(
+                          child: Icon(
+                            Icons.location_pin,
+                            size: 40,
+                            color: widget.tree.longitude != null && widget.tree.latitude != null ? Colors.red : Colors.grey
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Positioned(
@@ -127,13 +172,10 @@ class _DetailPlantScreenState extends State<DetailPlantScreen> {
                       height: MediaQuery.of(context).size.width * 0.05,
                       decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.5),
-                        borderRadius: BorderRadius.vertical(
-                          bottom: Radius.circular(15),
-                        ),
                       ),
                       alignment: Alignment.center,
                       child: Text(
-                        '(${widget.tree.latitude?.toStringAsFixed(2)}, ${widget.tree.longitude?.toStringAsFixed(2)})',
+                        '(${widget.tree.latitude}, ${widget.tree.longitude})',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 12,
