@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lecognition/core/configs/assets/app_images.dart';
 import 'package:lecognition/domain/bookmark/entities/bookmark.dart';
 import 'package:lecognition/presentation/bookmark/bloc/bookmark_cubit.dart';
-import 'package:lecognition/presentation/disease/pages/disease.dart';
+import 'package:lecognition/presentation/home/pages/disease.dart';
 
 class BookmarkedCard extends StatefulWidget {
   final BookmarkEntity disease;

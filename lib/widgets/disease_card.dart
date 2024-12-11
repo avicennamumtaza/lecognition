@@ -6,7 +6,7 @@ import 'package:lecognition/data/bookmark/models/bookmark_disease_params.dart';
 import 'package:lecognition/domain/bookmark/usecases/bookmark_disease.dart';
 import 'package:lecognition/domain/disease/entities/disease.dart';
 import 'package:lecognition/presentation/bookmark/bloc/bookmark_cubit.dart';
-import 'package:lecognition/presentation/disease/pages/disease.dart';
+import 'package:lecognition/presentation/home/pages/disease.dart';
 import 'package:lecognition/service_locator.dart';
 
 class DiseaseCard extends StatefulWidget {

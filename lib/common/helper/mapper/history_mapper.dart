@@ -1,8 +1,8 @@
-import 'package:lecognition/domain/diagnozer/entities/diagnosis.dart';
+import 'package:lecognition/domain/history/entities/history.dart';
 
-class DiagnosisMapper {
-  static DiagnosisEntity toEntity(DiagnosisEntity data) {
-    return DiagnosisEntity(
+class HistoryMapper {
+  static HistoryEntity toEntity(HistoryEntity data) {
+    return HistoryEntity(
       id: data.id,
       disease: data.disease,
       datetime: data.datetime,

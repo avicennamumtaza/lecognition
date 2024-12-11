@@ -1,3 +1,8 @@
+import 'dart:convert';
+
+import 'package:lecognition/domain/disease/entities/disease.dart';
+import 'package:lecognition/domain/tree/entities/tree.dart';
+
 class DiagnosisEntity {
   int? id;
   int? datetime;
@@ -35,7 +40,16 @@ class DiagnosisEntity {
     data['accuracy'] = this.accuracy;
     data['desc'] = this.desc;
     data['user'] = this.user;
-    data['disease'] = this.disease;
+    data['disease'] = DiseaseEntity.fromJson(
+      jsonDecode(
+        this.disease.toString(),
+      ),
+    ).toJson();
+    data['tree']  = TreeEntity.fromJson(
+      jsonDecode(
+        this.disease.toString(),
+      ),
+    ).toJson();
     return data;
   }
 }

@@ -18,12 +18,13 @@ class ApiUrls {
   static const refreshToken = "token/refresh/";
 
   // User-related URLs
-  static const getUserById = "user"; 
+  static const getUserById = "user";
   static const getAllUsers =
       "user/all"; // This will be used for both POST (register) and GET all users
 
   // Scan-related URLs
   static const scan = "scan";
+  static const scanByUser = "scan/user";
 
   // Disease-related URLs
   static const getAllDiseases = "disease";
