@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lecognition/common/helper/message/display_message.dart';
-import 'package:lecognition/common/widgets/appbar.dart';
+import 'package:lecognition/widgets/appbar.dart';
 import 'package:lecognition/core/configs/assets/app_images.dart';
 import 'package:lecognition/domain/disease/entities/disease.dart';
 import 'package:lecognition/presentation/bookmark/bloc/bookmark_cubit.dart';
@@ -133,37 +133,7 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
                     ],
                   ),
                 ),
-                // Level Bahaya
-                _descriptionCard(
-                    title: 'Level Bahaya',
-                    subtitles: [widget.disease.detail!.severity],
-                    context: context),
-                Divider(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSecondary
-                      .withOpacity(0.5),
-                  thickness: 1.0,
-                  height: 1.0,
-                ),
-                // Pengobatan
-                _descriptionCard(
-                    title: 'Pengobatan',
-                    subtitles: widget.disease.detail!.treatment,
-                    context: context),
-                Divider(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSecondary
-                      .withOpacity(0.5),
-                  thickness: 1.0,
-                  height: 1.0,
-                ),
-                // Pencegahan
-                _descriptionCard(
-                    title: 'Pencegahan',
-                    subtitles: widget.disease.detail!.prevention,
-                    context: context),
+                SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: ElevatedButton(
@@ -196,7 +166,38 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 10),
+                // Level Bahaya
+                _descriptionCard(
+                    title: 'Level Bahaya',
+                    subtitles: [widget.disease.detail!.severity],
+                    context: context),
+                Divider(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSecondary
+                      .withOpacity(0.5),
+                  thickness: 1.0,
+                  height: 1.0,
+                ),
+                // Pengobatan
+                _descriptionCard(
+                    title: 'Pengobatan',
+                    subtitles: widget.disease.detail!.treatment,
+                    context: context),
+                Divider(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSecondary
+                      .withOpacity(0.5),
+                  thickness: 1.0,
+                  height: 1.0,
+                ),
+                // Pencegahan
+                _descriptionCard(
+                    title: 'Pencegahan',
+                    subtitles: widget.disease.detail!.prevention,
+                    context: context),
               ],
             );
           },

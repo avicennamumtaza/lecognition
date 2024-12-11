@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:lecognition/common/widgets/appbar.dart';
+import 'package:lecognition/widgets/appbar.dart';
 import 'package:lecognition/domain/disease/entities/disease.dart';
 import 'package:lecognition/presentation/history/pages/history_detail.dart';
-import 'package:lecognition/presentation/home/pages/home.dart';
+import 'package:lecognition/presentation/home/pages/home2.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HistoriScreen extends StatefulWidget {

@@ -3,18 +3,17 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:lecognition/common/widgets/appbar.dart';
+import 'package:lecognition/domain/disease/entities/disease.dart';
+import 'package:lecognition/domain/disease/entities/disease_detail.dart';
+import 'package:lecognition/presentation/disease/pages/disease.dart';
+import 'package:lecognition/widgets/appbar.dart';
 import 'package:lecognition/data/diagnozer/models/get_diagnoze_result_params.dart';
 import 'package:lecognition/presentation/diagnozer/bloc/diagnosis_state.dart';
 import 'package:lecognition/presentation/diagnozer/bloc/diagnozer_cubit.dart';
-import 'package:lecognition/presentation/home/pages/home.dart';
+import 'package:lecognition/presentation/home/pages/home2.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../../domain/disease/entities/disease.dart';
-import '../../../domain/disease/entities/disease_detail.dart';
-import '../../disease/pages/disease.dart';
 
 class ResultScreen extends StatefulWidget {
   ResultScreen({
@@ -127,7 +126,7 @@ class _ResultScreenState extends State<ResultScreen> {
         ),
       );
     }
-    print("IIIIIIIIIIIDDDDDDDDDDDDDDD TTTTTTTTTRRRRRRRRRRRREEEEEEEEEEEEEEEEEEEEEEEEEEEEE ${widget.treeId}");
+    // print("IIIIIIIIIIIDDDDDDDDDDDDDDD TTTTTTTTTRRRRRRRRRRRREEEEEEEEEEEEEEEEEEEEEEEEEEEEE ${widget.treeId}");
     return Scaffold(
       appBar: AppBarWidget(title: 'Hasil Diagnosis'),
       body: BlocProvider<DiagnozerCubit>(
@@ -154,69 +153,72 @@ class _ResultScreenState extends State<ResultScreen> {
             // }
             if (state is DiagnosisFailureLoad) {
               return Center(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // ListTile(
-                  Icon(
-                    Icons.error_outline,
-                    size: 100,
-                    color: Colors.red,
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    "Proses diagnosis gagal :(",
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red[900],
+                  child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // ListTile(
+                    Icon(
+                      Icons.error_outline,
+                      size: 100,
+                      color: Colors.red,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 5),
-                  state.errorMessage.isNotEmpty
-                      ? Text(
-                          "${state.errorMessage} Silahkan coba lagi dengan lebih fokus ke objek daun atau pilih foto lain.",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red[900],
-                          ),
-                          textAlign: TextAlign.center,
-                        )
-                      : SizedBox.shrink(),
-                  // ),
-                  SizedBox(height: 20),
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
+                    SizedBox(height: 10),
+                    Text(
+                      "Proses diagnosis gagal :(",
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red[900],
                       ),
-                      child: Text(
-                        'Coba lagi',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 5),
+                    state.errorMessage.isNotEmpty
+                        ? Text(
+                            "${state.errorMessage}\nSilahkan coba lagi dengan lebih fokus ke satu objek daun atau pilih foto lain.",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red[900],
+                            ),
+                            textAlign: TextAlign.center,
+                          )
+                        : SizedBox.shrink(),
+                    // ),
+                    SizedBox(height: 20),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Text(
+                          'Coba lagi',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ));
             }
             if (state is DiagnosisLoaded) {

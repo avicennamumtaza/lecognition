@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:lecognition/common/helper/message/display_message.dart';
-import 'package:lecognition/common/widgets/appbar.dart';
-import 'package:lecognition/common/widgets/form.dart';
+import 'package:lecognition/widgets/appbar.dart';
+import 'package:lecognition/widgets/form.dart';
 import 'package:lecognition/data/user/models/update_user_profile_params.dart';
 import 'package:lecognition/domain/user/entities/user.dart';
 import 'package:lecognition/domain/user/usecases/update_user_profile.dart';
@@ -51,20 +51,22 @@ class _EditAccountState extends State<EditAccount> {
                   children: [
                     Hero(
                       tag: 'profile_image',
-                      child: Stack(children: [
-                        CircleAvatar(
-                          radius: 100,
-                          backgroundImage: AssetImage(
-                            'assets/avatars/Avatar_${widget.userData.avatar}.png',
+                      child: Stack(
+                        children: [
+                          CircleAvatar(
+                            radius: 100,
+                            backgroundImage: AssetImage(
+                              'assets/avatars/Avatar_${widget.userData.avatar}.png',
+                            ),
+                            backgroundColor: Colors.transparent,
                           ),
-                          backgroundColor: Colors.transparent,
-                        ),
-                        Positioned(
-                          right: 0,
-                          bottom: 0,
-                          child: _editIconButton(context),
-                        ),
-                      ]),
+                          Positioned(
+                            right: 0,
+                            bottom: 0,
+                            child: _editIconButton(context),
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 20),
                   ],
@@ -123,8 +125,9 @@ class _EditAccountState extends State<EditAccount> {
             _emailController,
             TextInputType.emailAddress,
             [
-              FormBuilderValidators.required(),
-              FormBuilderValidators.email(),
+              FormBuilderValidators.required(
+                  errorText: "Email tidak boleh kosong"),
+              FormBuilderValidators.email(errorText: "Email tidak valid"),
             ],
           ),
           const SizedBox(height: 20),
@@ -136,8 +139,10 @@ class _EditAccountState extends State<EditAccount> {
             _usernameController,
             TextInputType.text,
             [
-              FormBuilderValidators.required(),
-              FormBuilderValidators.minLength(6),
+              FormBuilderValidators.required(
+                  errorText: "Username tidak boleh kosong"),
+              FormBuilderValidators.minLength(6,
+                  errorText: "Username minimal 6 karakter"),
             ],
           ),
           const SizedBox(height: 20),
@@ -149,8 +154,10 @@ class _EditAccountState extends State<EditAccount> {
             _passwordController,
             TextInputType.text,
             [
-              FormBuilderValidators.required(),
-              FormBuilderValidators.minLength(6),
+              FormBuilderValidators.required(
+                  errorText: "Password tidak boleh kosong"),
+              FormBuilderValidators.minLength(6,
+                  errorText: "Password minimal 6 karakter"),
             ],
           ),
           const SizedBox(height: 20),
@@ -162,7 +169,8 @@ class _EditAccountState extends State<EditAccount> {
             _confirmPasswordController,
             TextInputType.text,
             [
-              FormBuilderValidators.required(),
+              FormBuilderValidators.required(
+                  errorText: "Konfirmasi password tidak boleh kosong"),
               (val) {
                 if (val != _passwordController.text) {
                   return 'Passwords do not match';

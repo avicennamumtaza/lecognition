@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lecognition/common/widgets/appbar.dart';
+import 'package:lecognition/widgets/appbar.dart';
 import 'package:lecognition/domain/bookmark/entities/bookmark.dart';
 import 'package:lecognition/domain/disease/entities/disease_detail.dart';
 import 'package:lecognition/presentation/bookmark/bloc/bookmark_cubit.dart';

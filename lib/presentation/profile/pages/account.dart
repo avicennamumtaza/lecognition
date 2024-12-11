@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lecognition/common/widgets/appbar.dart';
+import 'package:lecognition/widgets/appbar.dart';
 import 'package:lecognition/presentation/profile/bloc/user_cubit.dart';
 import 'package:lecognition/presentation/profile/bloc/user_state.dart';
 import 'package:lecognition/presentation/profile/pages/edit.dart';

@@ -4,8 +4,8 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:lecognition/common/helper/message/display_message.dart';
 import 'package:lecognition/common/helper/navigation/app_navigator.dart';
-import 'package:lecognition/common/widgets/form.dart';
-import 'package:lecognition/common/widgets/tabs.dart';
+import 'package:lecognition/widgets/form.dart';
+import 'package:lecognition/widgets/tabs.dart';
 import 'package:lecognition/data/auth/models/signin_req_params.dart';
 import 'package:lecognition/domain/auth/usecases/signin.dart';
 import 'package:lecognition/presentation/auth/pages/signup.dart';
@@ -99,7 +99,7 @@ class _SigninPageState extends State<SigninPage> {
                     text: "Belum memiliki akun? ",
                   ),
                   TextSpan(
-                    text: "Sign Up",
+                    text: "Daftar",
                     style: const TextStyle(
                       color: Colors.blue,
                       decoration: TextDecoration.underline,
@@ -131,8 +131,8 @@ class _SigninPageState extends State<SigninPage> {
             _emailController,
             TextInputType.emailAddress,
             [
-              FormBuilderValidators.required(),
-              FormBuilderValidators.email(),
+              FormBuilderValidators.required(errorText: "Email tidak boleh kosong"),
+              FormBuilderValidators.email(errorText: "Email tidak valid"),
             ],
           ),
           const SizedBox(height: 20),
@@ -144,8 +144,8 @@ class _SigninPageState extends State<SigninPage> {
             _passwordController,
             TextInputType.text,
             [
-              FormBuilderValidators.required(),
-              FormBuilderValidators.minLength(6),
+              FormBuilderValidators.required(errorText: "Password tidak boleh kosong"),
+              FormBuilderValidators.minLength(6, errorText: "Password minimal 6 karakter"),
             ],
           ),
         ],
@@ -193,7 +193,7 @@ class _SigninPageState extends State<SigninPage> {
       child: _isSubmitting
           ? CircularProgressIndicator()
           : const Text(
-              "Sign In",
+              "Masuk",
               style: TextStyle(
                 color: Colors.white,
               ),

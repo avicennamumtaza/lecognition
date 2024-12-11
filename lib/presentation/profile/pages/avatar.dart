@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lecognition/common/helper/message/display_message.dart';
-import 'package:lecognition/common/widgets/appbar.dart';
+import 'package:lecognition/widgets/appbar.dart';
 import 'package:lecognition/data/user/models/update_user_profile_params.dart';
 import 'package:lecognition/domain/user/entities/user.dart';
 import 'package:lecognition/domain/user/usecases/update_user_profile.dart';
