@@ -5,13 +5,13 @@ class AddTreeParams {
     required this.desc,
     required this.longitude,
     required this.latitude,
-    this.image,
+    required this.image,
   });
 
   final String desc;
   final double longitude;
   final double latitude;
-  final XFile? image;
+  final XFile image;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{

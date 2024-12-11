@@ -40,7 +40,7 @@ class DiagnozerApiServiceImpl extends DiagnozerApiService {
         return Right(response.data);
       }
     } on DioException catch (error) {
-      return Left(error.response!.data["message"]);
+      return Left("Error: ${error.message}");
     }
   }
 }

@@ -1,31 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lecognition/common/widgets/appbar.dart';
+import 'package:lecognition/widgets/appbar.dart';
 import 'package:lecognition/presentation/tree/bloc/tree_cubit.dart';
 import 'package:lecognition/presentation/tree/bloc/tree_state.dart';
 import 'package:lecognition/presentation/tree/pages/add_tree.dart';
 import 'package:lecognition/widgets/tree_card.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class TreesScreen extends StatelessWidget {
-  const TreesScreen({super.key});
+class TreesScreen extends StatefulWidget {
+  TreesScreen({super.key});
 
-  // void linkDiseaseDetails(List<BookmarkEntity> bookmarkedDiseases) {
-  //   print(bookmarkedDiseases);
-  //   for (var bookmarkedDisease in bookmarkedDiseases) {
-  //     print(bookmarkedDisease);
-  //     print(bookmarkedDisease.disease);
-  //     print(bookmarkedDisease.disease?.detail);
-  //     bookmarkedDisease.disease?.detail = diseaseDetails.firstWhere(
-  //       (detail) => detail.id == bookmarkedDisease.disease?.id,
-  //       orElse: null,
-  //     );
-  //     bookmarkedDisease.disease?.idBookmarked = bookmarkedDisease.id;
-  //     bookmarkedDisease.disease?.isBookmarked = true;
-  //   }
+  @override
+  State<TreesScreen> createState() => _TreesScreenState();
+}
+
+class _TreesScreenState extends State<TreesScreen> {
+  List<String> treeImages = [];
+
+  // @override
+  // void dispose() {
+  //   // TODO: implement dispose
+  //   super.dispose();
+  //   treeImages.clear();
   // }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    getImagesPath();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getImagesPath();
+  }
+
+  // void linkDiseaseDetails(List<BookmarkEntity> bookmarkedDiseases) {
+  Future<void> getImagesPath() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    treeImages = prefs.getStringList('tree_images') ?? [];
+    setState(() {
+      treeImages = treeImages;
+    });
+    // return savedImages;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    getImagesPath();
+    print("=============================================");
+    print("treeImages: $treeImages");
+    print("=============================================");
     return BlocProvider(
       create: (context) => TreeCubit()..getAllTrees(),
       child: BlocBuilder<TreeCubit, TreeState>(
@@ -46,7 +72,7 @@ class TreesScreen extends StatelessWidget {
               ),
             );
           }
-          if (state is TreeLoaded) {
+          if (state is TreesLoaded) {
             final trees = state.trees;
             if (trees.isEmpty) {
               return Scaffold(
@@ -76,10 +102,11 @@ class TreesScreen extends StatelessWidget {
                             MaterialPageRoute(
                               builder: (context) => AddTreeScreen(image: ''),
                             ),
-                          ).then((value) {
-                            if (value != null) {
+                          ).then((_) {
+                            // if (value != null) {
                               BlocProvider.of<TreeCubit>(context).getAllTrees();
-                            }
+                              getImagesPath();
+                            // }
                           });
                         },
                         child: Container(
@@ -152,7 +179,10 @@ class TreesScreen extends StatelessWidget {
                         itemCount: trees.length,
                         itemBuilder: (BuildContext context, int index) {
                           final eachTree = trees[index];
-                          return TreeCard(tree: eachTree);
+                          return TreeCard(
+                            tree: eachTree,
+                            treeImage: treeImages[index],
+                          );
                         },
                       ),
                     ),

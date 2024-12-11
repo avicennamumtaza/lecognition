@@ -4,9 +4,14 @@ abstract class TreeState {}
 
 class TreeLoading extends TreeState {}
 
-class TreeLoaded extends TreeState {
+class TreesLoaded extends TreeState {
   final List<TreeEntityWithoutForeign> trees;
-  TreeLoaded({required this.trees});
+  TreesLoaded({required this.trees});
+}
+
+class TreeLoaded extends TreeState {
+  final TreeEntityWithoutForeign tree;
+  TreeLoaded({required this.tree});
 }
 
 class TreeFailureLoad extends TreeState {

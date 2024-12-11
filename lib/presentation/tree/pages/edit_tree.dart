@@ -4,8 +4,8 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:lecognition/common/helper/message/display_message.dart';
-import 'package:lecognition/common/widgets/appbar.dart';
-import 'package:lecognition/common/widgets/form.dart';
+import 'package:lecognition/widgets/appbar.dart';
+import 'package:lecognition/widgets/form.dart';
 import 'package:lecognition/data/tree/models/update_tree_params.dart';
 import 'package:lecognition/domain/tree/entities/tree.dart';
 import 'package:lecognition/domain/tree/usecases/update_tree.dart';
@@ -70,36 +70,6 @@ class _EditTreeScreenState extends State<EditTreeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // return
-    // BlocProvider(
-    //     create: (context) => CameraCubit()..getCameraPhoto(),
-    //     child: BlocBuilder<CameraCubit, CameraPhotoState>(
-    //         builder: (context, state) {
-    //       if (state is CameraPhotoLoaded) {
-    //         // print(
-    //         //     "PPPPPPPPPPPPPPPPPPPRRRRRRRRRRRRRRRRRRRRRIIIIIIIIIIIIIIIIIIIIINNNNNNNNNNNNNNNNTTTTTTTTTTTTTTTTTT");
-    //         print(state.treePhoto);
-    //         return Scaffold(
-    //           appBar: AppBarWidget(title: 'Tambah Tanaman'),
-    //           body: SingleChildScrollView(
-    //             child: Padding(
-    //               padding: const EdgeInsets.all(20.0),
-    //               child: Column(
-    //                 crossAxisAlignment: CrossAxisAlignment.start,
-    //                 children: [
-    //                   _buildFormFields(state.treePhoto),
-    //                   const SizedBox(height: 20),
-    //                   Center(
-    //                     child: _isSubmitting
-    //                         ? CircularProgressIndicator()
-    //                         : _submitButton(context),
-    //                   ),
-    //                 ],
-    //               ),
-    //             ),
-    //           ),
-    //         );
-    //       }
     _descController = TextEditingController(text: widget.tree.name);
     return Scaffold(
       appBar: AppBarWidget(title: 'Tambah Tanaman'),
@@ -131,13 +101,13 @@ class _EditTreeScreenState extends State<EditTreeScreen> {
           SizedBox(height: 20),
           FormBoilerplate.buildTextField(
             'desc',
-            'Nama Tanaman',
-            'Nama Tanaman', // Updated hintText
+            'Informasi Tentang Tanaman',
+            widget.tree.name!, // Updated hintText
             Icons.title,
             _descController,
             TextInputType.text,
             [
-              FormBuilderValidators.required(),
+              FormBuilderValidators.required(errorText: "Tidak boleh kosong"),
             ],
           ),
           const SizedBox(height: 20),

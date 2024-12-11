@@ -3,15 +3,25 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:lecognition/common/widgets/appbar.dart';
-import 'package:lecognition/presentation/diagnozer/pages/result.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:lecognition/common/helper/message/display_message.dart';
+import 'package:lecognition/widgets/appbar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:lecognition/data/tree/models/add_tree_params.dart';
+import 'package:lecognition/domain/tree/usecases/add_tree.dart';
 import 'package:lecognition/presentation/tree/bloc/camera_cubit.dart';
 import 'package:lecognition/presentation/tree/bloc/camera_state.dart';
-import 'package:lecognition/presentation/tree/pages/add_tree.dart';
+import 'package:lecognition/service_locator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CameraScreen extends StatefulWidget {
-  const CameraScreen({super.key});
+  const CameraScreen({
+    super.key,
+    required this.nameTree,
+    required this.currentLocation,
+  });
+  final String nameTree;
+  final LatLng currentLocation;
 
   @override
   State<CameraScreen> createState() => _CameraScreenState();
@@ -62,32 +72,81 @@ class _CameraScreenState extends State<CameraScreen> {
       builder: (BuildContext context) {
         return BlocProvider(
             create: (context) => CameraCubit()..putCameraPhoto(_selectedImage!),
-        child: BlocBuilder<CameraCubit, CameraPhotoState>(builder: (context, state) {
-          return AlertDialog(
-            title: const Text('Konfirmasi'),
-            content: Image(
-              image: FileImage(
-                File(_selectedImage!.path),
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Batal'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  _navigateToAddPlant();
-                },
-                child: const Text('Ya'),
-              ),
-            ],
-          );
-        })
-        );
+            child: BlocBuilder<CameraCubit, CameraPhotoState>(
+                builder: (context, state) {
+              return AlertDialog(
+                title: const Text('Konfirmasi'),
+                content: Image(
+                  image: FileImage(
+                    File(_selectedImage!.path),
+                  ),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Batal'),
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      try {
+                        final result = await sl<AddTreeUseCase>().call(
+                          params: AddTreeParams(
+                              desc: widget.nameTree,
+                              image: _selectedImage!,
+                              // Default Google Office (latitude: 37.421998, longitude: -122.084)
+                              latitude: widget.currentLocation.latitude,
+                              longitude: widget.currentLocation.longitude),
+                        );
+                        result.fold(
+                          (failure) {
+                            DisplayMessage.errorMessage(
+                              context,
+                              failure.toString(),
+                            );
+                          },
+                          (success) async {
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            List<String>? savedImages =
+                                prefs.getStringList('tree_images') ?? [];
+                            // List<String>? savedPlantNames = prefs.getStringList('plant_names') ?? [];
+
+                            savedImages.add(_selectedImage!.path);
+                            // savedPlantNames.add(plantName);
+
+                            // // print("savedPlantNames: $savedPlantNames");
+                            print("=== savedImages ===");
+                            print("savedImages: $savedImages");
+                            print("=== savedImages ===");
+
+                            await prefs.setStringList(
+                              'tree_images',
+                              savedImages,
+                            );
+                            // await prefs.setStringList('plant_names', savedPlantNames);
+                            int count = 0;
+                            Navigator.popUntil(context, (route) {
+                              count++;
+                              return count == 4;
+                            });
+                          },
+                        );
+                      } catch (error) {
+                        DisplayMessage.errorMessage(context, error.toString());
+                      }
+                      // int count = 0;
+                      // Navigator.popUntil(context, (route) {
+                      //   count++;
+                      //   return count == 4;
+                      // });
+                    },
+                    child: const Text('Ya'),
+                  ),
+                ],
+              );
+            }));
       },
     );
   }
@@ -118,7 +177,45 @@ class _CameraScreenState extends State<CameraScreen> {
       setState(() {
         _selectedImage = returnedImage;
       });
-      _navigateToAddPlant();
+      try {
+        final result = await sl<AddTreeUseCase>().call(
+          params: AddTreeParams(
+              desc: widget.nameTree,
+              image: _selectedImage!,
+              // Default Google Office (latitude: 37.421998, longitude: -122.084)
+              latitude: widget.currentLocation.latitude,
+              longitude: widget.currentLocation.longitude),
+        );
+        result.fold(
+          (failure) {
+            DisplayMessage.errorMessage(context, failure.toString());
+          },
+          (success) async {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            List<String>? savedImages =
+                prefs.getStringList('tree_images') ?? [];
+            // List<String>? savedPlantNames = prefs.getStringList('plant_names') ?? [];
+
+            savedImages.add(_selectedImage!.path);
+            // savedPlantNames.add(plantName);
+
+            // // print("savedPlantNames: $savedPlantNames");
+            print("=== savedImages ===");
+            print("savedImages: $savedImages");
+            print("=== savedImages ===");
+
+            await prefs.setStringList('tree_images', savedImages);
+            // await prefs.setStringList('plant_names', savedPlantNames);
+            int count = 0;
+            Navigator.popUntil(context, (route) {
+              count++;
+              return count == 4;
+            });
+          },
+        );
+      } catch (error) {
+        DisplayMessage.errorMessage(context, error.toString());
+      }
     } catch (e) {
       _showErrorDialog('Failed to pick image from gallery: ${e.toString()}');
     }
@@ -146,22 +243,6 @@ class _CameraScreenState extends State<CameraScreen> {
       _confirm();
     } catch (e) {
       _showErrorDialog('Error saat mengambil gambar: $e');
-    }
-  }
-
-  void _navigateToAddPlant() async {
-    if (_selectedImage != null) {
-      try {
-        Navigator.of(context).pop(
-          MaterialPageRoute(
-            builder: (context) => AddTreeScreen(
-              image: _selectedImage!.path,
-            ),
-          ),
-        );
-      } catch (e) {
-        _showErrorDialog("Failed to navigate to result screen: $e");
-      }
     }
   }
 
@@ -220,7 +301,7 @@ class _CameraScreenState extends State<CameraScreen> {
                   IconButton(
                     onPressed: _pickImageGallery,
                     icon:
-                    const Icon(Icons.image, size: 35, color: Colors.white),
+                        const Icon(Icons.image, size: 35, color: Colors.white),
                   ),
                   Container(
                     decoration: const BoxDecoration(

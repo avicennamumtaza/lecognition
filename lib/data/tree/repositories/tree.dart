@@ -103,4 +103,29 @@ class TreeRepositoryImpl extends TreeRepository {
       },
     );
   }
+
+  @override
+  Future<Either> getTree(GetTreeScansParams params) async {
+    var data = await sl<TreeApiService>().getTree(params);
+    return data.fold(
+      (error) {
+        return Left(error);
+      },
+      (data) async {
+        print(data is List);
+        print("Data $data");
+        final returnedData = List.from(data)
+            .map(
+              (item) => TreeMapper.toEntityWithoutForeign(
+                TreeEntityWithoutForeign.fromJson(item),
+              ),
+            ).toList();
+        // final returnedData = TreeMapper.toEntityWithoutForeign(
+        //   TreeEntityWithoutForeign.fromJson(data),
+        // );
+        print("Returned data $returnedData");
+        return Right(returnedData);
+      },
+    );
+  }
 }

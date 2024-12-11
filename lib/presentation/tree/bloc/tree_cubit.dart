@@ -2,8 +2,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lecognition/common/helper/mapper/bookmark_mapper.dart';
 import 'package:lecognition/data/tree/models/add_tree_params.dart';
 import 'package:lecognition/data/tree/models/delete_tree_params.dart';
+import 'package:lecognition/data/tree/models/get_tree_scans_params.dart';
 import 'package:lecognition/domain/tree/usecases/add_tree.dart';
 import 'package:lecognition/domain/tree/usecases/delete_tree.dart';
+import 'package:lecognition/domain/tree/usecases/get_tree.dart';
 import 'package:lecognition/domain/tree/usecases/get_trees.dart';
 import 'package:lecognition/presentation/tree/bloc/tree_state.dart';
 import 'package:lecognition/service_locator.dart';
@@ -21,8 +23,25 @@ class TreeCubit extends Cubit<TreeState> {
         ),
       ),
       (userTrees) => emit(
-        TreeLoaded(
+        TreesLoaded(
           trees: userTrees,
+        ),
+      ),
+    );
+  }
+
+  void getTree(GetTreeScansParams params) async {
+    final returnedData = await sl<GetTreeUseCase>().call(params: params);
+    print(returnedData);
+    returnedData.fold(
+      (error) => emit(
+        TreeFailureLoad(
+          errorMessage: error.toString(),
+        ),
+      ),
+      (treeDetail) => emit(
+        TreesLoaded(
+          trees: treeDetail,
         ),
       ),
     );

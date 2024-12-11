@@ -241,7 +241,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
       create: (context) => TreeCubit()..getAllTrees(),
       child: BlocBuilder<TreeCubit, TreeState>(
         builder: (context, state) {
-          if (state is TreeLoaded) {
+          if (state is TreesLoaded) {
             return _buildCameraPreview(state.trees);
           }
           if (state is TreeLoading) {
