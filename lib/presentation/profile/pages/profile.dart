@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lecognition/common/helper/navigation/app_navigator.dart';
 import 'package:lecognition/presentation/auth/pages/signin.dart';
 import 'package:lecognition/presentation/bookmark/bloc/bookmark_cubit.dart';
@@ -8,11 +9,17 @@ import 'package:lecognition/presentation/history/pages/history.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lecognition/presentation/profile/bloc/user_cubit.dart';
 import 'package:lecognition/presentation/profile/bloc/user_state.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
-  final bool _isDark = false;
+
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  bool _isDark = false;
 
   @override
   Widget build(BuildContext context) {
@@ -90,22 +97,25 @@ class ProfileScreen extends StatelessWidget {
                     );
                   },
                 ),
-                // SwitchListTile(
-                //   value: _isDark,
-                //   onChanged: (value) {
-                //     value = !value;
-                //   },
-                //   title:
-                //       const Text('Mode Gelap', style: TextStyle(fontSize: 18)),
-                //   secondary: Icon(
-                //     Icons.dark_mode,
-                //     size: 30,
-                //     color: Theme.of(context).colorScheme.primary,
-                //   ),
-                //   activeColor: Theme.of(context).colorScheme.primary,
-                //   inactiveThumbColor: Colors.grey,
-                //   inactiveTrackColor: Colors.grey.shade300,
-                // ),
+                SwitchListTile(
+                  value: _isDark,
+                  onChanged: (value) {
+                    setState(() {
+                      _isDark = value;
+                    });
+                    print(value);
+                  },
+                  title:
+                      const Text('Mode Gelap', style: TextStyle(fontSize: 18)),
+                  secondary: Icon(
+                    Icons.dark_mode,
+                    size: 30,
+                    color: Colors.black.withOpacity(0.7),
+                  ),
+                  activeColor: Theme.of(context).colorScheme.onPrimary,
+                  inactiveThumbColor: Colors.grey,
+                  inactiveTrackColor: Colors.grey.shade300,
+                ),
                 _buildMenuItem(
                   icon: Icons.bookmark,
                   title: "Penyakit Tersimpan",
@@ -144,10 +154,10 @@ class ProfileScreen extends StatelessWidget {
                             ),
                             TextButton(
                               onPressed: () {
-                                SharedPreferences.getInstance().then((prefs) {
-                                  prefs.remove('refresh');
-                                  prefs.remove('access_token');
-                                });
+                                final storage = const FlutterSecureStorage();
+                                storage.delete(key: 'access_token');
+                                storage.delete(key: 'refresh');
+                                print('Delete Token');
                                 AppNavigator.pushReplacement(
                                   context,
                                   SigninPage(),

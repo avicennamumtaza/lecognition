@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// This interceptor is used to show request and response logs
 class LoggerInterceptor extends Interceptor {
@@ -43,10 +43,14 @@ class LoggerInterceptor extends Interceptor {
 class AuthorizationInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    final token = sharedPreferences.getString('access_token');
-    // final token = sharedPreferences.set('access_token');
-    debugPrint(token);
+    // final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // final token = sharedPreferences.getString('access_token');
+    final FlutterSecureStorage storage = const FlutterSecureStorage();
+    final token = await storage.read(key: 'access_token');
+    final tokenSS2 = await storage.read(key: 'refresh');
+    // debugPrint('Token Baru ${token}');
+    debugPrint('Token access ${token}');
+    debugPrint('Token refresh ${tokenSS2}');
     options.headers['authorization'] = "Bearer $token";
     handler.next(options);
   }
