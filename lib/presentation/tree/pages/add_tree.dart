@@ -97,7 +97,7 @@ class _AddTreeScreenState extends State<AddTreeScreen> {
           FormBoilerplate.buildTextField(
             'desc',
             'Informasi Tentang Tanaman',
-            'Pohon mangga madu depan rumah dedi', // Updated hintText
+            'Mangga madu depan rumah dedi', // Updated hintText
             Icons.title,
             _descController,
             TextInputType.text,

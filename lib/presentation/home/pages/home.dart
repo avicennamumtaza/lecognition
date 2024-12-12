@@ -47,6 +47,11 @@ class _HomeScreenState extends State<HomeScreen> {
   //   treeImages.clear();
   // }
 
+  didChangeDependencies() {
+    super.didChangeDependencies();
+    getImagesPath();
+  }
+
   // void linkDiseaseDetails(List<BookmarkEntity> bookmarkedDiseases) {
   Future<void> getImagesPath() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -182,6 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 BlocProvider.of<TreeCubit>(
                                                         context)
                                                     .getAllTrees();
+                                                getImagesPath();
                                               });
                                             },
                                             child: Text(
