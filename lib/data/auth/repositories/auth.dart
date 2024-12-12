@@ -6,7 +6,6 @@ import 'package:lecognition/data/auth/models/signup_req_params.dart';
 import 'package:lecognition/data/auth/sources/auth_api_service.dart';
 import 'package:lecognition/domain/auth/repositories/auth.dart';
 import 'package:lecognition/service_locator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
   // AuthApiService authApiService;
@@ -45,12 +44,14 @@ class AuthRepositoryImpl extends AuthRepository {
           value: data['refresh'],
         );
         Map<String, dynamic> valueStorage = await storage.readAll();
-        print(valueStorage);
+        print('Value Secure Storage: ${valueStorage}');
         await storage.deleteAll();
-        final SharedPreferences sharedPreferences =
-            await SharedPreferences.getInstance();
-        sharedPreferences.setString('access_token', data['access']);
-        sharedPreferences.setString('refresh', data['refresh']);
+        // final SharedPreferences sharedPreferences =
+        //     await SharedPreferences.getInstance();
+        // sharedPreferences.setString('access_token', data['access']);
+        // sharedPreferences.setString('refresh', data['refresh']);
+        storage.write(key: 'access_token', value: data['access']);
+        storage.write(key: 'refresh', value: data['refresh']);
         return Right(data);
       },
     );
@@ -79,11 +80,13 @@ class AuthRepositoryImpl extends AuthRepository {
           Map<String, dynamic> valueStorage = await storage.readAll();
           print(valueStorage);
           await storage.deleteAll();
-          final SharedPreferences sharedPreferences =
-              await SharedPreferences.getInstance();
-          sharedPreferences.setString('access_token', data['access']);
+          // final SharedPreferences sharedPreferences =
+          //     await SharedPreferences.getInstance();
+          // sharedPreferences.setString('access_token', data['access']);
+          storage.write(key: 'access_token', value: data['access']);
           print(data['access']);
-          sharedPreferences.setString('refresh', data['refresh']);
+          // sharedPreferences.setString('refresh', data['refresh']);
+          storage.write(key: 'refresh', value: data['refresh']);
           return true;
         },
       );
