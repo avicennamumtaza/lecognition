@@ -9,8 +9,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:lecognition/presentation/tree/bloc/tree_cubit.dart';
 import 'package:lecognition/presentation/tree/bloc/tree_state.dart';
 
-import '../../tree/pages/add_tree.dart';
-
 class DiagnozerScreen extends StatefulWidget {
   const DiagnozerScreen({super.key});
 
@@ -86,43 +84,19 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
                     fillColor: Colors.white,
                   ),
                   value: _selectedPlantName,
-                  items: [
-                    ...trees.map((tree) {
+                  items: trees.map((tree) {
                       final treeName = tree.name;
                       return DropdownMenuItem<String>(
                         value: treeName,
                         child: Text(treeName!),
                       );
                     }).toList(),
-                    DropdownMenuItem<String>(
-                      value: 'add_plant',
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Icon(Icons.add, color: Colors.blue),
-                          SizedBox(width: 8),
-                          Text('Tambah Tanaman', style: TextStyle(color: Colors.blue)),
-                        ],
-                      ),
-                    ),
-                  ],
                   onChanged: (String? value) {
-                    if (value == 'add_plant') {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddTreeScreen(image: '')
-                        ),
-                      ).then((_) async {
-                        BlocProvider.of<TreeCubit>(context).getAllTrees();
-                      });
-                    } else {
-                      setState(() {
-                        _selectedPlantName = value;
-                        int index = trees.indexWhere((tree) => tree.name == value);
-                        _selectedPlantId = trees[index].id;
-                      });
-                    }
+                    setState(() {
+                      _selectedPlantName = value;
+                      int index = trees.indexWhere((tree) => tree.name == value);
+                      _selectedPlantId = trees[index].id;
+                    });
                   }
               ),
             ],
