@@ -387,14 +387,11 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 TextSpan(
                     text: "Selamat Datang,\n",
-                    style: TextStyle(color: Colors.white)
+                    style: TextStyle(color: Colors.white, fontSize: 25)
                 ),
                 TextSpan(
                   text: username,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 23),
                 )
               ],
             )

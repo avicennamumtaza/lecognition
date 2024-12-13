@@ -60,7 +60,7 @@ dependencies:
   location: ^6.0.2
   latlong2: ^0.9.1
   geolocator: ^12.0.0
-  flutter_secure_storage: ^4.3.0
+  flutter_secure_storage: ^4.2.1
   provider: ^6.1.2
 
 #flutter_native_splash:
