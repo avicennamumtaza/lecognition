@@ -103,6 +103,7 @@ class _EditTreeScreenState extends State<EditTreeScreen> {
             context,
             [
               FormBuilderValidators.required(errorText: "Tidak boleh kosong"),
+              FormBuilderValidators.max(20, errorText: 'Maksimal 20 karakter'),
             ],
           ),
           const SizedBox(height: 20),

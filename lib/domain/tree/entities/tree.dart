@@ -56,13 +56,13 @@ class TreeEntityWithoutForeign {
   int? lastDiagnosis; // Foreign key as integer (user_id)
 
   TreeEntityWithoutForeign({
-    this.id,
-    this.name,
-    this.longitude,
-    this.latitude,
-    this.image,
-    this.user,
-    this.lastDiagnosis,
+    required this.id,
+    required this.name,
+    required this.longitude,
+    required this.latitude,
+    required this.image,
+    required this.user,
+    required this.lastDiagnosis,
   });
 
   // Constructor for creating an object from JSON

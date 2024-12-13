@@ -99,6 +99,7 @@ class _AddTreeScreenState extends State<AddTreeScreen> {
             context,
             [
               FormBuilderValidators.required(errorText: 'Tidak boleh kosong'),
+              FormBuilderValidators.max(20, errorText: 'Maksimal 20 karakter'),
             ],
           ),
           const SizedBox(height: 20),

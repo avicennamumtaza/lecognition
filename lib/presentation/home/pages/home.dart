@@ -29,7 +29,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   void linkDiseaseDetails(List<DiseaseEntity> diseases) {
     for (var disease in diseases) {
       disease.detail = diseaseDetails.firstWhere(
@@ -44,9 +43,12 @@ class _HomeScreenState extends State<HomeScreen> {
     List<BookmarkEntity> bookmarkedDiseases,
   ) {
     for (var disease in diseases) {
-      disease.isBookmarked = bookmarkedDiseases.any((bookmark) => bookmark.disease?.id == disease.id);
+      disease.isBookmarked = bookmarkedDiseases
+          .any((bookmark) => bookmark.disease?.id == disease.id);
       if (disease.isBookmarked == true) {
-        disease.idBookmarked = bookmarkedDiseases.firstWhere((bookmark) => bookmark.disease?.id == disease.id).id;
+        disease.idBookmarked = bookmarkedDiseases
+            .firstWhere((bookmark) => bookmark.disease?.id == disease.id)
+            .id;
       }
       HomeScreen.localDiseasesData.add(disease);
       print(HomeScreen.localDiseasesData);
@@ -79,10 +81,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   return BlocBuilder<TreeCubit, TreeState>(
                     builder: (context, treeState) {
                       List<BookmarkEntity> bookmarkedDiseases = [];
-                      if (bookmarkState is BookmarkedDiseasesLoaded && diseaseState is DiseasesLoaded &&
-                          userState is UserLoaded && treeState is TreesLoaded) {
-                        bookmarkedDiseases = bookmarkState.bookmarkedDiseases;
+                      if (diseaseState is DiseasesLoaded) {
                         linkDiseaseDetails(diseaseState.diseases);
+                      }
+                      if (bookmarkState is BookmarkedDiseasesLoaded &&
+                          diseaseState is DiseasesLoaded &&
+                          userState is UserLoaded &&
+                          treeState is TreesLoaded) {
+                        bookmarkedDiseases = bookmarkState.bookmarkedDiseases;
                         linkDiseaseBookmarkStatus(
                           diseaseState.diseases,
                           bookmarkedDiseases,
@@ -91,7 +97,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       return Skeletonizer(
                         enabled: diseaseState is DiseasesLoading ||
                             bookmarkState is BookmarkedDiseasesLoading ||
-                            userState is UserLoading || treeState is TreeLoading,
+                            userState is UserLoading ||
+                            treeState is TreeLoading,
                         child: SingleChildScrollView(
                           child: Container(
                             child: Column(
@@ -108,18 +115,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                     borderRadius: const BorderRadius.vertical(
                                       top: Radius.circular(20),
                                     ),
-                                    color: Theme.of(context).colorScheme.surface,
+                                    color:
+                                        Theme.of(context).colorScheme.surface,
                                   ),
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 14,
                                     vertical: 20,
                                   ),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       _actionButton(context),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
                                             'Daftar Tanaman',
@@ -133,17 +143,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                               print('push page');
                                               Navigator.push(
                                                 context,
-                                                MaterialPageRoute(builder: (context) {
+                                                MaterialPageRoute(
+                                                    builder: (context) {
                                                   return TreesScreen();
                                                 }),
                                               ).then((_) {
-                                                BlocProvider.of<TreeCubit>(context).getAllTrees();
+                                                BlocProvider.of<TreeCubit>(
+                                                        context)
+                                                    .getAllTrees();
                                               });
                                             },
                                             child: Text(
                                               'Lihat Semua',
                                               style: TextStyle(
-                                                color: Theme.of(context).colorScheme.onPrimaryContainer,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onPrimaryContainer,
                                               ),
                                             ),
                                           ),
@@ -162,23 +177,37 @@ class _HomeScreenState extends State<HomeScreen> {
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      if (diseaseState is DiseasesFailureLoad || bookmarkState is BookmarkedDiseasesFailureLoad ||
-                                          userState is UserFailureLoad || treeState is TreeFailureLoad)
+                                      if (diseaseState is DiseasesFailureLoad ||
+                                          bookmarkState
+                                              is BookmarkedDiseasesFailureLoad ||
+                                          userState is UserFailureLoad ||
+                                          treeState is TreeFailureLoad)
                                         Container(
                                           child: Center(
                                             child: Text(
                                               diseaseState
-                                              is DiseasesFailureLoad ? diseaseState.errorMessage : (bookmarkState
-                                              is BookmarkedDiseasesFailureLoad ? bookmarkState.errorMessage: userState
-                                              is UserFailureLoad ? userState.errorMessage : 'Terjadi kesalahan'),
+                                                      is DiseasesFailureLoad
+                                                  ? diseaseState.errorMessage
+                                                  : (bookmarkState
+                                                          is BookmarkedDiseasesFailureLoad
+                                                      ? bookmarkState
+                                                          .errorMessage
+                                                      : userState
+                                                              is UserFailureLoad
+                                                          ? userState
+                                                              .errorMessage
+                                                          : 'Terjadi kesalahan'),
                                               style: TextStyle(
-                                                color: Theme.of(context).colorScheme.error,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .error,
                                               ),
                                             ),
                                           ),
                                         ),
                                       if (diseaseState is DiseasesLoaded)
-                                        for (var disease in diseaseState.diseases)
+                                        for (var disease
+                                            in diseaseState.diseases)
                                           Column(
                                             children: [
                                               Padding(
@@ -191,7 +220,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ),
                                               ),
                                               Divider(
-                                                color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.5),
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onSecondary
+                                                    .withOpacity(0.5),
                                                 thickness: 1.0,
                                                 height: 1.0,
                                               ),
@@ -227,20 +259,22 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: trees.isEmpty
-          ? [
-            Text(
-              'Tidak ada tanaman',
-              style: TextStyle(fontSize: 16,),
-            ),
-            ]
-          : List.generate(
-            trees.length > 3 ? 3 : trees.length,
-                (i) => _cardTanamanku(
-              context,
-              trees[i],
-              i,
-            ),
-          ),
+              ? [
+                  Text(
+                    'Tidak ada tanaman',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ]
+              : List.generate(
+                  trees.length > 3 ? 3 : trees.length,
+                  (i) => _cardTanamanku(
+                    context,
+                    trees[i],
+                    i,
+                  ),
+                ),
         ),
       ),
     );
@@ -296,24 +330,28 @@ class _HomeScreenState extends State<HomeScreen> {
             decoration: BoxDecoration(
               color: Colors.grey,
               image: DecorationImage(
-                image: Image.network(ApiUrls.baseUrlWithoutApi + tree.image!.substring(1),).image,
+                image: Image.network(
+                  ApiUrls.baseUrlWithoutApi + tree.image!.substring(1),
+                ).image,
                 fit: BoxFit.cover,
               ),
             ),
           ),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    tree.name ?? 'Nama tidak tersedia',
+                    tree.name.toString().substring(0, 1).toUpperCase() +
+                        tree.name.toString().substring(1),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
                   ),
+                  SizedBox(height: 3),
                   Text(
                     '${tree.lastDiagnosis == null ? 'Belum pernah didiagnosis' : tree.lastDiagnosis! == 1 ? 'Tanaman sehat ^^' : 'Tanaman sakit :('}',
                   ),
@@ -383,19 +421,20 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                    text: "Selamat Datang,\n",
-                    style: TextStyle(color: Colors.white, fontSize: 25)
-                ),
-                TextSpan(
-                  text: username,
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 23),
-                )
-              ],
-            )
-          ),
+              text: TextSpan(
+            children: [
+              TextSpan(
+                  text: "Selamat Datang,\n",
+                  style: TextStyle(color: Colors.white, fontSize: 25)),
+              TextSpan(
+                text: username,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 23),
+              )
+            ],
+          )),
           _showAvatar(context, avatar),
         ],
       ),

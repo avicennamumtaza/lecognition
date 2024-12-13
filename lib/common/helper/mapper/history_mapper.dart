@@ -6,6 +6,7 @@ class HistoryMapper {
       id: data.id,
       disease: data.disease,
       datetime: data.datetime,
+      tree: data.tree,
       user: data.user,
       accuracy: data.accuracy,
       desc: data.desc,

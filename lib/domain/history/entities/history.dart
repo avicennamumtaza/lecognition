@@ -1,9 +1,10 @@
 import 'package:lecognition/domain/disease/entities/disease.dart';
+import 'package:lecognition/domain/tree/entities/tree.dart';
 
 class HistoryEntity {
   int? id;
   DiseaseEntity? disease;
-  Tree? tree;
+  TreeEntityWithoutForeign? tree;
   int? datetime;
   String? img;
   String? accuracy;
@@ -24,7 +25,7 @@ class HistoryEntity {
     id = json['id'];
     disease =
         json['disease'] != null ? new DiseaseEntity.fromJson(json['disease']) : null;
-    tree = json['tree'] != null ? new Tree.fromJson(json['tree']) : null;
+    tree = json['tree'] != null ? new TreeEntityWithoutForeign.fromJson(json['tree']) : null;
     datetime = json['datetime'];
     img = json['img'];
     accuracy = json['accuracy'];

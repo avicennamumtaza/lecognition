@@ -37,6 +37,7 @@ class TreeCard extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               // Image or placeholder
               ClipRRect(
@@ -51,7 +52,8 @@ class TreeCard extends StatelessWidget {
               const SizedBox(height: 10),
               // Title
               Text(
-                tree.name!,
+                tree.name.toString().substring(0, 1).toUpperCase() +
+                    tree.name.toString().substring(1),
                 style: const TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,
@@ -67,8 +69,9 @@ class TreeCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       '(${tree.latitude?.toStringAsFixed(2)}, ${tree.longitude?.toStringAsFixed(2)})',
-                      style:
-                      TextStyle(fontSize: 14.0, color: Theme.of(context).colorScheme.onSecondary),
+                      style: TextStyle(
+                          fontSize: 14.0,
+                          color: Theme.of(context).colorScheme.onSecondary),
                     ),
                   ),
                 ],

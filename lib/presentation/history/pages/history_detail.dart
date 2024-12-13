@@ -1,18 +1,19 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:lecognition/core/constant/api_urls.dart';
 import 'package:lecognition/widgets/appbar.dart';
 import 'package:lecognition/domain/disease/entities/disease.dart';
 import 'package:lecognition/presentation/home/pages/disease.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
-class ResultHistoryScreen extends StatefulWidget {
+class HistoryDetailScreen extends StatefulWidget {
   final String imagePath;
   final String plantName;
   final DiseaseEntity disease;
   final int diagnosisNumber;
   late double percentage;
 
-  ResultHistoryScreen({
+  HistoryDetailScreen({
     super.key,
     required this.imagePath,
     required this.plantName,
@@ -22,120 +23,123 @@ class ResultHistoryScreen extends StatefulWidget {
   });
 
   @override
-  State<ResultHistoryScreen> createState() => _ResultHistoryScreenState();
+  State<HistoryDetailScreen> createState() => _HistoryDetailScreenState();
 }
 
-class _ResultHistoryScreenState extends State<ResultHistoryScreen> {
+class _HistoryDetailScreenState extends State<HistoryDetailScreen> {
   bool isShowPercentage = false;
 
   @override
   Widget build(BuildContext context) {
-
     print('penyakit: ${widget.disease.name}');
     print('persentase: ${widget.percentage}');
     return Scaffold(
       appBar: AppBarWidget(
-        title: 'Diagnosis #${widget.diagnosisNumber + 1} - ${widget.disease.name}',
+        title: '${widget.diagnosisNumber + 1} - ${widget.disease.name}',
       ),
       body: ListView(
         padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
         children: [
-          Stack(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(10),
-                  image: DecorationImage(
-                    image: FileImage(
-                      File(widget.imagePath),
-                    ),
-                    fit: BoxFit.cover,
-                  ),
+          Stack(children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(10),
+                image: DecorationImage(
+                  image: Image.network(
+                    ApiUrls.baseUrlWithoutApi + widget.imagePath.substring(1),
+                  ).image,
+                  fit: BoxFit.cover,
                 ),
-                margin: const EdgeInsets.only(bottom: 15),
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.width * 1.2,
               ),
-              Positioned(
-                bottom: 30,
-                right: 20,
-                child: Column(
-                  children: [
-                    if (isShowPercentage)
-                      AnimatedOpacity(
-                        opacity: isShowPercentage ? 1.0 : 0.0,
+              margin: const EdgeInsets.only(bottom: 15),
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.width * 1.2,
+            ),
+            Positioned(
+              bottom: 30,
+              right: 20,
+              child: Column(
+                children: [
+                  if (isShowPercentage)
+                    AnimatedOpacity(
+                      opacity: isShowPercentage ? 1.0 : 0.0,
+                      duration: const Duration(milliseconds: 5000),
+                      child: AnimatedSize(
                         duration: const Duration(milliseconds: 5000),
-                        child: AnimatedSize(
-                          duration: const Duration(milliseconds: 5000),
-                          curve: Curves.easeInOut,
-                          child: isShowPercentage
+                        curve: Curves.easeInOut,
+                        child: isShowPercentage
                             ? Container(
-                              padding: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.5),
-                                borderRadius:
-                                BorderRadius.circular(100),
-                              ),
-                              child: CircularPercentIndicator(
-                                radius: 45.0,
-                                lineWidth: 13.0,
-                                percent: widget.percentage / 100,
-                                animation: true,
-                                animationDuration: 1000,
-                                center: Text(
-                                  (widget.percentage == 100)
-                                    ? "100%" :
-                                    "${(widget.percentage).toStringAsFixed(2)}%",
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.0,
-                                  ),
+                                padding: const EdgeInsets.all(3),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onPrimary
+                                      .withOpacity(0.5),
+                                  borderRadius: BorderRadius.circular(100),
                                 ),
-                                circularStrokeCap:
-                                CircularStrokeCap.round,
-                                progressColor: Theme.of(context).colorScheme.onSecondaryContainer,
-                              ),
-                            )
+                                child: CircularPercentIndicator(
+                                  radius: 50.0,
+                                  lineWidth: 11.0,
+                                  percent: widget.percentage / 100,
+                                  animation: true,
+                                  animationDuration: 1000,
+                                  center: Text(
+                                    (widget.percentage == 100)
+                                        ? "100%"
+                                        : "${(widget.percentage).toStringAsFixed(2)}%",
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20.0,
+                                    ),
+                                  ),
+                                  circularStrokeCap: CircularStrokeCap.round,
+                                  progressColor:
+                                      Theme.of(context).colorScheme.primary,
+                                ),
+                              )
                             : SizedBox.shrink(),
-                        ),
-                      ),
-                    SizedBox(height: 10),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          isShowPercentage = !isShowPercentage;
-                        });
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primary,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Akurasi",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Icon(
-                              isShowPercentage ? Icons.arrow_drop_down : Icons.arrow_drop_up,
-                              size: 25,
-                            ),
-                          ],
-                        ),
                       ),
                     ),
-                  ],
-                ),
+                  SizedBox(height: 10),
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        isShowPercentage = !isShowPercentage;
+                      });
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Akurasi",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Icon(
+                            isShowPercentage
+                                ? Icons.arrow_drop_down
+                                : Icons.arrow_drop_up,
+                            size: 25,
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ]
-          ),
+            ),
+          ]),
           Container(
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.onPrimary,
@@ -161,21 +165,21 @@ class _ResultHistoryScreenState extends State<ResultHistoryScreen> {
               ),
               subtitle: widget.disease.id == 1
                   ? Text(
-                "Tidak ada penyakit terdeteksi",
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.green,
-                ),
-              )
+                      "Tidak ada penyakit terdeteksi",
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.green,
+                      ),
+                    )
                   : Text(
-                "Terkena Penyakit ${widget.disease}!",
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.red,
-                ),
-              ),
+                      "Terkena Penyakit ${widget.disease.name}!",
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.red,
+                      ),
+                    ),
             ),
           ),
           SizedBox(height: 20),
@@ -198,8 +202,8 @@ class _ResultHistoryScreenState extends State<ResultHistoryScreen> {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 16.0, horizontal: 10),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 16.0, horizontal: 10),
                 child: Center(
                   child: Text(
                     'Detail',

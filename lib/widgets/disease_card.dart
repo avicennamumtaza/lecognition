@@ -104,7 +104,10 @@ class _DiseaseCardState extends State<DiseaseCard> {
                           height: 5.0,
                         ),
                         Text(
-                          widget.disease.desc.toString(),
+                          widget.disease.detail!.desc.length > 50
+                              ? widget.disease.detail!.desc.substring(0, 50) +
+                                  '...'
+                              : widget.disease.detail!.desc.toString(),
                           style: TextStyle(
                             fontSize: 13.0,
                             // color: Theme.of(context)

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:lecognition/common/helper/mapper/diagnosis_mapper.dart';
 import 'package:lecognition/common/helper/mapper/disease_mapper.dart';
@@ -19,17 +21,36 @@ class HistoryRepositoryImpl extends HistoryRepository {
         return Left(error);
       },
       (data) async {
-        print("BEFORE DATA $data");
-        print("=============================");
-        final histories = List.from(data)
-            .map(
-              (item) => HistoryMapper.toEntity(
-                HistoryEntity.fromJson(item),
-              ),
-            )
-            .toList();
-        histories.map((history) => print("AFTER EACH DATA $history"));
-        return Right(histories);
+        try {
+          // Validasi apakah data adalah String dan mencoba decode JSON
+          if (data is String) {
+            print("Raw API Response: $data");
+
+            // Pastikan respons JSON valid
+            data = jsonDecode(data);
+          }
+
+          // Validasi bahwa data adalah List
+          if (data is! List) {
+            throw FormatException(
+                "Unexpected data format: ${data.runtimeType}");
+          }
+
+          // Proses data menjadi entitas
+          final treeScans = data
+              .map(
+                (item) => HistoryMapper.toEntity(
+                  HistoryEntity.fromJson(item),
+                ),
+              )
+              .toList();
+
+          print("Processed Tree Scans: $treeScans");
+          return Right(treeScans);
+        } catch (e) {
+          print("Error parsing response: $e");
+          return Left("Failed to parse API response: $e");
+        }
       },
     );
   }

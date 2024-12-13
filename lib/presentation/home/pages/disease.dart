@@ -111,7 +111,7 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.disease.desc.toString(),
+                            widget.disease.detail!.desc.toString(),
                             style: const TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.w500,
@@ -129,9 +129,13 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (isBookmarked) {
-                        context.read<BookmarkCubit>().unbookmarkDisease(idBookmarked!);
+                        context
+                            .read<BookmarkCubit>()
+                            .unbookmarkDisease(idBookmarked!);
                       } else {
-                        context.read<BookmarkCubit>().bookmarkDisease(widget.disease.id!);
+                        context
+                            .read<BookmarkCubit>()
+                            .bookmarkDisease(widget.disease.id!);
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -157,10 +161,12 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
                 _descriptionCard(
                     title: 'Level Bahaya',
                     subtitles: [widget.disease.detail!.severity],
-                    context: context
-                ),
+                    context: context),
                 Divider(
-                  color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.5),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSecondary
+                      .withOpacity(0.5),
                   thickness: 1.0,
                   height: 1.0,
                 ),
@@ -168,10 +174,12 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
                 _descriptionCard(
                     title: 'Pengobatan',
                     subtitles: widget.disease.detail!.treatment,
-                    context: context
-                ),
+                    context: context),
                 Divider(
-                  color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.5),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSecondary
+                      .withOpacity(0.5),
                   thickness: 1.0,
                   height: 1.0,
                 ),
@@ -179,8 +187,7 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
                 _descriptionCard(
                     title: 'Pencegahan',
                     subtitles: widget.disease.detail!.prevention,
-                    context: context
-                ),
+                    context: context),
               ],
             );
           },
@@ -216,22 +223,23 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: subtitles.length > 1
-              ? subtitles
-                .map((subtitle) => Padding(
-                  padding: const EdgeInsets.only(bottom: 5),
-                  child: Text(
-                    '- $subtitle',
-                    style: const TextStyle(fontSize: 14),
-                  ),
-                )).toList()
-              : [
-                  Text(
-                    subtitles.first,
-                    style: const TextStyle(
-                      fontSize: 14,
+                ? subtitles
+                    .map((subtitle) => Padding(
+                          padding: const EdgeInsets.only(bottom: 5),
+                          child: Text(
+                            '- $subtitle',
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                        ))
+                    .toList()
+                : [
+                    Text(
+                      subtitles.first,
+                      style: const TextStyle(
+                        fontSize: 14,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
           ),
         ],
       ),

@@ -15,14 +15,12 @@ import '../../../core/configs/theme/app_theme.dart';
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
-
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool _isDark = false;
-
 
   @override
   void initState() {
@@ -64,20 +62,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 15),
+                // const SizedBox(height: 15),
                 Text(
                   state.user.username!,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 22,
+                    fontSize: 33,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 50),
+                SizedBox(height: 20),
+                Divider(
+                  color: Colors.grey[500],
+                  indent: 20,
+                  endIndent: 20,
+                ),
                 _buildMenuItem(
                   context: context,
                   icon: Icons.account_circle,
-                  title: 'Akun',
+                  title: 'Pengaturan Akun',
                   onTap: () {
                     Navigator.push(
                       context,
@@ -85,9 +88,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         builder: (context) => const AkunScreen(),
                       ),
                     ).then(
-                      (value) => BlocProvider.of<UserCubit>(context).getUserProfile(),
+                      (value) =>
+                          BlocProvider.of<UserCubit>(context).getUserProfile(),
                     );
                   },
+                ),
+                Divider(
+                  color: Colors.grey[500],
+                  indent: 20,
+                  endIndent: 20,
                 ),
                 _buildMenuItem(
                   context: context,
@@ -102,25 +111,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     );
                   },
                 ),
-                SwitchListTile(
-                  value: _isDark,
-                  onChanged: (value) {
-                    setState(() {
-                      Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
-                      _isDark = value;
-                    });
-                    print(value);
-                  },
-                  title:
-                      const Text('Mode Gelap', style: TextStyle(fontSize: 18)),
-                  secondary: Icon(
-                    Icons.dark_mode,
-                    size: 30,
-                  ),
-                  activeColor: Theme.of(context).colorScheme.onPrimary,
-                  inactiveThumbColor: Colors.grey,
-                  inactiveTrackColor: Colors.grey.shade300,
-                  activeTrackColor: Colors.grey.shade300,
+                Divider(
+                  color: Colors.grey[500],
+                  indent: 20,
+                  endIndent: 20,
                 ),
                 _buildMenuItem(
                   icon: Icons.bookmark,
@@ -132,10 +126,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         builder: (context) => const BookmarkedScreen(),
                       ),
                     ).then((_) {
-                      BlocProvider.of<BookmarkCubit>(context).getAllBookmarkedDiseases();
+                      BlocProvider.of<BookmarkCubit>(context)
+                          .getAllBookmarkedDiseases();
                     });
                   },
                   context: context,
+                ),
+                Divider(
+                  color: Colors.grey[500],
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: SwitchListTile(
+                    value: _isDark,
+                    onChanged: (value) {
+                      setState(() {
+                        Provider.of<ThemeProvider>(context, listen: false)
+                            .toggleTheme();
+                        _isDark = value;
+                      });
+                      print(value);
+                    },
+                    title: const Text(
+                      'Mode Gelap',
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    secondary: Icon(
+                      Icons.dark_mode,
+                      size: 30,
+                    ),
+                    activeColor: Theme.of(context).colorScheme.onPrimary,
+                    inactiveThumbColor: Colors.grey,
+                    inactiveTrackColor: Colors.grey.shade300,
+                    activeTrackColor: Colors.grey.shade300,
+                  ),
+                ),
+                Divider(
+                  color: Colors.grey[500],
+                  indent: 20,
+                  endIndent: 20,
                 ),
                 _buildMenuItem(
                   context: context,
@@ -146,14 +179,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       context: context,
                       builder: (context) {
                         return AlertDialog(
-                          title: Text('Konfirmasi', style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary)),
-                          content: const Text('Apakah anda yakin ingin keluar?'),
+                          title: Text('Konfirmasi',
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .inversePrimary)),
+                          content:
+                              const Text('Apakah anda yakin ingin keluar?'),
                           actions: <Widget>[
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
-                              child: Text('Batal', style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer)),
+                              child: Text('Batal',
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimaryContainer)),
                             ),
                             TextButton(
                               onPressed: () {
@@ -166,7 +208,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   SigninPage(),
                                 );
                               },
-                              child: Text('Keluar', style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer)),
+                              child: Text('Keluar',
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimaryContainer)),
                             ),
                           ],
                         );
@@ -184,16 +230,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   // Function to build each menu item
-  Widget _buildMenuItem({
-    required IconData icon,
-    required String title,
-    required Function() onTap,
-    required BuildContext context
-  }) {
-    return ListTile(
-      leading: Icon(icon, size: 30),
-      title: Text(title, style: const TextStyle(fontSize: 18)),
-      onTap: onTap,
+  Widget _buildMenuItem(
+      {required IconData icon,
+      required String title,
+      required Function() onTap,
+      required BuildContext context}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: ListTile(
+        leading: Icon(icon, size: 30),
+        title: Text(title, style: const TextStyle(fontSize: 18)),
+        onTap: onTap,
+      ),
     );
   }
 }
