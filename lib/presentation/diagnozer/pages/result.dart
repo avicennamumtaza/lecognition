@@ -3,6 +3,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:lecognition/core/constant/api_urls.dart';
 import 'package:lecognition/domain/disease/entities/disease.dart';
 import 'package:lecognition/domain/disease/entities/disease_detail.dart';
 import 'package:lecognition/presentation/home/pages/disease.dart';
@@ -13,7 +14,6 @@ import 'package:lecognition/presentation/diagnozer/bloc/diagnozer_cubit.dart';
 import 'package:lecognition/presentation/home/pages/home.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ResultScreen extends StatefulWidget {
   ResultScreen({
@@ -33,39 +33,39 @@ class _ResultScreenState extends State<ResultScreen> {
   // DiseaseEntity ds = diseases[0];
   // final double percentage = Random().nextDouble();
   bool isShowPercentage = false;
-  bool isSaved = false;
+  // bool isSaved = false;
 
   /////////////////////////////////////////////
   /////////////////////////////////////////////
-  Future<File> _saveImageLocally(File imageFile) async {
-    try {
-      final directory = await getApplicationDocumentsDirectory();
-      final fileName = imageFile.path.split('/').last;
-      final newImagePath = '${directory.path}/$fileName';
-      final newImage = await imageFile.copy(newImagePath);
-      print('Image saved locally: $newImagePath');
-      return newImage;
-    } catch (e) {
-      throw Exception('Error saat menyimpan gambar: $e');
-    }
-  }
+  // Future<File> _saveImageLocally(File imageFile) async {
+  //   try {
+  //     final directory = await getApplicationDocumentsDirectory();
+  //     final fileName = imageFile.path.split('/').last;
+  //     final newImagePath = '${directory.path}/$fileName';
+  //     final newImage = await imageFile.copy(newImagePath);
+  //     print('Image saved locally: $newImagePath');
+  //     return newImage;
+  //   } catch (e) {
+  //     throw Exception('Error saat menyimpan gambar: $e');
+  //   }
+  // }
 
-  Future<void> _saveDiagnosis(File image) async {
-    final plantName = "nama mangga";
+  // Future<void> _saveDiagnosis(File image) async {
+  //   final plantName = "nama mangga";
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? savedImages = prefs.getStringList('diagnosis_images') ?? [];
-    List<String>? savedPlantNames = prefs.getStringList('plant_names') ?? [];
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   List<String>? savedImages = prefs.getStringList('diagnosis_images') ?? [];
+  //   List<String>? savedPlantNames = prefs.getStringList('plant_names') ?? [];
 
-    savedImages.add(image.path);
-    savedPlantNames.add(plantName);
+  //   savedImages.add(image.path);
+  //   savedPlantNames.add(plantName);
 
-    print("savedPlantNames: $savedPlantNames");
-    print("savedImages: $savedImages");
+  //   print("savedPlantNames: $savedPlantNames");
+  //   print("savedImages: $savedImages");
 
-    await prefs.setStringList('diagnosis_images', savedImages);
-    await prefs.setStringList('plant_names', savedPlantNames);
-  }
+  //   await prefs.setStringList('diagnosis_images', savedImages);
+  //   await prefs.setStringList('plant_names', savedPlantNames);
+  // }
   /////////////////////////////////////////////
   /////////////////////////////////////////////
 
@@ -89,24 +89,24 @@ class _ResultScreenState extends State<ResultScreen> {
     return returnedDisease;
   }
 
-  void saveDiagosisResult(
-    int idResultedDisease,
-    double percentageResultedDisease,
-  ) async {
-    print("Resulted Disease: $idResultedDisease $percentageResultedDisease%");
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+  // void saveDiagosisResult(
+  //   int idResultedDisease,
+  //   double percentageResultedDisease,
+  // ) async {
+  //   print("Resulted Disease: $idResultedDisease $percentageResultedDisease%");
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    List<String>? savedResults = prefs.getStringList('diagnosis_result') ?? [];
-    savedResults.add(idResultedDisease.toString());
-    await prefs.setStringList('diagnosis_result', savedResults);
-    print('Saved results: $savedResults');
+  //   List<String>? savedResults = prefs.getStringList('diagnosis_result') ?? [];
+  //   savedResults.add(idResultedDisease.toString());
+  //   await prefs.setStringList('diagnosis_result', savedResults);
+  //   print('Saved results: $savedResults');
 
-    List<String>? savedPercentages =
-        prefs.getStringList('diagnosis_percentage') ?? [];
-    savedPercentages.add(percentageResultedDisease.toString());
-    await prefs.setStringList('diagnosis_percentage', savedPercentages);
-    print('Saved percentages: $savedPercentages');
-  }
+  //   List<String>? savedPercentages =
+  //       prefs.getStringList('diagnosis_percentage') ?? [];
+  //   savedPercentages.add(percentageResultedDisease.toString());
+  //   await prefs.setStringList('diagnosis_percentage', savedPercentages);
+  //   print('Saved percentages: $savedPercentages');
+  // }
 
   void showPercentage() async {
     print('Show Percentage ${isShowPercentage}');
@@ -117,7 +117,7 @@ class _ResultScreenState extends State<ResultScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final photoImg = File(widget.photo.path);
+    // final photoImg = File(widget.photo.path);
     if (HomeScreen.localDiseasesData.isEmpty) {
       return Center(
         child: Text(
@@ -142,14 +142,14 @@ class _ResultScreenState extends State<ResultScreen> {
             // if (state is DiagnosisLoading) {
             // print("Persentase: $persentase");
             //   print("Disease: ${state.diagnosis.disease}");
-            print(
-              "Path gambar: ${widget.photo.path}",
-            );
-            print(
-              "Apakah file ada? ${File(
-                widget.photo.path,
-              ).existsSync()}",
-            );
+            // print(
+            //   "Path gambar: ${widget.photo.path}",
+            // );
+            // print(
+            //   "Apakah file ada? ${File(
+            //     widget.photo.path,
+            //   ).existsSync()}",
+            // );
             // }
             if (state is DiagnosisFailureLoad) {
               return Center(
@@ -224,25 +224,28 @@ class _ResultScreenState extends State<ResultScreen> {
             if (state is DiagnosisLoaded) {
               try {
                 final double? persentase = state.diagnosis.accuracy;
-                print("Persentase: $persentase");
-                print("Disease: ${state.diagnosis.disease}");
-                print("Path gambar: ${widget.photo.path}");
-                print(
-                  "Apakah file ada? ${File(
-                    widget.photo.path,
-                  ).existsSync()}",
-                );
-                if (isSaved == false) {
-                  _saveDiagnosis(photoImg);
-                  _saveImageLocally(photoImg);
-                  saveDiagosisResult(state.diagnosis.disease!, persentase!);
-                  isSaved = true;
-                }
+                // print("Persentase: $persentase");
+                // print("Disease: ${state.diagnosis.disease}");
+                // print("Path gambar: ${widget.photo.path}");
+                // print(
+                //   "Apakah file ada? ${File(
+                //     widget.photo.path,
+                //   ).existsSync()}",
+                // );
+                // if (isSaved == false) {
+                //   _saveDiagnosis(photoImg);
+                //   _saveImageLocally(photoImg);
+                //   saveDiagosisResult(state.diagnosis.disease!, persentase!);
+                //   isSaved = true;
+                // }
                 // _saveDiagnosis(photoImg);
                 // _saveImageLocally(photoImg);
                 // saveDiagosisResult(state.diagnosis.disease!, persentase!);
                 final DiseaseEntity disease =
                     _findDisease(state.diagnosis.disease!);
+                print(
+                  "URL DIAGNOSIS IMAGE: ${ApiUrls.baseUrlWithoutApi + state.diagnosis.img!.substring(1)}",
+                );
                 return ListView(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -253,7 +256,10 @@ class _ResultScreenState extends State<ResultScreen> {
                           color: Colors.grey[300],
                           borderRadius: BorderRadius.circular(10),
                           image: DecorationImage(
-                            image: FileImage(photoImg),
+                            image: Image.network(
+                              ApiUrls.baseUrlWithoutApi +
+                                  state.diagnosis.img!.substring(1),
+                            ).image,
                             fit: BoxFit.cover,
                           ),
                         ),

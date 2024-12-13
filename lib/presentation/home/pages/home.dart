@@ -3,6 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lecognition/common/helper/navigation/app_navigator.dart';
+import 'package:lecognition/core/constant/api_urls.dart';
+import 'package:lecognition/data/media/models/get_image_params.dart';
+import 'package:lecognition/presentation/media/bloc/media_cubit.dart';
+import 'package:lecognition/presentation/media/bloc/media_state.dart';
 import 'package:lecognition/widgets/tabs.dart';
 import 'package:lecognition/domain/bookmark/entities/bookmark.dart';
 import 'package:lecognition/domain/disease/entities/disease.dart';
@@ -31,33 +35,26 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<String> treeImages = [];
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getImagesPath();
-  }
+  // List<String> treeImages = [];
 
   // @override
-  // void dispose() {
-  //   // TODO: implement dispose
-  //   super.dispose();
-  //   treeImages.clear();
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   getImagesPath();
   // }
 
-  didChangeDependencies() {
-    super.didChangeDependencies();
-    getImagesPath();
-  }
+  // didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   // getImagesPath();
+  // }
 
-  // void linkDiseaseDetails(List<BookmarkEntity> bookmarkedDiseases) {
-  Future<void> getImagesPath() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    treeImages = prefs.getStringList('tree_images') ?? [];
-    // return savedImages;
-  }
+  // // void linkDiseaseDetails(List<BookmarkEntity> bookmarkedDiseases) {
+  // Future<void> getImagesPath() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   treeImages = prefs.getStringList('tree_images') ?? [];
+  //   // return savedImages;
+  // }
 
   void linkDiseaseDetails(List<DiseaseEntity> diseases) {
     for (var disease in diseases) {
@@ -88,9 +85,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    getImagesPath();
+    // getImagesPath();
     print("=============================================");
-    print("treeImages: $treeImages");
+    // print("treeImages: $treeImages");
     print("=============================================");
     return MultiBlocProvider(
       providers: [
@@ -187,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 BlocProvider.of<TreeCubit>(
                                                         context)
                                                     .getAllTrees();
-                                                getImagesPath();
+                                                // getImagesPath();
                                               });
                                             },
                                             child: Text(
@@ -206,7 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         _sectionTanamanku(
                                           context,
                                           treeState.trees,
-                                          treeImages,
+                                          // treeImages,
                                         ),
                                       SizedBox(height: 15),
                                       Text(
@@ -291,7 +288,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _sectionTanamanku(
     BuildContext context,
     List<TreeEntityWithoutForeign> trees,
-    List<String> treeImages,
+    // List<String> treeImages,
   ) {
     print(trees);
     return SingleChildScrollView(
@@ -314,7 +311,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   context,
                   trees[i],
                   i,
-                  treeImages,
+                  // treeImages,
                   // 'assets/images/mg.jpeg',
                   // trees[i].desc!,
                   // 'Sehat',
@@ -326,7 +323,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   context,
                   trees[i],
                   i,
-                  treeImages,
+                  // treeImages,
                   // 'assets/images/mg.jpeg',
                   // trees[i].desc!,
                   // 'Sehat',
@@ -342,7 +339,7 @@ class _HomeScreenState extends State<HomeScreen> {
     BuildContext context,
     TreeEntityWithoutForeign tree,
     int index,
-    List<String> treeImages,
+    // List<String> treeImages,
   ) {
     return InkWell(
       onTap: () {
@@ -350,34 +347,52 @@ class _HomeScreenState extends State<HomeScreen> {
           MaterialPageRoute(builder: (context) {
             return TreeDetailScreen(
               tree: tree,
-              treeImage: treeImages[index],
+              // treeImage: treeImages[index],
             );
           }),
         ).then((_) {
           BlocProvider.of<TreeCubit>(context).getAllTrees();
-          getImagesPath();
+          // getImagesPath();
         });
-        // .push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) {
-        //     return TreeDetailScreen(
-        //       tree: tree,
-        //       treeImage: treeImages[index],
-        //     );
-        //   }),
-        // ).then((_) {
-        //   BlocProvider.of<TreeCubit>(context).getAllTrees();
-        // });
       },
-      child: _buildTreeCard(context, tree, treeImages[index]),
+      child: _buildTreeCard(
+        context,
+        tree,
+        // treeImages[index],
+      ),
     );
   }
 
   Widget _buildTreeCard(
     BuildContext context,
     TreeEntityWithoutForeign tree,
-    String treeImage,
+    // String treeImage,
   ) {
+    // return BlocProvider(
+    //   create: (context) => MediaCubit()
+    //     ..getImage(
+    //       GetImageParams(
+    //         url: tree.image!,
+    //       ),
+    //     ),
+    //   child: BlocBuilder<MediaCubit, MediaState>(
+    //     builder: (context, state) {
+    //       if (state is MediaLoading) {
+    //         return Center(
+    //           child: CircularProgressIndicator(),
+    //         );
+    //       }
+    //       if (state is MediaFailureLoad) {
+    //         return Center(
+    //           child: Text(
+    //             state.errorMessage,
+    //             style: TextStyle(
+    //               color: Theme.of(context).colorScheme.error,
+    //             ),
+    //           ),
+    //         );
+    //       }
+    print("URL IMAGE: ${tree.image}");
     return Container(
       padding: EdgeInsets.all(10),
       margin: EdgeInsets.only(right: 15),
@@ -404,11 +419,19 @@ class _HomeScreenState extends State<HomeScreen> {
             decoration: BoxDecoration(
               color: Colors.grey,
               image: DecorationImage(
-                image: FileImage(
-                  File(
-                    treeImage,
-                  ),
-                ),
+                image: Image.network(
+                  ApiUrls.baseUrlWithoutApi + tree.image!.substring(1),
+                ).image,
+                // FileImage(
+                //   File(
+                //     treeImage,
+                //   ),
+                // ),
+                //     Image.memory(
+                //   state is MediaLoaded
+                //       ? state.image
+                //       : File(treeImage).readAsBytesSync(),
+                // ).image,
                 // image: AssetImage('assets/images/mg.jpeg'),
                 fit: BoxFit.cover,
               ),
@@ -441,6 +464,9 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
+    //     },
+    //   ),
+    // );
   }
 
   Widget _actionButton(BuildContext context) {

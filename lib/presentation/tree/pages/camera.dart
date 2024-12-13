@@ -107,24 +107,24 @@ class _CameraScreenState extends State<CameraScreen> {
                             );
                           },
                           (success) async {
-                            SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            List<String>? savedImages =
-                                prefs.getStringList('tree_images') ?? [];
+                            // SharedPreferences prefs =
+                            //     await SharedPreferences.getInstance();
+                            // // List<String>? savedImages =
+                            //     prefs.getStringList('tree_images') ?? [];
                             // List<String>? savedPlantNames = prefs.getStringList('plant_names') ?? [];
 
-                            savedImages.add(_selectedImage!.path);
+                            // savedImages.add(_selectedImage!.path);
                             // savedPlantNames.add(plantName);
 
                             // // print("savedPlantNames: $savedPlantNames");
-                            print("=== savedImages ===");
-                            print("savedImages: $savedImages");
-                            print("=== savedImages ===");
+                            // print("=== savedImages ===");
+                            // // print("savedImages: $savedImages");
+                            // print("=== savedImages ===");
 
-                            await prefs.setStringList(
-                              'tree_images',
-                              savedImages,
-                            );
+                            // await prefs.setStringList(
+                            //   'tree_images',
+                            //   // savedImages,
+                            // );
                             // await prefs.setStringList('plant_names', savedPlantNames);
                             int count = 0;
                             Navigator.popUntil(context, (route) {
@@ -191,20 +191,20 @@ class _CameraScreenState extends State<CameraScreen> {
             DisplayMessage.errorMessage(context, failure.toString());
           },
           (success) async {
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            List<String>? savedImages =
-                prefs.getStringList('tree_images') ?? [];
+            // SharedPreferences prefs = await SharedPreferences.getInstance();
+            // // List<String>? savedImages =
+            //     prefs.getStringList('tree_images') ?? [];
             // List<String>? savedPlantNames = prefs.getStringList('plant_names') ?? [];
 
-            savedImages.add(_selectedImage!.path);
+            // savedImages.add(_selectedImage!.path);
             // savedPlantNames.add(plantName);
 
             // // print("savedPlantNames: $savedPlantNames");
-            print("=== savedImages ===");
-            print("savedImages: $savedImages");
-            print("=== savedImages ===");
+            // print("=== savedImages ===");
+            // // print("savedImages: $savedImages");
+            // print("=== savedImages ===");
 
-            await prefs.setStringList('tree_images', savedImages);
+            // await prefs.setStringList('tree_images', savedImages);
             // await prefs.setStringList('plant_names', savedPlantNames);
             int count = 0;
             Navigator.popUntil(context, (route) {

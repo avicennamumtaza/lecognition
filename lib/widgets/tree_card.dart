@@ -2,15 +2,16 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lecognition/core/constant/api_urls.dart';
 import 'package:lecognition/domain/tree/entities/tree.dart';
 import 'package:lecognition/presentation/tree/bloc/tree_cubit.dart';
 import 'package:lecognition/presentation/tree/pages/tree.dart';
 
 class TreeCard extends StatelessWidget {
   final TreeEntityWithoutForeign tree;
-  final String treeImage;
+  // final String treeImage;
 
-  const TreeCard({super.key, required this.tree, required this.treeImage});
+  const TreeCard({super.key, required this.tree});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class TreeCard extends StatelessWidget {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return TreeDetailScreen(
             tree: tree,
-            treeImage: treeImage,
+            // treeImage: treeImage,
           );
         })).then((_) {
           BlocProvider.of<TreeCubit>(context).getAllTrees();
@@ -44,18 +45,24 @@ class TreeCard extends StatelessWidget {
               // Image or placeholder
               ClipRRect(
                 borderRadius: BorderRadius.circular(10.0),
-                child: File(treeImage).existsSync()
-                    ? Image.file(
-                        File(treeImage),
-                        fit: BoxFit.cover,
-                        height: 100,
-                        width: double.infinity,
-                      )
-                    : const Icon(
-                        Icons.image_not_supported,
-                        size: 100,
-                        color: Colors.grey,
-                      ),
+                child: Image.network(
+                  ApiUrls.baseUrlWithoutApi + tree.image!.substring(1),
+                  fit: BoxFit.cover,
+                  height: 100,
+                  width: double.infinity,
+                ),
+                // File(treeImage).existsSync()
+                //     ? Image.file(
+                //         File(treeImage),
+                //         fit: BoxFit.cover,
+                //         height: 100,
+                //         width: double.infinity,
+                //       )
+                //     : const Icon(
+                //         Icons.image_not_supported,
+                //         size: 100,
+                //         color: Colors.grey,
+                //       ),
               ),
               const SizedBox(height: 10),
               // Title

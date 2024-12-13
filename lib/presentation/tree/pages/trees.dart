@@ -24,31 +24,31 @@ class _TreesScreenState extends State<TreesScreen> {
   //   treeImages.clear();
   // }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    getImagesPath();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   // getImagesPath();
+  // }
 
-  @override
-  void initState() {
-    super.initState();
-    getImagesPath();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // getImagesPath();
+  // }
 
-  // void linkDiseaseDetails(List<BookmarkEntity> bookmarkedDiseases) {
-  Future<void> getImagesPath() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    treeImages = prefs.getStringList('tree_images') ?? [];
-    setState(() {
-      treeImages = treeImages;
-    });
-    // return savedImages;
-  }
+  // // void linkDiseaseDetails(List<BookmarkEntity> bookmarkedDiseases) {
+  // Future<void> getImagesPath() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   treeImages = prefs.getStringList('tree_images') ?? [];
+  //   setState(() {
+  //     treeImages = treeImages;
+  //   });
+  //   // return savedImages;
+  // }
 
   @override
   Widget build(BuildContext context) {
-    getImagesPath();
+    // getImagesPath();
     print("=============================================");
     print("treeImages: $treeImages");
     print("=============================================");
@@ -105,7 +105,7 @@ class _TreesScreenState extends State<TreesScreen> {
                           ).then((_) {
                             // if (value != null) {
                               BlocProvider.of<TreeCubit>(context).getAllTrees();
-                              getImagesPath();
+                              // getImagesPath();
                             // }
                           });
                         },
@@ -181,7 +181,7 @@ class _TreesScreenState extends State<TreesScreen> {
                           final eachTree = trees[index];
                           return TreeCard(
                             tree: eachTree,
-                            treeImage: treeImages[index],
+                            // treeImage: treeImages[index],
                           );
                         },
                       ),

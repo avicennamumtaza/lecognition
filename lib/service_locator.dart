@@ -10,6 +10,8 @@ import 'package:lecognition/data/disease/repositories/disease.dart';
 import 'package:lecognition/data/disease/sources/disease_api_service.dart';
 import 'package:lecognition/data/history/repositories/history.dart';
 import 'package:lecognition/data/history/sources/history_api_service.dart';
+import 'package:lecognition/data/media/repositories/media.dart';
+import 'package:lecognition/data/media/sources/media_api_service.dart';
 import 'package:lecognition/data/tree/repositories/tree.dart';
 import 'package:lecognition/data/tree/sources/tree_api_service.dart';
 import 'package:lecognition/data/user/repositories/user.dart';
@@ -28,6 +30,8 @@ import 'package:lecognition/domain/disease/repositories/disease.dart';
 import 'package:lecognition/domain/disease/usecases/get_all_diseases.dart';
 import 'package:lecognition/domain/history/repositories/history.dart';
 import 'package:lecognition/domain/history/usecases/get_user_histories.dart';
+import 'package:lecognition/domain/media/repositories/media.dart';
+import 'package:lecognition/domain/media/usecases/get_image.dart';
 import 'package:lecognition/domain/tree/repositories/tree.dart';
 import 'package:lecognition/domain/tree/usecases/add_tree.dart';
 import 'package:lecognition/domain/tree/usecases/delete_tree.dart';
@@ -52,6 +56,7 @@ void setupServiceLocator() {
   sl.registerSingleton<DiagnozerApiService>(DiagnozerApiServiceImpl());
   sl.registerSingleton<TreeApiService>(TreeApiServiceImpl());
   sl.registerSingleton<HistoryApiService>(HistoryApiServiceImpl());
+  sl.registerSingleton<MediaApiService>(MediaApiServiceImpl());
 
   // Repositories
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl());
@@ -61,6 +66,7 @@ void setupServiceLocator() {
   sl.registerSingleton<DiagnozerRepository>(DiagnozerRepositoryImpl());
   sl.registerSingleton<TreeRepository>(TreeRepositoryImpl());
   sl.registerSingleton<HistoryRepository>(HistoryRepositoryImpl());
+  sl.registerSingleton<MediaRepository>(MediaRepositoryImpl());
 
   // Usecases
   sl.registerSingleton<SignupUseCase>(SignupUseCase());
@@ -80,4 +86,5 @@ void setupServiceLocator() {
   sl.registerSingleton<UpdateTreeUseCase>(UpdateTreeUseCase());
   sl.registerSingleton<GetTreeUseCase>(GetTreeUseCase());
   sl.registerSingleton<GetUserHistoriesUseCase>(GetUserHistoriesUseCase());
+  sl.registerSingleton<GetImageUseCase>(GetImageUseCase());
 }

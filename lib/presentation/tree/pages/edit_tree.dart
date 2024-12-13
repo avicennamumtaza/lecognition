@@ -55,6 +55,7 @@ class _EditTreeScreenState extends State<EditTreeScreen> {
   @override
   void initState() {
     super.initState();
+    _descController = TextEditingController(text: widget.tree.name);
 
     // _image = XFile(widget.image);
 
@@ -70,7 +71,7 @@ class _EditTreeScreenState extends State<EditTreeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _descController = TextEditingController(text: widget.tree.name);
+    // _descController = TextEditingController(text: widget.tree.name);
     return Scaffold(
       appBar: AppBarWidget(title: 'Tambah Tanaman'),
       body: SingleChildScrollView(

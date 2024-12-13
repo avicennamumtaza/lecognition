@@ -69,16 +69,16 @@ class AuthRepositoryImpl extends AuthRepository {
         },
         (data) async {
           final storage = FlutterSecureStorage();
-          await storage.write(
-            key: '1',
-            value: data['access'],
-          );
-          await storage.write(
-            key: '2',
-            value: data['refresh'],
-          );
-          Map<String, dynamic> valueStorage = await storage.readAll();
-          print(valueStorage);
+          // await storage.write(
+          //   key: '1',
+          //   value: data['access'],
+          // );
+          // await storage.write(
+          //   key: '2',
+          //   value: data['refresh'],
+          // );
+          // Map<String, dynamic> valueStorage = await storage.readAll();
+          // print(valueStorage);
           await storage.deleteAll();
           // final SharedPreferences sharedPreferences =
           //     await SharedPreferences.getInstance();
