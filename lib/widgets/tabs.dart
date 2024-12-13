@@ -3,6 +3,7 @@ import 'package:lecognition/presentation/diagnozer/pages/diagnozer.dart';
 import 'package:lecognition/presentation/home/pages/home.dart';
 import 'package:lecognition/presentation/home/pages/home.dart';
 import 'package:lecognition/presentation/profile/pages/profile.dart';
+import 'package:lecognition/widgets/appbar.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key, this.index});
@@ -37,15 +38,11 @@ class _TabsScreenState extends State<TabsScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(activeScreenTitle),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Theme.of(context).colorScheme.onPrimary,
-      ),
-      backgroundColor: (_selectedScreenIndex == 0) ? Theme.of(context).colorScheme.primary : Colors.white,
+      appBar: AppBarWidget(title: activeScreenTitle),
+      backgroundColor: (_selectedScreenIndex == 0) ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.surface,
       body: activeScreen,
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Theme.of(context).colorScheme.onPrimary,
+        // backgroundColor: Theme.of(context).colorScheme.onPrimary,
         onTap: _selectScreen,
         currentIndex: _selectedScreenIndex,
         items: const [

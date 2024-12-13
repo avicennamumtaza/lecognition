@@ -61,6 +61,7 @@ dependencies:
   latlong2: ^0.9.1
   geolocator: ^12.0.0
   flutter_secure_storage: ^4.3.0
+  provider: ^6.1.2
 
 #flutter_native_splash:
 #  # color: "#ffffff" # Set background color of the splash screen

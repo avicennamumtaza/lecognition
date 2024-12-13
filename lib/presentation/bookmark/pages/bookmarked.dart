@@ -74,7 +74,6 @@ class BookmarkedScreen extends StatelessWidget {
                       itemBuilder: (BuildContext context, int index) {
                         linkDiseaseDetails(diseases);
                         final eachDisease = diseases[index];
-                        // print(eachDisease);
                         return BookmarkedCard(disease: eachDisease);
                       },
                     ),

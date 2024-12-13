@@ -9,6 +9,8 @@ import 'package:lecognition/presentation/history/pages/history.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lecognition/presentation/profile/bloc/user_cubit.dart';
 import 'package:lecognition/presentation/profile/bloc/user_state.dart';
+import 'package:provider/provider.dart';
+import '../../../core/configs/theme/app_theme.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -20,6 +22,13 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool _isDark = false;
+
+
+  @override
+  void initState() {
+    super.initState();
+    _isDark = Provider.of<ThemeProvider>(context, listen: false).isDarkMode;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           if (state is UserLoaded) {
             return ListView(
               children: [
-                const SizedBox(height: 70), // Spasi antara header dan menu
+                const SizedBox(height: 70),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Hero(
@@ -55,7 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 15), // Spasi antara header dan menu
+                const SizedBox(height: 15),
                 Text(
                   state.user.username!,
                   style: TextStyle(
@@ -65,9 +74,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 50),
-                // Divider(
-                //   color: Theme.of(context).colorScheme.primary,
-                // ),
                 _buildMenuItem(
                   context: context,
                   icon: Icons.account_circle,
@@ -79,8 +85,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         builder: (context) => const AkunScreen(),
                       ),
                     ).then(
-                      (value) =>
-                          BlocProvider.of<UserCubit>(context).getUserProfile(),
+                      (value) => BlocProvider.of<UserCubit>(context).getUserProfile(),
                     );
                   },
                 ),
@@ -101,6 +106,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   value: _isDark,
                   onChanged: (value) {
                     setState(() {
+                      Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
                       _isDark = value;
                     });
                     print(value);
@@ -110,11 +116,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   secondary: Icon(
                     Icons.dark_mode,
                     size: 30,
-                    color: Colors.black.withOpacity(0.7),
                   ),
                   activeColor: Theme.of(context).colorScheme.onPrimary,
                   inactiveThumbColor: Colors.grey,
                   inactiveTrackColor: Colors.grey.shade300,
+                  activeTrackColor: Colors.grey.shade300,
                 ),
                 _buildMenuItem(
                   icon: Icons.bookmark,
@@ -126,8 +132,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         builder: (context) => const BookmarkedScreen(),
                       ),
                     ).then((_) {
-                      BlocProvider.of<BookmarkCubit>(context)
-                          .getAllBookmarkedDiseases();
+                      BlocProvider.of<BookmarkCubit>(context).getAllBookmarkedDiseases();
                     });
                   },
                   context: context,
@@ -137,20 +142,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   icon: Icons.logout,
                   title: 'Keluar',
                   onTap: () {
-                    // Bisa digunakan untuk logout
                     showDialog(
                       context: context,
                       builder: (context) {
                         return AlertDialog(
-                          title: const Text('Konfirmasi'),
-                          content:
-                              const Text('Apakah anda yakin ingin keluar?'),
+                          title: Text('Konfirmasi', style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary)),
+                          content: const Text('Apakah anda yakin ingin keluar?'),
                           actions: <Widget>[
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
-                              child: const Text('Batal'),
+                              child: Text('Batal', style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer)),
                             ),
                             TextButton(
                               onPressed: () {
@@ -163,7 +166,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   SigninPage(),
                                 );
                               },
-                              child: const Text('Keluar'),
+                              child: Text('Keluar', style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer)),
                             ),
                           ],
                         );
@@ -181,158 +184,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   // Function to build each menu item
-  Widget _buildMenuItem(
-      {required IconData icon,
-      required String title,
-      required Function() onTap,
-      required BuildContext context}) {
+  Widget _buildMenuItem({
+    required IconData icon,
+    required String title,
+    required Function() onTap,
+    required BuildContext context
+  }) {
     return ListTile(
-      leading: Icon(icon, size: 30, color: Colors.black.withOpacity(0.7)),
+      leading: Icon(icon, size: 30),
       title: Text(title, style: const TextStyle(fontSize: 18)),
       onTap: onTap,
-      // minTileHeight: 50,
     );
   }
 }
-
-
-// class ProfileScreen extends StatefulWidget {
-//   const ProfileScreen({super.key});
-
-//   @override
-//   State<ProfileScreen> createState() => _ProfileScreenState();
-// }
-
-// class _ProfileScreenState extends State<ProfileScreen> {
-//   bool _isDark = false;
-
-//   Future<void> _toggleDarkMode() async {
-//     try {
-//       setState(() {
-//         _isDark = !_isDark;
-//       });
-//     } catch (e) {
-//       print('Dark mode toggle Error: $e');
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return ListView(
-//       // crossAxisAlignment: CrossAxisAlignment.center,
-//       children: [
-//         const SizedBox(height: 70), // Spasi antara header dan menu
-//         Padding(
-//           padding: const EdgeInsets.all(8.0),
-//           child: Hero(
-//             tag: 'profile_image',
-//             child: CircleAvatar(
-//               radius: 100,
-//               child: Image.asset(
-//                 'assets/avatars/Avatar_3.png',
-//                 fit: BoxFit.cover,
-//               ),
-//               backgroundColor: Colors.transparent,
-//             ),
-//           ),
-//         ),
-//         const SizedBox(height: 30), // Spasi antara header dan menu
-//         const Text(
-//           'Nazwa Ayunda M',
-//           style: TextStyle(
-//             fontWeight: FontWeight.bold,
-//             fontSize: 22,
-//           ),
-//           textAlign: TextAlign.center,
-//         ),
-//         const SizedBox(height: 50),
-//         // Divider(
-//         //   color: Theme.of(context).colorScheme.primary,
-//         // ),
-//         _buildMenuItem(
-//           icon: Icons.account_circle,
-//           title: 'Akun',
-//           onTap: () {
-//             // Navigasi ke halaman Akun
-//             Navigator.push(
-//               context,
-//               MaterialPageRoute(
-//                 builder: (context) => const AkunScreen(), // Pindah ke layar AkunScreen
-//               ),
-//             );
-//           },
-//         ),
-//         _buildMenuItem(
-//           icon: Icons.history,
-//           title: 'Histori Diagnosis',
-//           onTap: () {
-//             // Navigate to HistoriScreen when tapped
-//             Navigator.push(
-//               context,
-//               MaterialPageRoute(
-//                 builder: (context) => const HistoriScreen(),
-//               ),
-//             );
-//           },
-//         ),
-//         SwitchListTile(
-//           value: _isDark,
-//           onChanged: (value) {
-//             _toggleDarkMode();
-//           },
-//           title: const Text('Mode Gelap', style: TextStyle(fontSize: 18)),
-//           secondary: Icon(
-//             Icons.dark_mode,
-//             size: 30,
-//             color: Theme.of(context).colorScheme.primary,
-//           ),
-//           activeColor: Theme.of(context).colorScheme.primary,
-//           inactiveThumbColor: Colors.grey,
-//           inactiveTrackColor: Colors.grey.shade300,
-//         ),
-//         _buildMenuItem(
-//           icon: Icons.logout,
-//           title: 'Keluar',
-//           onTap: () {
-//             // Bisa digunakan untuk logout
-//             showDialog(context: context, builder: (context) {
-//               return AlertDialog(
-//                 title: const Text('Konfirmasi'),
-//                 content: const Text('Apakah Anda yakin ingin keluar?'),
-//                 actions: <Widget>[
-//                   TextButton(
-//                     onPressed: () {
-//                       Navigator.of(context).pop();
-//                     },
-//                     child: const Text('Batal'),
-//                   ),
-//                   TextButton(
-//                     onPressed: () {
-//                       Navigator.push(
-//                           context,
-//                           MaterialPageRoute(
-//                               builder: (context) => SigninPage()
-//                           )
-//                       );
-//                     },
-//                     child: const Text('Keluar'),
-//                   ),
-//                 ],
-//               );
-//             });
-//           },
-//         ),
-//       ],
-//     );
-//   }
-
-//   // Function to build each menu item
-//   Widget _buildMenuItem({required IconData icon, required String title, required Function() onTap}) {
-//     return ListTile(
-//       leading: Icon(icon, size: 30, color: Theme.of(context).colorScheme.primary),
-//       title: Text(title, style: const TextStyle(fontSize: 18)),
-//       onTap: onTap,
-//       // minTileHeight: 50,
-//     );
-//   }
-// }

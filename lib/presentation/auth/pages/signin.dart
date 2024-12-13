@@ -31,16 +31,6 @@ class _SigninPageState extends State<SigninPage> {
           Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height / 4,
-            decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Colors.white, Colors.white],
-                ),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(100),
-                  bottomRight: Radius.circular(100),
-                )),
             child: Center(
               child: Image.asset(
                 "assets/images/icon.png",
@@ -56,7 +46,7 @@ class _SigninPageState extends State<SigninPage> {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 36,
-                color: Colors.black,
+                // color: Colors.black,
               ),
             ),
           ),
@@ -81,7 +71,7 @@ class _SigninPageState extends State<SigninPage> {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
-                color: Colors.black,
+                // color: Colors.black,
               ),
             ),
           ),
@@ -90,8 +80,8 @@ class _SigninPageState extends State<SigninPage> {
             alignment: Alignment.center,
             child: RichText(
               text: TextSpan(
-                style: const TextStyle(
-                  color: Colors.black,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.inversePrimary,
                   fontSize: 14,
                 ),
                 children: <TextSpan>[
@@ -130,6 +120,7 @@ class _SigninPageState extends State<SigninPage> {
             Icons.email,
             _emailController,
             TextInputType.emailAddress,
+            context,
             [
               FormBuilderValidators.required(errorText: "Email tidak boleh kosong"),
               FormBuilderValidators.email(errorText: "Email tidak valid"),
@@ -139,10 +130,11 @@ class _SigninPageState extends State<SigninPage> {
           FormBoilerplate.buildTextField(
             'password',
             'Password',
-            'Enter new password', // Default hintText for password
+            'Enter new password',
             Icons.lock,
             _passwordController,
             TextInputType.text,
+            context,
             [
               FormBuilderValidators.required(errorText: "Password tidak boleh kosong"),
               FormBuilderValidators.minLength(6, errorText: "Password minimal 6 karakter"),
@@ -197,7 +189,7 @@ class _SigninPageState extends State<SigninPage> {
               style: TextStyle(
                 color: Colors.white,
               ),
-            ),
+          ),
     );
   }
 
@@ -205,7 +197,6 @@ class _SigninPageState extends State<SigninPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
         body: _loginUI(context),
       ),
     );

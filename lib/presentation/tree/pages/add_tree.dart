@@ -10,7 +10,6 @@ import 'camera.dart';
 
 class AddTreeScreen extends StatefulWidget {
   AddTreeScreen({super.key, required this.image});
-  // final UserEntity userData;
   final String image;
 
   @override
@@ -52,8 +51,6 @@ class _AddTreeScreenState extends State<AddTreeScreen> {
   void initState() {
     super.initState();
 
-    // _image = XFile(widget.image);
-
     getCurrentLocation().then((location) {
       setState(() {
         currentLocation = location;
@@ -77,9 +74,7 @@ class _AddTreeScreenState extends State<AddTreeScreen> {
               _buildFormFields(),
               const SizedBox(height: 20),
               Center(
-                child: _isSubmitting
-                    ? CircularProgressIndicator()
-                    : _submitButton(context),
+                child: _isSubmitting ? CircularProgressIndicator() : _submitButton(context),
               ),
             ],
           ),
@@ -97,13 +92,13 @@ class _AddTreeScreenState extends State<AddTreeScreen> {
           FormBoilerplate.buildTextField(
             'desc',
             'Informasi Tentang Tanaman',
-            'Mangga madu depan rumah dedi', // Updated hintText
+            'Mangga madu depan rumah dedi',
             Icons.title,
             _descController,
             TextInputType.text,
+            context,
             [
               FormBuilderValidators.required(errorText: 'Tidak boleh kosong'),
-              // FormBuilderValidators.max(32, errorText: 'Maksimal 32 karakter'),
             ],
           ),
           const SizedBox(height: 20),
@@ -128,8 +123,6 @@ class _AddTreeScreenState extends State<AddTreeScreen> {
         }
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Theme.of(context).colorScheme.onPrimary,
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       ),

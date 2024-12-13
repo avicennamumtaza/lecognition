@@ -51,7 +51,6 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
             }
 
             return ListView(
-              // padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
               children: [
                 InkWell(
                   onTap: () {
@@ -63,19 +62,12 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
                     );
                   },
                   child: Container(
-                    // padding: const EdgeInsets.all(10),
-                    // decoration: BoxDecoration(
-                    //   color: Colors.grey[300],
-                    //   borderRadius: BorderRadius.circular(10),
-                    // ),
-                    // margin: const EdgeInsets.only(bottom: 15),
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height / 3.5,
                     child: Hero(
                       tag: "photo_${widget.disease.id}",
                       child: Container(
                         decoration: BoxDecoration(
-                          // borderRadius: BorderRadius.circular(10.0),
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: AssetImage(
@@ -100,9 +92,7 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.primary,
                     borderRadius: BorderRadius.vertical(
-                      bottom: Radius.circular(
-                        20,
-                      ),
+                      bottom: Radius.circular(20),
                     ),
                   ),
                   child: Column(
@@ -139,13 +129,9 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (isBookmarked) {
-                        context
-                            .read<BookmarkCubit>()
-                            .unbookmarkDisease(idBookmarked!);
+                        context.read<BookmarkCubit>().unbookmarkDisease(idBookmarked!);
                       } else {
-                        context
-                            .read<BookmarkCubit>()
-                            .bookmarkDisease(widget.disease.id!);
+                        context.read<BookmarkCubit>().bookmarkDisease(widget.disease.id!);
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -171,12 +157,10 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
                 _descriptionCard(
                     title: 'Level Bahaya',
                     subtitles: [widget.disease.detail!.severity],
-                    context: context),
+                    context: context
+                ),
                 Divider(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSecondary
-                      .withOpacity(0.5),
+                  color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.5),
                   thickness: 1.0,
                   height: 1.0,
                 ),
@@ -184,12 +168,10 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
                 _descriptionCard(
                     title: 'Pengobatan',
                     subtitles: widget.disease.detail!.treatment,
-                    context: context),
+                    context: context
+                ),
                 Divider(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSecondary
-                      .withOpacity(0.5),
+                  color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.5),
                   thickness: 1.0,
                   height: 1.0,
                 ),
@@ -197,7 +179,8 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
                 _descriptionCard(
                     title: 'Pencegahan',
                     subtitles: widget.disease.detail!.prevention,
-                    context: context),
+                    context: context
+                ),
               ],
             );
           },
@@ -226,30 +209,29 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.primary,
+              color: Theme.of(context).colorScheme.onSecondaryContainer,
             ),
           ),
           const SizedBox(height: 5),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: subtitles.length > 1
-                ? subtitles
-                    .map((subtitle) => Padding(
-                          padding: const EdgeInsets.only(bottom: 5),
-                          child: Text(
-                            '- $subtitle',
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                        ))
-                    .toList()
-                : [
-                    Text(
-                      subtitles.first,
-                      style: const TextStyle(
-                        fontSize: 14,
-                      ),
+              ? subtitles
+                .map((subtitle) => Padding(
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: Text(
+                    '- $subtitle',
+                    style: const TextStyle(fontSize: 14),
+                  ),
+                )).toList()
+              : [
+                  Text(
+                    subtitles.first,
+                    style: const TextStyle(
+                      fontSize: 14,
                     ),
-                  ],
+                  ),
+                ],
           ),
         ],
       ),

@@ -52,13 +52,11 @@ class AkunScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 30),
-                      // Bagian informasi akun
                       const Text(
                         'Informasi Akun',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
-                          color: Colors.black,
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -74,34 +72,21 @@ class AkunScreen extends StatelessWidget {
                         subtitle: state.user.email!,
                         context: context,
                       ),
-                      // _buildInfoCard(
-                      //   icon: Icons.phone,
-                      //   title: 'Nomor Telepon',
-                      //   subtitle: '+6281234567890',
-                      // ),
                       const SizedBox(height: 20),
                       Center(
                         child: ElevatedButton.icon(
                           onPressed: () {
-                            // Tambahkan aksi jika perlu
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => EditAccount(
-                                  userData: state.user,
-                                ),
+                                builder: (context) => EditAccount(userData: state.user,),
                               ),
                             ).then((_) {
                               context.read<UserCubit>().getUserProfile();
                             });
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                Theme.of(context).colorScheme.primary,
-                            foregroundColor:
-                                Theme.of(context).colorScheme.onPrimary,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 30, vertical: 15),
+                            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
@@ -125,7 +110,6 @@ class AkunScreen extends StatelessWidget {
     );
   }
 
-  // Widget untuk menampilkan informasi akun dalam bentuk Card
   Widget _buildInfoCard({
     required IconData icon,
     required String title,
@@ -136,14 +120,17 @@ class AkunScreen extends StatelessWidget {
       elevation: 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
-        side: BorderSide(color: Colors.grey.shade200),
+        side: BorderSide(
+          color: Colors.grey.shade200,
+          style: BorderStyle.solid,
+          width: 0.5,
+        ),
       ),
       margin: const EdgeInsets.symmetric(vertical: 10),
-      color: Colors.white,
+      color: Theme.of(context).colorScheme.onPrimary,
       shadowColor: Colors.grey,
       child: ListTile(
-        leading:
-            Icon(icon, color: Colors.black.withOpacity(0.7), size: 30),
+        leading: Icon(icon, size: 30),
         title: Text(
           title,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),

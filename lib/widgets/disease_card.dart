@@ -25,7 +25,7 @@ class _DiseaseCardState extends State<DiseaseCard> {
     return Hero(
       tag: "photo_${widget.disease.id}",
       child: Material(
-        color: Colors.transparent,
+        // color: Colors.transparent,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(22.0),
         ),
@@ -83,9 +83,9 @@ class _DiseaseCardState extends State<DiseaseCard> {
                               widget.disease.name.toString(),
                               style: TextStyle(
                                 fontSize: 17.0,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onPrimaryContainer,
+                                // color: Theme.of(context)
+                                //     .colorScheme
+                                //     .onPrimaryContainer,
                               ),
                             ),
                             Text(
@@ -107,9 +107,9 @@ class _DiseaseCardState extends State<DiseaseCard> {
                           widget.disease.desc.toString(),
                           style: TextStyle(
                             fontSize: 13.0,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onPrimaryContainer,
+                            // color: Theme.of(context)
+                            //     .colorScheme
+                            //     .onPrimaryContainer,
                           ),
                         ),
                         const SizedBox(
@@ -189,7 +189,7 @@ class _DiseaseCardState extends State<DiseaseCard> {
               : 'Level Bahaya $prevention',
           style: TextStyle(
             fontSize: 13.0,
-            color: Theme.of(context).colorScheme.onPrimaryContainer,
+            // color: Theme.of(context).colorScheme.onPrimaryContainer,
           ),
         ),
       ],

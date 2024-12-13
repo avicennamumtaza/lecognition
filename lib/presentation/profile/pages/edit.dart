@@ -29,7 +29,6 @@ class _EditAccountState extends State<EditAccount> {
   @override
   void initState() {
     super.initState();
-    // Initialize controllers with existing user data
     _emailController.text = widget.userData.email ?? '';
     _usernameController.text = widget.userData.username ?? '';
   }
@@ -55,9 +54,7 @@ class _EditAccountState extends State<EditAccount> {
                         children: [
                           CircleAvatar(
                             radius: 100,
-                            backgroundImage: AssetImage(
-                              'assets/avatars/Avatar_${widget.userData.avatar}.png',
-                            ),
+                            backgroundImage: AssetImage('assets/avatars/Avatar_${widget.userData.avatar}.png'),
                             backgroundColor: Colors.transparent,
                           ),
                           Positioned(
@@ -73,12 +70,10 @@ class _EditAccountState extends State<EditAccount> {
                 ),
               ),
               const SizedBox(height: 50),
-              _buildFormFields(),
+              _buildFormFields(context),
               const SizedBox(height: 20),
               Center(
-                child: _isSubmitting
-                    ? CircularProgressIndicator()
-                    : _submitButton(context),
+                child: _isSubmitting ? CircularProgressIndicator() : _submitButton(context),
               ),
             ],
           ),
@@ -101,9 +96,7 @@ class _EditAccountState extends State<EditAccount> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => EditAvatar(
-                userData: widget.userData,
-              ),
+              builder: (context) => EditAvatar(userData: widget.userData,),
             ),
           );
         },
@@ -112,7 +105,7 @@ class _EditAccountState extends State<EditAccount> {
     );
   }
 
-  Widget _buildFormFields() {
+  Widget _buildFormFields(BuildContext context) {
     return FormBuilder(
       key: _formKey,
       child: Column(
@@ -120,13 +113,13 @@ class _EditAccountState extends State<EditAccount> {
           FormBoilerplate.buildTextField(
             'e-mail',
             'E-mail',
-            widget.userData.email ?? 'Enter e-mail', // Updated hintText
+            widget.userData.email ?? 'Enter e-mail',
             Icons.email,
             _emailController,
             TextInputType.emailAddress,
+            context,
             [
-              FormBuilderValidators.required(
-                  errorText: "Email tidak boleh kosong"),
+              FormBuilderValidators.required(errorText: "Email tidak boleh kosong"),
               FormBuilderValidators.email(errorText: "Email tidak valid"),
             ],
           ),
@@ -134,43 +127,41 @@ class _EditAccountState extends State<EditAccount> {
           FormBoilerplate.buildTextField(
             'username',
             'Username',
-            widget.userData.username ?? 'Enter username', // Updated hintText
+            widget.userData.username ?? 'Enter username',
             Icons.person,
             _usernameController,
             TextInputType.text,
+            context,
             [
-              FormBuilderValidators.required(
-                  errorText: "Username tidak boleh kosong"),
-              FormBuilderValidators.minLength(6,
-                  errorText: "Username minimal 6 karakter"),
+              FormBuilderValidators.required(errorText: "Username tidak boleh kosong"),
+              FormBuilderValidators.minLength(6, errorText: "Username minimal 6 karakter"),
             ],
           ),
           const SizedBox(height: 20),
           FormBoilerplate.buildTextField(
             'password',
             'Password',
-            'Enter new password', // Default hintText for password
+            'Enter new password',
             Icons.lock,
             _passwordController,
             TextInputType.text,
+            context,
             [
-              FormBuilderValidators.required(
-                  errorText: "Password tidak boleh kosong"),
-              FormBuilderValidators.minLength(6,
-                  errorText: "Password minimal 6 karakter"),
+              FormBuilderValidators.required(errorText: "Password tidak boleh kosong"),
+              FormBuilderValidators.minLength(6, errorText: "Password minimal 6 karakter"),
             ],
           ),
           const SizedBox(height: 20),
           FormBoilerplate.buildTextField(
             'confPassword',
             'Confirm Password',
-            'Re-enter new password', // Default hintText for confirm password
+            'Re-enter new password',
             Icons.lock,
             _confirmPasswordController,
             TextInputType.text,
+            context,
             [
-              FormBuilderValidators.required(
-                  errorText: "Konfirmasi password tidak boleh kosong"),
+              FormBuilderValidators.required(errorText: "Konfirmasi password tidak boleh kosong"),
               (val) {
                 if (val != _passwordController.text) {
                   return 'Passwords do not match';
@@ -203,7 +194,6 @@ class _EditAccountState extends State<EditAccount> {
                 DisplayMessage.errorMessage(context, failure.toString());
               },
               (success) {
-                // AppNavigator.pushReplacement(context, const ProfileScreen());
                 Navigator.pop(context);
                 DisplayMessage.errorMessage(context, success.toString());
               },
@@ -216,8 +206,6 @@ class _EditAccountState extends State<EditAccount> {
         }
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Theme.of(context).colorScheme.onPrimary,
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       ),
