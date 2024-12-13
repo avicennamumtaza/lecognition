@@ -7,6 +7,8 @@ import 'package:lecognition/common/helper/navigation/app_navigator.dart';
 import 'package:lecognition/core/constant/api_urls.dart';
 import 'package:lecognition/data/tree/models/delete_tree_params.dart';
 import 'package:lecognition/data/tree/models/get_tree_scans_params.dart';
+import 'package:lecognition/domain/diagnozer/entities/diagnosis.dart';
+import 'package:lecognition/domain/history/entities/history.dart';
 import 'package:lecognition/domain/tree/entities/tree.dart';
 import 'package:lecognition/domain/tree/usecases/delete_tree.dart';
 import 'package:lecognition/presentation/tree/bloc/tree_cubit.dart';
@@ -162,6 +164,8 @@ class Tree_DetailScreenState extends State<TreeDetailScreen> {
                     ),
                   ),
                   SizedBox(height: 10),
+                  Divider(color: Colors.grey[500]),
+                  SizedBox(height: 5),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Text(
@@ -172,7 +176,7 @@ class Tree_DetailScreenState extends State<TreeDetailScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 5),
+                  SizedBox(height: 10),
                   Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.width * 0.3,
@@ -249,11 +253,14 @@ class Tree_DetailScreenState extends State<TreeDetailScreen> {
                       ],
                     ),
                   ),
+                  SizedBox(height: 10),
+                  Divider(color: Colors.grey[500]),
                   SizedBox(height: 5),
-                  Divider(color: Colors.grey[300]),
-                  SizedBox(height: 7),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 0,
+                    ),
                     child: Text(
                       'Riwayat Diagnosis',
                       style: const TextStyle(
@@ -263,7 +270,33 @@ class Tree_DetailScreenState extends State<TreeDetailScreen> {
                     ),
                   ),
                   SizedBox(height: 10),
-                  for (int i = 0; i < 5; i++) _historyPlant(i),
+                  BlocProvider(
+                    create: (context) => TreeCubit()
+                      ..getTreeScans(
+                        GetTreeScansParams(
+                          treeId: widget.tree.id!,
+                        ),
+                      ),
+                    child: BlocBuilder<TreeCubit, TreeState>(
+                        builder: (context, state) {
+                      if (state is TreeScansLoaded) {
+                        return ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: state.scans.length,
+                          itemBuilder: (context, index) {
+                            final scan = state.scans[index];
+                            return _historyPlant(index, scan);
+                          },
+                        );
+                      }
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }),
+                  ),
+                  // for (int i = 0; i < 5; i++) _historyPlant(i),
                 ],
               );
             }
@@ -367,7 +400,7 @@ class Tree_DetailScreenState extends State<TreeDetailScreen> {
     });
   }
 
-  Widget _historyPlant(int index) {
+  Widget _historyPlant(int index, HistoryEntity scan) {
     return GestureDetector(
       onTap: () {
         // Navigate to detail screen when tapped
@@ -385,13 +418,13 @@ class Tree_DetailScreenState extends State<TreeDetailScreen> {
         // );
       },
       child: Card(
-        margin: const EdgeInsets.all(10),
+        margin: const EdgeInsets.all(5),
         color: Theme.of(context).colorScheme.onPrimary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16.0), // 16px padding from all sides
+          padding: const EdgeInsets.all(5.0), // 16px padding from all sides
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -415,7 +448,7 @@ class Tree_DetailScreenState extends State<TreeDetailScreen> {
                     //   fit: BoxFit.cover,
                     // ),
                     child: Image.network(
-                      "https://via.placeholder.com/150",
+                      ApiUrls.baseUrlWithoutApi + scan.img!.substring(1),
                       width: 70,
                       height: 70,
                       fit: BoxFit.cover,
@@ -431,14 +464,17 @@ class Tree_DetailScreenState extends State<TreeDetailScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Diagnosis #Powder', // Diagnosis name
+                              '${scan.disease!.name}' +
+                                  (scan.disease!.id! > 1
+                                      ? " 🔴"
+                                      : " 💚"), // Diagnosis name
                               style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
+                                fontWeight: FontWeight.w900,
+                                fontSize: 17,
                               ),
                             ),
                             Text(
-                              '21-10-2024', // Static date, replace with actual if needed
+                              '${scan.datetime.toString()}', // Static date, replace with actual if needed
                               style: const TextStyle(
                                 color: Colors.grey,
                                 fontSize: 12,

@@ -167,7 +167,7 @@ class _ResultScreenState extends State<ResultScreen> {
                     ),
                     SizedBox(height: 10),
                     Text(
-                      "Proses diagnosis gagal :(",
+                      "Diagnosis Gagal :(",
                       style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
@@ -223,6 +223,7 @@ class _ResultScreenState extends State<ResultScreen> {
             }
             if (state is DiagnosisLoaded) {
               try {
+                // print("State Img Diagnosis Result: ${state.diagnosis.img}");
                 final double? persentase = state.diagnosis.accuracy;
                 // print("Persentase: $persentase");
                 // print("Disease: ${state.diagnosis.disease}");
@@ -243,9 +244,9 @@ class _ResultScreenState extends State<ResultScreen> {
                 // saveDiagosisResult(state.diagnosis.disease!, persentase!);
                 final DiseaseEntity disease =
                     _findDisease(state.diagnosis.disease!);
-                print(
-                  "URL DIAGNOSIS IMAGE: ${ApiUrls.baseUrlWithoutApi + state.diagnosis.img!.substring(1)}",
-                );
+                // print(
+                //   "URL DIAGNOSIS IMAGE: ${ApiUrls.baseUrlWithoutApi + state.diagnosis.img!.substring(1)}",
+                // );
                 return ListView(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -255,11 +256,17 @@ class _ResultScreenState extends State<ResultScreen> {
                         decoration: BoxDecoration(
                           color: Colors.grey[300],
                           borderRadius: BorderRadius.circular(10),
+                          // image: DecorationImage(
+                          //   image: Image.network(
+                          //     ApiUrls.baseUrlWithoutApi +
+                          //         state.diagnosis.img!.substring(1),
+                          //   ).image,
+                          //   fit: BoxFit.cover,
+                          // ),
                           image: DecorationImage(
-                            image: Image.network(
-                              ApiUrls.baseUrlWithoutApi +
-                                  state.diagnosis.img!.substring(1),
-                            ).image,
+                            image: FileImage(
+                              File(widget.photo.path),
+                            ),
                             fit: BoxFit.cover,
                           ),
                         ),

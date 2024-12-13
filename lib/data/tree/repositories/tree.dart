@@ -1,10 +1,16 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
+import 'package:lecognition/common/helper/mapper/diagnosis_mapper.dart';
+import 'package:lecognition/common/helper/mapper/history_mapper.dart';
 import 'package:lecognition/common/helper/mapper/tree_mapper.dart';
 import 'package:lecognition/data/tree/models/add_tree_params.dart';
 import 'package:lecognition/data/tree/models/delete_tree_params.dart';
 import 'package:lecognition/data/tree/models/get_tree_scans_params.dart';
 import 'package:lecognition/data/tree/models/update_tree_params.dart';
 import 'package:lecognition/data/tree/sources/tree_api_service.dart';
+import 'package:lecognition/domain/diagnozer/entities/diagnosis.dart';
+import 'package:lecognition/domain/history/entities/history.dart';
 import 'package:lecognition/domain/tree/entities/tree.dart';
 import 'package:lecognition/domain/tree/repositories/tree.dart';
 import 'package:lecognition/service_locator.dart';
@@ -80,13 +86,43 @@ class TreeRepositoryImpl extends TreeRepository {
 
   @override
   Future<Either> getTreeScans(GetTreeScansParams params) async {
-    var data = await sl<TreeApiService>().getTreeScans(params);
-    return data.fold(
+    var response = await sl<TreeApiService>().getTreeScans(params);
+
+    return response.fold(
       (error) {
         return Left(error);
       },
       (data) async {
-        return Right(data);
+        try {
+          // Validasi apakah data adalah String dan mencoba decode JSON
+          if (data is String) {
+            print("Raw API Response: $data");
+
+            // Pastikan respons JSON valid
+            data = jsonDecode(data);
+          }
+
+          // Validasi bahwa data adalah List
+          if (data is! List) {
+            throw FormatException(
+                "Unexpected data format: ${data.runtimeType}");
+          }
+
+          // Proses data menjadi entitas
+          final treeScans = data
+              .map(
+                (item) => HistoryMapper.toEntity(
+                  HistoryEntity.fromJson(item),
+                ),
+              )
+              .toList();
+
+          print("Processed Tree Scans: $treeScans");
+          return Right(treeScans);
+        } catch (e) {
+          print("Error parsing response: $e");
+          return Left("Failed to parse API response: $e");
+        }
       },
     );
   }
@@ -119,7 +155,8 @@ class TreeRepositoryImpl extends TreeRepository {
               (item) => TreeMapper.toEntityWithoutForeign(
                 TreeEntityWithoutForeign.fromJson(item),
               ),
-            ).toList();
+            )
+            .toList();
         // final returnedData = TreeMapper.toEntityWithoutForeign(
         //   TreeEntityWithoutForeign.fromJson(data),
         // );

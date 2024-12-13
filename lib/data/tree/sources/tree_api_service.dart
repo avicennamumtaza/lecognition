@@ -106,7 +106,7 @@ class TreeApiServiceImpl extends TreeApiService {
         ),
       );
       print(response);
-      return Right(response.toString());
+      return Right(response.data);
     } on DioException catch (error) {
       return Left(error);
     }

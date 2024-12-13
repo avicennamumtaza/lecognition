@@ -84,21 +84,29 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
                     fillColor: Colors.white,
                   ),
                   value: _selectedPlantName,
-                  items: trees.map((tree) {
+                  items: trees.map(
+                    (tree) {
                       final treeName = tree.name;
                       return DropdownMenuItem<String>(
                         value: treeName,
-                        child: Text(treeName!),
+                        child: Text(
+                          treeName!.substring(
+                            0,
+                            treeName.length > 20 ? 20 : treeName.length,
+                          ) + (treeName.length > 20 ? "..." : ""),
+                        ),
                       );
-                    }).toList(),
+                    },
+                  ).toList(),
                   onChanged: (String? value) {
                     setState(() {
                       _selectedPlantName = value;
-                      int index = trees.indexWhere((tree) => tree.name == value);
+                      int index = trees.indexWhere(
+                        (tree) => tree.name == value,
+                      );
                       _selectedPlantId = trees[index].id;
                     });
-                  }
-              ),
+                  }),
             ],
           ),
           actions: <Widget>[
@@ -267,7 +275,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
                   IconButton(
                     onPressed: () => _pickImageGallery(trees),
                     icon:
-                    const Icon(Icons.image, size: 35, color: Colors.white),
+                        const Icon(Icons.image, size: 35, color: Colors.white),
                   ),
                   Container(
                     decoration: const BoxDecoration(

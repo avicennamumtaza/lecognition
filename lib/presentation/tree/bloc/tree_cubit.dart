@@ -6,6 +6,7 @@ import 'package:lecognition/data/tree/models/get_tree_scans_params.dart';
 import 'package:lecognition/domain/tree/usecases/add_tree.dart';
 import 'package:lecognition/domain/tree/usecases/delete_tree.dart';
 import 'package:lecognition/domain/tree/usecases/get_tree.dart';
+import 'package:lecognition/domain/tree/usecases/get_tree_scans.dart';
 import 'package:lecognition/domain/tree/usecases/get_trees.dart';
 import 'package:lecognition/presentation/tree/bloc/tree_state.dart';
 import 'package:lecognition/service_locator.dart';
@@ -42,6 +43,23 @@ class TreeCubit extends Cubit<TreeState> {
       (treeDetail) => emit(
         TreesLoaded(
           trees: treeDetail,
+        ),
+      ),
+    );
+  }
+
+  void getTreeScans(GetTreeScansParams params) async {
+    final returnedData = await sl<GetTreeScansUseCase>().call(params: params);
+    print(returnedData);
+    returnedData.fold(
+      (error) => emit(
+        TreeFailureLoad(
+          errorMessage: error.toString(),
+        ),
+      ),
+      (treeScans) => emit(
+        TreeScansLoaded(
+          scans: treeScans,
         ),
       ),
     );

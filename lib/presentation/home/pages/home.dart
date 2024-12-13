@@ -1,12 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lecognition/common/helper/navigation/app_navigator.dart';
 import 'package:lecognition/core/constant/api_urls.dart';
-import 'package:lecognition/data/media/models/get_image_params.dart';
-import 'package:lecognition/presentation/media/bloc/media_cubit.dart';
-import 'package:lecognition/presentation/media/bloc/media_state.dart';
 import 'package:lecognition/widgets/tabs.dart';
 import 'package:lecognition/domain/bookmark/entities/bookmark.dart';
 import 'package:lecognition/domain/disease/entities/disease.dart';
@@ -23,7 +17,6 @@ import 'package:lecognition/presentation/tree/bloc/tree_state.dart';
 import 'package:lecognition/presentation/tree/pages/tree.dart';
 import 'package:lecognition/presentation/tree/pages/trees.dart';
 import 'package:lecognition/widgets/disease_card.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -35,26 +28,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // List<String> treeImages = [];
-
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   getImagesPath();
-  // }
-
-  // didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   // getImagesPath();
-  // }
-
-  // // void linkDiseaseDetails(List<BookmarkEntity> bookmarkedDiseases) {
-  // Future<void> getImagesPath() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   treeImages = prefs.getStringList('tree_images') ?? [];
-  //   // return savedImages;
-  // }
 
   void linkDiseaseDetails(List<DiseaseEntity> diseases) {
     for (var disease in diseases) {
@@ -85,10 +58,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // getImagesPath();
-    print("=============================================");
-    // print("treeImages: $treeImages");
-    print("=============================================");
     return MultiBlocProvider(
       providers: [
         BlocProvider<DiseaseCubit>(
@@ -123,7 +92,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           diseaseState.diseases,
                           bookmarkedDiseases,
                         );
-                        // linkTreeDisease(treeState.trees);
                       }
 
                       return Skeletonizer(
@@ -184,7 +152,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 BlocProvider.of<TreeCubit>(
                                                         context)
                                                     .getAllTrees();
-                                                // getImagesPath();
                                               });
                                             },
                                             child: Text(
@@ -199,11 +166,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ],
                                       ),
                                       if (treeState is TreesLoaded)
-                                        // SizedBox(height: 5),
                                         _sectionTanamanku(
                                           context,
                                           treeState.trees,
-                                          // treeImages,
                                         ),
                                       SizedBox(height: 15),
                                       Text(
@@ -260,7 +225,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .onSecondary
-                                                    .withOpacity(0.5),
+                                                    .withOpacity(
+                                                      0.5,
+                                                    ),
                                                 thickness: 1.0,
                                                 height: 1.0,
                                               ),
@@ -311,11 +278,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   context,
                   trees[i],
                   i,
-                  // treeImages,
-                  // 'assets/images/mg.jpeg',
-                  // trees[i].desc!,
-                  // 'Sehat',
-                  // 'Tanaman ini sehat',
                 ),
             if (trees.length <= 3)
               for (var i = 0; i < trees.length; i++)
@@ -323,11 +285,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   context,
                   trees[i],
                   i,
-                  // treeImages,
-                  // 'assets/images/mg.jpeg',
-                  // trees[i].desc!,
-                  // 'Sehat',
-                  // 'Tanaman ini sehat',
                 ),
           ],
         ),
@@ -339,7 +296,6 @@ class _HomeScreenState extends State<HomeScreen> {
     BuildContext context,
     TreeEntityWithoutForeign tree,
     int index,
-    // List<String> treeImages,
   ) {
     return InkWell(
       onTap: () {
@@ -347,18 +303,15 @@ class _HomeScreenState extends State<HomeScreen> {
           MaterialPageRoute(builder: (context) {
             return TreeDetailScreen(
               tree: tree,
-              // treeImage: treeImages[index],
             );
           }),
         ).then((_) {
           BlocProvider.of<TreeCubit>(context).getAllTrees();
-          // getImagesPath();
         });
       },
       child: _buildTreeCard(
         context,
         tree,
-        // treeImages[index],
       ),
     );
   }
@@ -368,30 +321,6 @@ class _HomeScreenState extends State<HomeScreen> {
     TreeEntityWithoutForeign tree,
     // String treeImage,
   ) {
-    // return BlocProvider(
-    //   create: (context) => MediaCubit()
-    //     ..getImage(
-    //       GetImageParams(
-    //         url: tree.image!,
-    //       ),
-    //     ),
-    //   child: BlocBuilder<MediaCubit, MediaState>(
-    //     builder: (context, state) {
-    //       if (state is MediaLoading) {
-    //         return Center(
-    //           child: CircularProgressIndicator(),
-    //         );
-    //       }
-    //       if (state is MediaFailureLoad) {
-    //         return Center(
-    //           child: Text(
-    //             state.errorMessage,
-    //             style: TextStyle(
-    //               color: Theme.of(context).colorScheme.error,
-    //             ),
-    //           ),
-    //         );
-    //       }
     print("URL IMAGE: ${tree.image}");
     return Container(
       padding: EdgeInsets.all(10),
@@ -464,9 +393,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
-    //     },
-    //   ),
-    // );
   }
 
   Widget _actionButton(BuildContext context) {
@@ -494,11 +420,6 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Icon(
-              //   Icons.camera_alt_outlined,
-              //   size: 50,
-              // ),
-              // SizedBox(width: 10),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -511,13 +432,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Colors.white,
                     ),
                   ),
-                  // Text(
-                  //   'Tanamanmu',
-                  //   style: TextStyle(
-                  //     fontSize: 16,
-                  //     color: Colors.white,
-                  //   ),
-                  // ),
                 ],
               )
             ],

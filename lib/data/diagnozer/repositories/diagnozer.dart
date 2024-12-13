@@ -22,7 +22,9 @@ class DiagnozerRepositoryImpl extends DiagnozerRepository {
         // );
         // print("Resultingggg $bookmarked");
         final dataEntity = DiagnosisEntity.fromJson(data);
-        print('Resultingggggg ${dataEntity}');
+        print(
+          '=============================> Resultingggggg Returned Diagnosis Data ${dataEntity}',
+        );
         return Right(dataEntity);
       },
     );

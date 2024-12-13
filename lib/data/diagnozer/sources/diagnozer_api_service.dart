@@ -18,7 +18,7 @@ class DiagnozerApiServiceImpl extends DiagnozerApiService {
       } else {
         FormData formData = FormData.fromMap({
           "img": await MultipartFile.fromFile(params.imageFile.path),
-          "datetime": 123456,
+          // "datetime": 123456,
           'tree': params.treeId,
         });
         print("formData: $formData");

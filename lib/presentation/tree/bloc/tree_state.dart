@@ -1,3 +1,5 @@
+import 'package:lecognition/domain/diagnozer/entities/diagnosis.dart';
+import 'package:lecognition/domain/history/entities/history.dart';
 import 'package:lecognition/domain/tree/entities/tree.dart';
 
 abstract class TreeState {}
@@ -7,6 +9,11 @@ class TreeLoading extends TreeState {}
 class TreesLoaded extends TreeState {
   final List<TreeEntityWithoutForeign> trees;
   TreesLoaded({required this.trees});
+}
+
+class TreeScansLoaded extends TreeState {
+  final List<HistoryEntity> scans;
+  TreeScansLoaded({required this.scans});
 }
 
 class TreeLoaded extends TreeState {
