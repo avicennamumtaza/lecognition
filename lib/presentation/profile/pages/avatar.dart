@@ -56,9 +56,7 @@ class _EditAvatarState extends State<EditAvatar> {
                   ElevatedButton(
                     onPressed: () async {
                       try {
-                        print("AVATAR CHOSEN $avatarChoosen");
-                        final result =
-                            await sl<UpdateUserProfileUseCase>().call(
+                        final result = await sl<UpdateUserProfileUseCase>().call(
                           params: UpdateUserProfileParams(
                             userAvatar: avatarChoosen,
                             email: widget.userData.email!,
@@ -66,7 +64,6 @@ class _EditAvatarState extends State<EditAvatar> {
                             password: widget.userData.password!,
                           ),
                         );
-                        print("RESULTTTTTTT $result");
                         result.fold(
                           (failure) {
                             DisplayMessage.errorMessage(
@@ -90,10 +87,7 @@ class _EditAvatarState extends State<EditAvatar> {
                         DisplayMessage.errorMessage(context, error.toString());
                       }
                     },
-                    child: const Text(
-                      'Simpan',
-                      style: TextStyle(color: Colors.white),
-                    ),
+                    child: const Text('Simpan',),
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.all(15),
                       shape: RoundedRectangleBorder(
@@ -105,7 +99,6 @@ class _EditAvatarState extends State<EditAvatar> {
                 ],
               ),
             ),
-            // Menampilkan avatar dalam 3 baris, 2 avatar per baris
             for (int i = 1; i <= 6; i += 2)
               Padding(
                 padding: const EdgeInsets.only(bottom: 20),
@@ -141,12 +134,12 @@ class _EditAvatarState extends State<EditAvatar> {
           side: BorderSide(
             color: avatarId == avatarChoosen
                 ? Theme.of(context).colorScheme.secondary
-                : Theme.of(context).colorScheme.primary,
+                : Theme.of(context).colorScheme.onPrimaryContainer,
             width: 2,
           ),
         ),
         backgroundColor: avatarId == avatarChoosen
-            ? Theme.of(context).colorScheme.primary.withOpacity(0.8)
+            ? Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.8)
             : Theme.of(context).colorScheme.secondary,
         padding: const EdgeInsets.all(10),
       ),

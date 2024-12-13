@@ -71,22 +71,20 @@ class _CameraScreenState extends State<CameraScreen> {
       context: context,
       builder: (BuildContext context) {
         return BlocProvider(
-            create: (context) => CameraCubit()..putCameraPhoto(_selectedImage!),
-            child: BlocBuilder<CameraCubit, CameraPhotoState>(
-                builder: (context, state) {
+          create: (context) => CameraCubit()..putCameraPhoto(_selectedImage!),
+          child: BlocBuilder<CameraCubit, CameraPhotoState>(
+            builder: (context, state) {
               return AlertDialog(
-                title: const Text('Konfirmasi'),
+                title: Text('Konfirmasi', style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary)),
                 content: Image(
-                  image: FileImage(
-                    File(_selectedImage!.path),
-                  ),
+                  image: FileImage(File(_selectedImage!.path)),
                 ),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: const Text('Batal'),
+                    child: Text('Batal', style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer)),
                   ),
                   TextButton(
                     onPressed: () async {
@@ -95,37 +93,18 @@ class _CameraScreenState extends State<CameraScreen> {
                           params: AddTreeParams(
                               desc: widget.nameTree,
                               image: _selectedImage!,
-                              // Default Google Office (latitude: 37.421998, longitude: -122.084)
                               latitude: widget.currentLocation.latitude,
-                              longitude: widget.currentLocation.longitude),
+                              longitude: widget.currentLocation.longitude
+                          ),
                         );
                         result.fold(
-                          (failure) {
+                              (failure) {
                             DisplayMessage.errorMessage(
                               context,
                               failure.toString(),
                             );
                           },
                           (success) async {
-                            // SharedPreferences prefs =
-                            //     await SharedPreferences.getInstance();
-                            // // List<String>? savedImages =
-                            //     prefs.getStringList('tree_images') ?? [];
-                            // List<String>? savedPlantNames = prefs.getStringList('plant_names') ?? [];
-
-                            // savedImages.add(_selectedImage!.path);
-                            // savedPlantNames.add(plantName);
-
-                            // // print("savedPlantNames: $savedPlantNames");
-                            // print("=== savedImages ===");
-                            // // print("savedImages: $savedImages");
-                            // print("=== savedImages ===");
-
-                            // await prefs.setStringList(
-                            //   'tree_images',
-                            //   // savedImages,
-                            // );
-                            // await prefs.setStringList('plant_names', savedPlantNames);
                             int count = 0;
                             Navigator.popUntil(context, (route) {
                               count++;
@@ -136,17 +115,14 @@ class _CameraScreenState extends State<CameraScreen> {
                       } catch (error) {
                         DisplayMessage.errorMessage(context, error.toString());
                       }
-                      // int count = 0;
-                      // Navigator.popUntil(context, (route) {
-                      //   count++;
-                      //   return count == 4;
-                      // });
                     },
-                    child: const Text('Ya'),
+                    child: Text('Ya', style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer)),
                   ),
                 ],
               );
-            }));
+            }
+          )
+        );
       },
     );
   }
@@ -182,30 +158,15 @@ class _CameraScreenState extends State<CameraScreen> {
           params: AddTreeParams(
               desc: widget.nameTree,
               image: _selectedImage!,
-              // Default Google Office (latitude: 37.421998, longitude: -122.084)
               latitude: widget.currentLocation.latitude,
-              longitude: widget.currentLocation.longitude),
+              longitude: widget.currentLocation.longitude
+          ),
         );
         result.fold(
           (failure) {
             DisplayMessage.errorMessage(context, failure.toString());
           },
           (success) async {
-            // SharedPreferences prefs = await SharedPreferences.getInstance();
-            // // List<String>? savedImages =
-            //     prefs.getStringList('tree_images') ?? [];
-            // List<String>? savedPlantNames = prefs.getStringList('plant_names') ?? [];
-
-            // savedImages.add(_selectedImage!.path);
-            // savedPlantNames.add(plantName);
-
-            // // print("savedPlantNames: $savedPlantNames");
-            // print("=== savedImages ===");
-            // // print("savedImages: $savedImages");
-            // print("=== savedImages ===");
-
-            // await prefs.setStringList('tree_images', savedImages);
-            // await prefs.setStringList('plant_names', savedPlantNames);
             int count = 0;
             Navigator.popUntil(context, (route) {
               count++;
@@ -230,7 +191,6 @@ class _CameraScreenState extends State<CameraScreen> {
     }
 
     try {
-      // Ambil gambar dari kamera dan simpan dalam file sementara
       await cameraController?.setFocusMode(FocusMode.auto);
       final XFile image = await cameraController!.takePicture();
       _isTorchOn = false;
@@ -251,14 +211,14 @@ class _CameraScreenState extends State<CameraScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Error'),
+          title: Text('Error', style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary)),
           content: Text(message),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('OK'),
+              child: Text('OK', style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer)),
             ),
           ],
         );
@@ -275,8 +235,7 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   Widget _buildCameraPreview() {
-    if (cameraController == null ||
-        cameraController?.value.isInitialized == false) {
+    if (cameraController == null || cameraController?.value.isInitialized == false) {
       return const Center(
         child: SpinKitSquareCircle(
           color: Color.fromARGB(255, 255, 131, 23),
@@ -300,8 +259,7 @@ class _CameraScreenState extends State<CameraScreen> {
                 children: [
                   IconButton(
                     onPressed: _pickImageGallery,
-                    icon:
-                        const Icon(Icons.image, size: 35, color: Colors.white),
+                    icon: const Icon(Icons.image, size: 35, color: Colors.white),
                   ),
                   Container(
                     decoration: const BoxDecoration(
@@ -315,16 +273,14 @@ class _CameraScreenState extends State<CameraScreen> {
                     ),
                     child: IconButton(
                       onPressed: _takePicture,
-                      icon: const Icon(Icons.circle,
-                          size: 50, color: Colors.white),
+                      icon: const Icon(Icons.circle, size: 50, color: Colors.white),
                     ),
                   ),
                   IconButton(
                     onPressed: () {
                       _toggleFlashlight();
                     },
-                    icon: Icon(_isTorchOn ? Icons.flash_on : Icons.flash_off,
-                        size: 35, color: Colors.white),
+                    icon: Icon(_isTorchOn ? Icons.flash_on : Icons.flash_off, size: 35, color: Colors.white),
                   ),
                 ],
               ),

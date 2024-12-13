@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lecognition/core/constant/api_urls.dart';
@@ -9,7 +7,6 @@ import 'package:lecognition/presentation/tree/pages/tree.dart';
 
 class TreeCard extends StatelessWidget {
   final TreeEntityWithoutForeign tree;
-  // final String treeImage;
 
   const TreeCard({super.key, required this.tree});
 
@@ -24,19 +21,18 @@ class TreeCard extends StatelessWidget {
           );
         })).then((_) {
           BlocProvider.of<TreeCubit>(context).getAllTrees();
-          
         });
       },
       child: Card(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0), // Rounded corners
+          borderRadius: BorderRadius.circular(15.0),
         ),
         elevation: 5, // Shadow effect
-        margin: const EdgeInsets.all(10), // Space around the card
+        margin: const EdgeInsets.all(10),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15.0),
-            color: Colors.green[50], // Light green background
+            color: Theme.of(context).colorScheme.onInverseSurface,
           ),
           padding: const EdgeInsets.all(10.0),
           child: Column(
@@ -51,18 +47,6 @@ class TreeCard extends StatelessWidget {
                   height: 100,
                   width: double.infinity,
                 ),
-                // File(treeImage).existsSync()
-                //     ? Image.file(
-                //         File(treeImage),
-                //         fit: BoxFit.cover,
-                //         height: 100,
-                //         width: double.infinity,
-                //       )
-                //     : const Icon(
-                //         Icons.image_not_supported,
-                //         size: 100,
-                //         color: Colors.grey,
-                //       ),
               ),
               const SizedBox(height: 10),
               // Title
@@ -84,7 +68,7 @@ class TreeCard extends StatelessWidget {
                     child: Text(
                       '(${tree.latitude?.toStringAsFixed(2)}, ${tree.longitude?.toStringAsFixed(2)})',
                       style:
-                          const TextStyle(fontSize: 14.0, color: Colors.grey),
+                      TextStyle(fontSize: 14.0, color: Theme.of(context).colorScheme.onSecondary),
                     ),
                   ),
                 ],

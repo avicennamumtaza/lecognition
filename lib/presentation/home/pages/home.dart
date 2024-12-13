@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lecognition/core/constant/api_urls.dart';
 import 'package:lecognition/widgets/tabs.dart';
 import 'package:lecognition/domain/bookmark/entities/bookmark.dart';
 import 'package:lecognition/domain/disease/entities/disease.dart';
@@ -18,6 +17,8 @@ import 'package:lecognition/presentation/tree/pages/tree.dart';
 import 'package:lecognition/presentation/tree/pages/trees.dart';
 import 'package:lecognition/widgets/disease_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+
+import '../../../core/constant/api_urls.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -43,13 +44,9 @@ class _HomeScreenState extends State<HomeScreen> {
     List<BookmarkEntity> bookmarkedDiseases,
   ) {
     for (var disease in diseases) {
-      disease.isBookmarked = bookmarkedDiseases.any(
-        (bookmark) => bookmark.disease?.id == disease.id,
-      );
+      disease.isBookmarked = bookmarkedDiseases.any((bookmark) => bookmark.disease?.id == disease.id);
       if (disease.isBookmarked == true) {
-        disease.idBookmarked = bookmarkedDiseases
-            .firstWhere((bookmark) => bookmark.disease?.id == disease.id)
-            .id;
+        disease.idBookmarked = bookmarkedDiseases.firstWhere((bookmark) => bookmark.disease?.id == disease.id).id;
       }
       HomeScreen.localDiseasesData.add(disease);
       print(HomeScreen.localDiseasesData);
@@ -82,10 +79,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   return BlocBuilder<TreeCubit, TreeState>(
                     builder: (context, treeState) {
                       List<BookmarkEntity> bookmarkedDiseases = [];
-                      if (bookmarkState is BookmarkedDiseasesLoaded &&
-                          diseaseState is DiseasesLoaded &&
-                          userState is UserLoaded &&
-                          treeState is TreesLoaded) {
+                      if (bookmarkState is BookmarkedDiseasesLoaded && diseaseState is DiseasesLoaded &&
+                          userState is UserLoaded && treeState is TreesLoaded) {
                         bookmarkedDiseases = bookmarkState.bookmarkedDiseases;
                         linkDiseaseDetails(diseaseState.diseases);
                         linkDiseaseBookmarkStatus(
@@ -93,12 +88,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           bookmarkedDiseases,
                         );
                       }
-
                       return Skeletonizer(
                         enabled: diseaseState is DiseasesLoading ||
                             bookmarkState is BookmarkedDiseasesLoading ||
-                            userState is UserLoading ||
-                            treeState is TreeLoading,
+                            userState is UserLoading || treeState is TreeLoading,
                         child: SingleChildScrollView(
                           child: Container(
                             child: Column(
@@ -112,29 +105,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Container(
                                   width: MediaQuery.of(context).size.width,
                                   decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(20),
-                                      topRight: Radius.circular(20),
+                                    borderRadius: const BorderRadius.vertical(
+                                      top: Radius.circular(20),
                                     ),
-                                    color: Colors.white,
+                                    color: Theme.of(context).colorScheme.surface,
                                   ),
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 14,
                                     vertical: 20,
                                   ),
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       _actionButton(context),
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
                                             'Daftar Tanaman',
                                             style: TextStyle(
-                                              color: Colors.black,
                                               fontSize: 18,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -144,22 +133,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                               print('push page');
                                               Navigator.push(
                                                 context,
-                                                MaterialPageRoute(
-                                                    builder: (context) {
+                                                MaterialPageRoute(builder: (context) {
                                                   return TreesScreen();
                                                 }),
                                               ).then((_) {
-                                                BlocProvider.of<TreeCubit>(
-                                                        context)
-                                                    .getAllTrees();
+                                                BlocProvider.of<TreeCubit>(context).getAllTrees();
                                               });
                                             },
                                             child: Text(
                                               'Lihat Semua',
                                               style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
+                                                color: Theme.of(context).colorScheme.onPrimaryContainer,
                                               ),
                                             ),
                                           ),
@@ -174,42 +158,27 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Text(
                                         'Daftar Penyakit',
                                         style: TextStyle(
-                                          color: Colors.black,
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      if (diseaseState is DiseasesFailureLoad ||
-                                          bookmarkState
-                                              is BookmarkedDiseasesFailureLoad ||
-                                          userState is UserFailureLoad ||
-                                          treeState is TreeFailureLoad)
+                                      if (diseaseState is DiseasesFailureLoad || bookmarkState is BookmarkedDiseasesFailureLoad ||
+                                          userState is UserFailureLoad || treeState is TreeFailureLoad)
                                         Container(
                                           child: Center(
                                             child: Text(
                                               diseaseState
-                                                      is DiseasesFailureLoad
-                                                  ? diseaseState.errorMessage
-                                                  : (bookmarkState
-                                                          is BookmarkedDiseasesFailureLoad
-                                                      ? bookmarkState
-                                                          .errorMessage
-                                                      : userState
-                                                              is UserFailureLoad
-                                                          ? userState
-                                                              .errorMessage
-                                                          : 'Terjadi kesalahan'),
+                                              is DiseasesFailureLoad ? diseaseState.errorMessage : (bookmarkState
+                                              is BookmarkedDiseasesFailureLoad ? bookmarkState.errorMessage: userState
+                                              is UserFailureLoad ? userState.errorMessage : 'Terjadi kesalahan'),
                                               style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .error,
+                                                color: Theme.of(context).colorScheme.error,
                                               ),
                                             ),
                                           ),
                                         ),
                                       if (diseaseState is DiseasesLoaded)
-                                        for (var disease
-                                            in diseaseState.diseases)
+                                        for (var disease in diseaseState.diseases)
                                           Column(
                                             children: [
                                               Padding(
@@ -222,12 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ),
                                               ),
                                               Divider(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onSecondary
-                                                    .withOpacity(
-                                                      0.5,
-                                                    ),
+                                                color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.5),
                                                 thickness: 1.0,
                                                 height: 1.0,
                                               ),
@@ -255,7 +219,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _sectionTanamanku(
     BuildContext context,
     List<TreeEntityWithoutForeign> trees,
-    // List<String> treeImages,
   ) {
     print(trees);
     return SingleChildScrollView(
@@ -263,30 +226,21 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
-          children: [
-            if (trees.isEmpty)
-              Text(
-                'Tidak ada tanaman',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                ),
-              ),
-            if (trees.length > 3)
-              for (var i = 0; i < 3; i++)
-                _cardTanamanku(
-                  context,
-                  trees[i],
-                  i,
-                ),
-            if (trees.length <= 3)
-              for (var i = 0; i < trees.length; i++)
-                _cardTanamanku(
-                  context,
-                  trees[i],
-                  i,
-                ),
-          ],
+          children: trees.isEmpty
+          ? [
+            Text(
+              'Tidak ada tanaman',
+              style: TextStyle(fontSize: 16,),
+            ),
+            ]
+          : List.generate(
+            trees.length > 3 ? 3 : trees.length,
+                (i) => _cardTanamanku(
+              context,
+              trees[i],
+              i,
+            ),
+          ),
         ),
       ),
     );
@@ -301,25 +255,19 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(builder: (context) {
-            return TreeDetailScreen(
-              tree: tree,
-            );
+            return TreeDetailScreen(tree: tree);
           }),
         ).then((_) {
           BlocProvider.of<TreeCubit>(context).getAllTrees();
         });
       },
-      child: _buildTreeCard(
-        context,
-        tree,
-      ),
+      child: _buildTreeCard(context, tree),
     );
   }
 
   Widget _buildTreeCard(
     BuildContext context,
     TreeEntityWithoutForeign tree,
-    // String treeImage,
   ) {
     print("URL IMAGE: ${tree.image}");
     return Container(
@@ -348,20 +296,7 @@ class _HomeScreenState extends State<HomeScreen> {
             decoration: BoxDecoration(
               color: Colors.grey,
               image: DecorationImage(
-                image: Image.network(
-                  ApiUrls.baseUrlWithoutApi + tree.image!.substring(1),
-                ).image,
-                // FileImage(
-                //   File(
-                //     treeImage,
-                //   ),
-                // ),
-                //     Image.memory(
-                //   state is MediaLoaded
-                //       ? state.image
-                //       : File(treeImage).readAsBytesSync(),
-                // ).image,
-                // image: AssetImage('assets/images/mg.jpeg'),
+                image: Image.network(ApiUrls.baseUrlWithoutApi + tree.image!.substring(1),).image,
                 fit: BoxFit.cover,
               ),
             ),
@@ -381,9 +316,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Text(
                     '${tree.lastDiagnosis == null ? 'Belum pernah didiagnosis' : tree.lastDiagnosis! == 1 ? 'Tanaman sehat ^^' : 'Tanaman sakit :('}',
-                    style: TextStyle(
-                      color: Colors.grey,
-                    ),
                   ),
                 ],
               ),
@@ -451,23 +383,22 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           RichText(
-              text: TextSpan(
-            children: [
-              TextSpan(
-                text: "Selamat Datang,\n",
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                      color: Colors.white,
-                    ),
-              ),
-              TextSpan(
-                text: username,
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-              )
-            ],
-          )),
+            text: TextSpan(
+              children: [
+                TextSpan(
+                    text: "Selamat Datang,\n",
+                    style: TextStyle(color: Colors.white)
+                ),
+                TextSpan(
+                  text: username,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                )
+              ],
+            )
+          ),
           _showAvatar(context, avatar),
         ],
       ),

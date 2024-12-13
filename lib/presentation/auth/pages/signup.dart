@@ -31,16 +31,6 @@ class _SignupPageState extends State<SignupPage> {
           Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height / 4,
-            decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Colors.white, Colors.white],
-                ),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(100),
-                  bottomRight: Radius.circular(100),
-                )),
             child: Center(
               child: Image.asset(
                 "assets/images/icon.png",
@@ -56,7 +46,7 @@ class _SignupPageState extends State<SignupPage> {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 36,
-                color: Colors.black,
+                // color: Colors.black,
               ),
             ),
           ),
@@ -65,7 +55,7 @@ class _SignupPageState extends State<SignupPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: Column(children: [
-              _buildFormFields(),
+              _buildFormFields(context),
               const SizedBox(height: 30),
               _signinButton(context),
               const SizedBox(height: 10),
@@ -79,7 +69,7 @@ class _SignupPageState extends State<SignupPage> {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
-                color: Colors.black,
+                // color: Colors.black,
               ),
             ),
           ),
@@ -88,8 +78,8 @@ class _SignupPageState extends State<SignupPage> {
             alignment: Alignment.center,
             child: RichText(
               text: TextSpan(
-                style: const TextStyle(
-                  color: Colors.black,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.inversePrimary,
                   fontSize: 14,
                 ),
                 children: <TextSpan>[
@@ -116,7 +106,7 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  Widget _buildFormFields() {
+  Widget _buildFormFields(BuildContext context) {
     return FormBuilder(
       key: _formKey,
       child: Column(
@@ -128,6 +118,7 @@ class _SignupPageState extends State<SignupPage> {
             Icons.email,
             _emailController,
             TextInputType.emailAddress,
+            context,
             [
               FormBuilderValidators.required(errorText: "Email tidak boleh kosong"),
               FormBuilderValidators.email(errorText: "Email tidak valid"),
@@ -141,6 +132,7 @@ class _SignupPageState extends State<SignupPage> {
             Icons.person,
             _usernameController,
             TextInputType.text,
+            context,
             [
               FormBuilderValidators.required(errorText: "Username tidak boleh kosong"),
               FormBuilderValidators.minLength(6, errorText: "Username minimal 6 karakter"),
@@ -150,10 +142,11 @@ class _SignupPageState extends State<SignupPage> {
           FormBoilerplate.buildTextField(
             'password',
             'Password',
-            'Enter new password', // Default hintText for password
+            'Enter new password',
             Icons.lock,
             _passwordController,
             TextInputType.text,
+            context,
             [
               FormBuilderValidators.required(errorText: "Password tidak boleh kosong"),
               FormBuilderValidators.minLength(6, errorText: "Password minimal 6 karakter"),
@@ -175,8 +168,8 @@ class _SignupPageState extends State<SignupPage> {
               ),
             ),
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.yellow.shade800, // warna tombol
-        minimumSize: const Size(double.infinity, 50), // ukuran tombol
+        backgroundColor: Colors.yellow.shade800,
+        minimumSize: const Size(double.infinity, 50),
       ),
       onPressed: () async {
         if (_formKey.currentState?.saveAndValidate() ?? false) {
@@ -219,7 +212,6 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
         body: _registerUI(context),
       ),
     );

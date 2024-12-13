@@ -10,12 +10,13 @@ class FormBoilerplate {
       IconData icon,
       TextEditingController controller,
       TextInputType textType,
+      BuildContext context,
       List<String? Function(String?)> validators) {
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
+            color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.5),
             spreadRadius: 2,
             blurRadius: 5,
             offset: Offset(0, 3),
@@ -29,7 +30,7 @@ class FormBoilerplate {
           labelText: labelText,
           hintText: hintText,
           prefixIcon: Icon(icon),
-          fillColor: Colors.white,
+          fillColor: Theme.of(context).colorScheme.onPrimaryFixed,
         ),
         controller: controller,
         validator: FormBuilderValidators.compose(validators),

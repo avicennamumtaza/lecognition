@@ -13,7 +13,6 @@ import 'package:lecognition/service_locator.dart';
 
 class EditTreeScreen extends StatefulWidget {
   EditTreeScreen({super.key, required this.tree});
-  // final UserEntity userData;
   final TreeEntityWithoutForeign tree;
 
   @override
@@ -24,7 +23,6 @@ class _EditTreeScreenState extends State<EditTreeScreen> {
   LatLng? currentLocation;
   var _descController = TextEditingController();
   final _formKey = GlobalKey<FormBuilderState>();
-  // XFile? _image;
   bool _isSubmitting = false;
 
   Future<LatLng> getCurrentLocation() async {
@@ -57,8 +55,6 @@ class _EditTreeScreenState extends State<EditTreeScreen> {
     super.initState();
     _descController = TextEditingController(text: widget.tree.name);
 
-    // _image = XFile(widget.image);
-
     getCurrentLocation().then((location) {
       setState(() {
         currentLocation = location;
@@ -71,7 +67,6 @@ class _EditTreeScreenState extends State<EditTreeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // _descController = TextEditingController(text: widget.tree.name);
     return Scaffold(
       appBar: AppBarWidget(title: 'Tambah Tanaman'),
       body: SingleChildScrollView(
@@ -83,9 +78,7 @@ class _EditTreeScreenState extends State<EditTreeScreen> {
               _buildFormFields(widget.tree),
               const SizedBox(height: 20),
               Center(
-                child: _isSubmitting
-                    ? CircularProgressIndicator()
-                    : _submitButton(context),
+                child: _isSubmitting ? CircularProgressIndicator() : _submitButton(context),
               ),
             ],
           ),
@@ -103,10 +96,11 @@ class _EditTreeScreenState extends State<EditTreeScreen> {
           FormBoilerplate.buildTextField(
             'desc',
             'Informasi Tentang Tanaman',
-            widget.tree.name!, // Updated hintText
+            widget.tree.name!,
             Icons.title,
             _descController,
             TextInputType.text,
+            context,
             [
               FormBuilderValidators.required(errorText: "Tidak boleh kosong"),
             ],
@@ -128,7 +122,6 @@ class _EditTreeScreenState extends State<EditTreeScreen> {
             final result = await sl<UpdateTreeUseCase>().call(
               params: UpdateTreeParams(
                 desc: _descController.text,
-                // image: _image?.path ?? '',
                 latitude: currentLocation?.latitude ?? 37.421998,
                 longitude: currentLocation?.longitude ?? -122.084,
                 id: widget.tree.id,
@@ -140,13 +133,10 @@ class _EditTreeScreenState extends State<EditTreeScreen> {
               },
               (success) {
                 int count = 0;
-                // // AppNavigator.pushReplacement(context, const ProfileScreen());
                 Navigator.popUntil(context, (route) {
                   count++;
                   return count == 3;
                 });
-                // Navigator.pop(context);
-                // DisplayMessage.errorMessage(context, success.toString());
               },
             );
           } catch (error) {

@@ -66,7 +66,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
       builder: (BuildContext context) {
         print(trees);
         return AlertDialog(
-          title: const Text('Konfirmasi'),
+          title: Text('Konfirmasi', style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -84,29 +84,26 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
                     fillColor: Colors.white,
                   ),
                   value: _selectedPlantName,
-                  items: trees.map(
-                    (tree) {
-                      final treeName = tree.name;
-                      return DropdownMenuItem<String>(
-                        value: treeName,
-                        child: Text(
-                          treeName!.substring(
-                            0,
-                            treeName.length > 20 ? 20 : treeName.length,
-                          ) + (treeName.length > 20 ? "..." : ""),
-                        ),
-                      );
-                    },
-                  ).toList(),
+                  items: trees.map((tree) {
+                    final treeName = tree.name;
+                    return DropdownMenuItem<String>(
+                      value: treeName,
+                      child: Text(
+                        treeName!.substring(
+                          0,
+                          treeName.length > 20 ? 20 : treeName.length,
+                        ) + (treeName.length > 20 ? "..." : ""),
+                      ),
+                    );
+                  }).toList(),
                   onChanged: (String? value) {
                     setState(() {
                       _selectedPlantName = value;
-                      int index = trees.indexWhere(
-                        (tree) => tree.name == value,
-                      );
+                      int index = trees.indexWhere((tree) => tree.name == value);
                       _selectedPlantId = trees[index].id;
                     });
-                  }),
+                  }
+              ),
             ],
           ),
           actions: <Widget>[
@@ -114,7 +111,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Batal'),
+              child: Text('Batal', style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer)),
             ),
             TextButton(
               onPressed: () {
@@ -125,7 +122,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
                 Navigator.of(context).pop();
                 _navigateToResultScreen();
               },
-              child: const Text('Ya'),
+              child: Text('Ya', style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer)),
             ),
           ],
         );
@@ -161,7 +158,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
       });
       _confirm(trees);
     } catch (e) {
-      _showErrorDialog('Failed to pick image from gallery: ${e.toString()}');
+      _showErrorDialog('Gagal mendapatkan gambar: ${e.toString()}');
     }
   }
 
@@ -211,14 +208,14 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Error'),
+          title: Text('Error', style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary)),
           content: Text(message),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('OK'),
+              child: Text('OK', style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer)),
             ),
           ],
         );
@@ -274,8 +271,7 @@ class _DiagnozerScreenState extends State<DiagnozerScreen> {
                 children: [
                   IconButton(
                     onPressed: () => _pickImageGallery(trees),
-                    icon:
-                        const Icon(Icons.image, size: 35, color: Colors.white),
+                    icon: const Icon(Icons.image, size: 35, color: Colors.white),
                   ),
                   Container(
                     decoration: const BoxDecoration(
