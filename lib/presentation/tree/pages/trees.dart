@@ -5,7 +5,6 @@ import 'package:lecognition/presentation/tree/bloc/tree_cubit.dart';
 import 'package:lecognition/presentation/tree/bloc/tree_state.dart';
 import 'package:lecognition/presentation/tree/pages/add_tree.dart';
 import 'package:lecognition/widgets/tree_card.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class TreesScreen extends StatefulWidget {
   TreesScreen({super.key});

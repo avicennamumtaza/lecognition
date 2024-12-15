@@ -1,4 +1,3 @@
-import 'package:lecognition/domain/diagnozer/entities/diagnosis.dart';
 import 'package:lecognition/domain/history/entities/history.dart';
 import 'package:lecognition/domain/tree/entities/tree.dart';
 

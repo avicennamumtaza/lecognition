@@ -1,13 +1,8 @@
 import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
-import 'package:lecognition/common/helper/mapper/diagnosis_mapper.dart';
-import 'package:lecognition/common/helper/mapper/disease_mapper.dart';
 import 'package:lecognition/common/helper/mapper/history_mapper.dart';
-import 'package:lecognition/data/disease/sources/disease_api_service.dart';
 import 'package:lecognition/data/history/sources/history_api_service.dart';
-import 'package:lecognition/domain/diagnozer/entities/diagnosis.dart';
-import 'package:lecognition/domain/disease/entities/disease.dart';
 import 'package:lecognition/domain/history/entities/history.dart';
 import 'package:lecognition/domain/history/repositories/history.dart';
 import 'package:lecognition/service_locator.dart';

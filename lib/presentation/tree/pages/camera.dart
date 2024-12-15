@@ -12,7 +12,6 @@ import 'package:lecognition/domain/tree/usecases/add_tree.dart';
 import 'package:lecognition/presentation/tree/bloc/camera_cubit.dart';
 import 'package:lecognition/presentation/tree/bloc/camera_state.dart';
 import 'package:lecognition/service_locator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({

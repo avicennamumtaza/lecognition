@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:lecognition/core/constant/api_urls.dart';
 import 'package:lecognition/core/network/dio_client.dart';
 import 'package:lecognition/data/media/models/get_image_params.dart';
 import 'package:lecognition/service_locator.dart';

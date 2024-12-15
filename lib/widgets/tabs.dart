@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lecognition/presentation/diagnozer/pages/diagnozer.dart';
 import 'package:lecognition/presentation/home/pages/home.dart';
-import 'package:lecognition/presentation/home/pages/home.dart';
 import 'package:lecognition/presentation/profile/pages/profile.dart';
 import 'package:lecognition/widgets/appbar.dart';
 

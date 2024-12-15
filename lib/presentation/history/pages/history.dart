@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lecognition/core/constant/api_urls.dart';
@@ -6,7 +5,6 @@ import 'package:lecognition/presentation/history/bloc/history_cubit.dart';
 import 'package:lecognition/presentation/history/bloc/history_state.dart';
 import 'package:lecognition/widgets/appbar.dart';
 import 'package:lecognition/presentation/history/pages/history_detail.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HistoriScreen extends StatefulWidget {
   const HistoriScreen({super.key});

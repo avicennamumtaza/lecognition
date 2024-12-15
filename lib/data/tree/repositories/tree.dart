@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
-import 'package:lecognition/common/helper/mapper/diagnosis_mapper.dart';
 import 'package:lecognition/common/helper/mapper/history_mapper.dart';
 import 'package:lecognition/common/helper/mapper/tree_mapper.dart';
 import 'package:lecognition/data/tree/models/add_tree_params.dart';
@@ -9,7 +8,6 @@ import 'package:lecognition/data/tree/models/delete_tree_params.dart';
 import 'package:lecognition/data/tree/models/get_tree_scans_params.dart';
 import 'package:lecognition/data/tree/models/update_tree_params.dart';
 import 'package:lecognition/data/tree/sources/tree_api_service.dart';
-import 'package:lecognition/domain/diagnozer/entities/diagnosis.dart';
 import 'package:lecognition/domain/history/entities/history.dart';
 import 'package:lecognition/domain/tree/entities/tree.dart';
 import 'package:lecognition/domain/tree/repositories/tree.dart';

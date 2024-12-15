@@ -3,7 +3,6 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:lecognition/core/constant/api_urls.dart';
 import 'package:lecognition/domain/disease/entities/disease.dart';
 import 'package:lecognition/domain/disease/entities/disease_detail.dart';
 import 'package:lecognition/presentation/home/pages/disease.dart';
@@ -12,7 +11,6 @@ import 'package:lecognition/data/diagnozer/models/get_diagnoze_result_params.dar
 import 'package:lecognition/presentation/diagnozer/bloc/diagnosis_state.dart';
 import 'package:lecognition/presentation/diagnozer/bloc/diagnozer_cubit.dart';
 import 'package:lecognition/presentation/home/pages/home.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class ResultScreen extends StatefulWidget {
@@ -83,7 +81,7 @@ class _ResultScreenState extends State<ResultScreen> {
             if (state is DiagnosisFailureLoad) {
               return Center(
                   child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 45),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -106,7 +104,7 @@ class _ResultScreenState extends State<ResultScreen> {
                     SizedBox(height: 5),
                     state.errorMessage.isNotEmpty
                         ? Text(
-                            "${state.errorMessage}\nSilahkan coba lagi dengan lebih fokus ke satu objek daun atau pilih foto lain.",
+                            "${state.errorMessage}\nSilahkan coba foto lain dengan lebih fokus pada satu objek daun mangga.",
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -278,7 +276,7 @@ class _ResultScreenState extends State<ResultScreen> {
                                 ),
                               )
                             : Text(
-                                "Terkena Penyakit ${disease.name}!",
+                                "Penyakit ${disease.name}!",
                                 style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w700,
