@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:lecognition/widgets/appbar.dart';
 import 'package:lecognition/presentation/tree/bloc/tree_cubit.dart';
 import 'package:lecognition/presentation/tree/bloc/tree_state.dart';
@@ -16,34 +18,25 @@ class TreesScreen extends StatefulWidget {
 class _TreesScreenState extends State<TreesScreen> {
   List<String> treeImages = [];
 
-  // @override
-  // void dispose() {
-  //   // TODO: implement dispose
-  //   super.dispose();
-  //   treeImages.clear();
-  // }
+  LatLng getCenterPoint(List<LatLng> locationList) {
+    double totalLatitude = 0;
+    double totalLongitude = 0;
+    for (int i = 0; i < locationList.length; i++) {
+      totalLatitude += locationList[i].latitude;
+      totalLongitude += locationList[i].longitude;
+    }
+    return LatLng(totalLatitude / locationList.length,
+        totalLongitude / locationList.length);
+  }
 
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   // getImagesPath();
-  // }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // getImagesPath();
-  // }
-
-  // // void linkDiseaseDetails(List<BookmarkEntity> bookmarkedDiseases) {
-  // Future<void> getImagesPath() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   treeImages = prefs.getStringList('tree_images') ?? [];
-  //   setState(() {
-  //     treeImages = treeImages;
-  //   });
-  //   // return savedImages;
-  // }
+  List<LatLng> getLocationTrees(
+      List<double> latitudes, List<double> longitudes) {
+    List<LatLng> locationPoints = [];
+    for (int i = 0; i < latitudes.length; i++) {
+      locationPoints.add(LatLng(latitudes[i], longitudes[i]));
+    }
+    return locationPoints;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,8 +96,8 @@ class _TreesScreenState extends State<TreesScreen> {
                             ),
                           ).then((_) {
                             // if (value != null) {
-                              BlocProvider.of<TreeCubit>(context).getAllTrees();
-                              // getImagesPath();
+                            BlocProvider.of<TreeCubit>(context).getAllTrees();
+                            // getImagesPath();
                             // }
                           });
                         },
@@ -164,9 +157,74 @@ class _TreesScreenState extends State<TreesScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    SizedBox(height: 20),
+                    Text(
+                      'Peta Lokasi Tanaman',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.width * 0.5,
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.greenAccent,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: FlutterMap(
+                        options: MapOptions(
+                          initialCenter: getCenterPoint(getLocationTrees(
+                              trees.map((tree) => tree.latitude!).toList(),
+                              trees.map((tree) => tree.longitude!).toList())),
+                          initialZoom: 7.0,
+                          maxZoom: 17.0,
+                          minZoom: 5.0,
+                        ),
+                        children: [
+                          TileLayer(
+                            urlTemplate:
+                                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                          ),
+                          MarkerLayer(
+                            markers: getLocationTrees(
+                                    trees
+                                        .map((tree) => tree.latitude!)
+                                        .toList(),
+                                    trees
+                                        .map((tree) => tree.longitude!)
+                                        .toList())
+                                .map((point) => Marker(
+                                      point: point,
+                                      child: const Icon(
+                                        Icons.location_pin,
+                                        size: 30,
+                                        color: Colors.red,
+                                      ),
+                                    ))
+                                .toList(),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Divider(
+                      color: Colors.grey[500],
+                      indent: 20,
+                      endIndent: 20,
+                    ),
                     Expanded(
                       child: GridView.builder(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        // padding: const EdgeInsets.symmetric(vertical: 10),
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2, // 2 cards per row
