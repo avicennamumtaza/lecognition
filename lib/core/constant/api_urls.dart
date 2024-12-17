@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 
 class ApiUrls {
-  static const myComputerIpAddress = "192.168.x.x";
+  static const myComputerIpAddress = "192.168.245.61";
   static final baseUrl = kIsWeb
       ? "http://localhost:8000/api"
       : Platform.isAndroid
@@ -18,6 +18,9 @@ class ApiUrls {
           : Platform.isIOS
               ? "http://127.0.0.1:8000"
               : "http://$myComputerIpAddress:8000";
+
+  // static final baseUrlWithoutApi = "http://192.168.245.61:8000/";
+  // static final baseUrl = "http://192.168.245.61:8000/api/";
 
   // Auth-related URLs
   static const login = "login";

@@ -78,6 +78,14 @@ class _ResultScreenState extends State<ResultScreen> {
           ),
         child: BlocBuilder<DiagnozerCubit, DiagnosisState>(
           builder: (context, state) {
+            if (state is DiagnosisLoading) {
+              return Center(
+                child: SpinKitSquareCircle(
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 50.0,
+                ),
+              );
+            }
             if (state is DiagnosisFailureLoad) {
               return Center(
                   child: Padding(

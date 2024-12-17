@@ -333,7 +333,7 @@ class Tree_DetailScreenState extends State<TreeDetailScreen> {
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: const Text('Konfirmasi'),
+              title: Text('Konfirmasi', style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary)),
               content:
                   const Text('Apakah anda yakin ingin menghapus tanaman ini?'),
               actions: <Widget>[
@@ -341,7 +341,7 @@ class Tree_DetailScreenState extends State<TreeDetailScreen> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text('Batal'),
+                  child: Text('Batal', style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer)),
                 ),
                 TextButton(
                   onPressed: () async {
@@ -353,7 +353,7 @@ class Tree_DetailScreenState extends State<TreeDetailScreen> {
                       return count == 3;
                     });
                   },
-                  child: const Text('Hapus'),
+                  child: Text('Hapus', style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer)),
                 ),
               ],
             );
