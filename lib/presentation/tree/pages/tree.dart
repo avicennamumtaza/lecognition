@@ -248,6 +248,11 @@ class Tree_DetailScreenState extends State<TreeDetailScreen> {
                     child: BlocBuilder<TreeCubit, TreeState>(
                         builder: (context, state) {
                       if (state is TreeScansLoaded) {
+                        if (state.scans.isEmpty) {
+                          return const Center(
+                            child: Text('Tanaman ini belum pernah didiagnosis'),
+                          );
+                        }
                         return ListView.builder(
                           reverse: true,
                           padding: EdgeInsets.zero,

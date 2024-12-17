@@ -208,11 +208,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   SigninPage(),
                                 );
                               },
-                              child: Text('Keluar',
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimaryContainer)),
+                              child: Text(
+                                'Keluar',
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onPrimaryContainer,
+                                ),
+                              ),
                             ),
                           ],
                         );

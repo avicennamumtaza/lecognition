@@ -24,6 +24,7 @@ class _EditTreeScreenState extends State<EditTreeScreen> {
   var _descController = TextEditingController();
   final _formKey = GlobalKey<FormBuilderState>();
   bool _isSubmitting = false;
+  bool _isUpdateLocationToHere = false;
 
   Future<LatLng> getCurrentLocation() async {
     bool serviceEnabled;
@@ -78,7 +79,9 @@ class _EditTreeScreenState extends State<EditTreeScreen> {
               _buildFormFields(widget.tree),
               const SizedBox(height: 20),
               Center(
-                child: _isSubmitting ? CircularProgressIndicator() : _submitButton(context),
+                child: _isSubmitting
+                    ? CircularProgressIndicator()
+                    : _submitButton(context),
               ),
             ],
           ),
@@ -103,10 +106,35 @@ class _EditTreeScreenState extends State<EditTreeScreen> {
             context,
             [
               FormBuilderValidators.required(errorText: "Tidak boleh kosong"),
-              FormBuilderValidators.max(20, errorText: 'Maksimal 20 karakter'),
+              FormBuilderValidators.maxLength(
+                20,
+                errorText: 'Maksimal 20 karakter',
+              ),
             ],
           ),
           const SizedBox(height: 20),
+          SwitchListTile(
+            value: _isUpdateLocationToHere,
+            onChanged: (value) {
+              setState(() {
+                _isUpdateLocationToHere = value;
+              });
+            },
+            title: const Text(
+              'Perbarui Lokasi Tanaman sesuai Lokasi Anda',
+              style: TextStyle(
+                fontSize: 15,
+              ),
+            ),
+            secondary: Icon(
+              Icons.my_location,
+              size: 27,
+            ),
+            activeColor: Theme.of(context).colorScheme.primary,
+            activeTrackColor: Colors.grey.shade400,
+            inactiveThumbColor: Colors.grey,
+            inactiveTrackColor: Colors.grey.shade300,
+          ),
         ],
       ),
     );
@@ -123,8 +151,12 @@ class _EditTreeScreenState extends State<EditTreeScreen> {
             final result = await sl<UpdateTreeUseCase>().call(
               params: UpdateTreeParams(
                 desc: _descController.text,
-                latitude: currentLocation?.latitude ?? 37.421998,
-                longitude: currentLocation?.longitude ?? -122.084,
+                latitude: _isUpdateLocationToHere
+                    ? currentLocation?.latitude
+                    : widget.tree.latitude,
+                longitude: _isUpdateLocationToHere
+                    ? currentLocation?.longitude
+                    : widget.tree.longitude,
                 id: widget.tree.id,
               ),
             );
