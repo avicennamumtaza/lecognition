@@ -224,14 +224,10 @@ class _TreesScreenState extends State<TreesScreen> {
                     ),
                     Expanded(
                       child: GridView.builder(
-                        // padding: const EdgeInsets.symmetric(vertical: 10),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2, // 2 cards per row
-                          // crossAxisSpacing: 1,
-                          // mainAxisSpacing: 10.0,
-                          childAspectRatio:
-                              0.75, // Adjust card height-to-width ratio
+                        padding: const EdgeInsets.only(bottom: 15),
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.90,
                         ),
                         itemCount: trees.length,
                         itemBuilder: (BuildContext context, int index) {

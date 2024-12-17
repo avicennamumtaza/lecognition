@@ -27,8 +27,8 @@ class TreeCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
         ),
-        elevation: 5, // Shadow effect
-        margin: const EdgeInsets.all(10),
+        elevation: 3, // Shadow effect
+        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15.0),
