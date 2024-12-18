@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lecognition/core/constant/api_urls.dart';
+import 'package:lecognition/domain/disease/entities/disease_detail.dart';
+import 'package:lecognition/presentation/home/pages/home.dart';
 import 'package:lecognition/widgets/appbar.dart';
 import 'package:lecognition/domain/disease/entities/disease.dart';
 import 'package:lecognition/presentation/home/pages/disease.dart';
@@ -28,10 +30,31 @@ class HistoryDetailScreen extends StatefulWidget {
 class _HistoryDetailScreenState extends State<HistoryDetailScreen> {
   bool isShowPercentage = false;
 
+  DiseaseEntity _findDisease(int diseaseId) {
+    print("Disease ID: $diseaseId");
+    for (var disease in HomeScreen.localDiseasesData) {
+      print("Disease ID Looping Now ${disease.id} == $diseaseId ?");
+      if (disease.id == diseaseId) {
+        return disease;
+      }
+    }
+    final DiseaseEntity returnedDisease = DiseaseEntity(
+      id: 5,
+      name: 'Penyakit Tidak Diketahui',
+      desc: 'Penyakit ini tidak ditemukan dalam database kami.',
+    );
+    returnedDisease.detail = diseaseDetails.firstWhere(
+      (detail) => detail.id == returnedDisease.id,
+      orElse: null,
+    );
+    return returnedDisease;
+  }
+
   @override
   Widget build(BuildContext context) {
     print('penyakit: ${widget.disease.name}');
     print('persentase: ${widget.percentage}');
+    final DiseaseEntity disease = _findDisease(widget.disease.id!);
     return Scaffold(
       appBar: AppBarWidget(
         title: '${widget.diagnosisNumber + 1} - ${widget.disease.name}',
@@ -188,7 +211,7 @@ class _HistoryDetailScreenState extends State<HistoryDetailScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => DiseaseScreen(
-                    disease: widget.disease,
+                    disease: disease,
                   ),
                 ),
               );
