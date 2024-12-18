@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:lecognition/common/helper/message/display_message.dart';
 import 'package:lecognition/widgets/appbar.dart';
 import 'package:lecognition/presentation/tree/bloc/tree_cubit.dart';
 import 'package:lecognition/presentation/tree/bloc/tree_state.dart';
@@ -17,6 +18,7 @@ class TreesScreen extends StatefulWidget {
 
 class _TreesScreenState extends State<TreesScreen> {
   List<String> treeImages = [];
+  int mapZoom = 7;
 
   LatLng getCenterPoint(List<LatLng> locationList) {
     double totalLatitude = 0;
@@ -27,6 +29,28 @@ class _TreesScreenState extends State<TreesScreen> {
     }
     return LatLng(totalLatitude / locationList.length,
         totalLongitude / locationList.length);
+  }
+
+  void zoomIn() {
+    if (mapZoom == 17) {
+      DisplayMessage.errorMessage(
+          context, 'Zoom level is already at maximum $mapZoom');
+      return;
+    }
+    setState(() {
+      mapZoom += 1;
+    });
+  }
+
+  void zoomOut() {
+    if (mapZoom == 5) {
+      DisplayMessage.errorMessage(
+          context, 'Zoom level is already at minimum $mapZoom');
+      return;
+    }
+    setState(() {
+      mapZoom -= 1;
+    });
   }
 
   List<LatLng> getLocationTrees(
@@ -166,55 +190,85 @@ class _TreesScreenState extends State<TreesScreen> {
                       ),
                     ),
                     SizedBox(height: 10),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.width * 0.5,
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.greenAccent,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 1,
-                            blurRadius: 5,
-                            offset: const Offset(0, 3),
+                    Stack(
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.width * 0.5,
+                          margin: const EdgeInsets.symmetric(horizontal: 10),
+                          decoration: BoxDecoration(
+                            color: Colors.greenAccent,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 1,
+                                blurRadius: 5,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      child: FlutterMap(
-                        options: MapOptions(
-                          initialCenter: getCenterPoint(getLocationTrees(
-                              trees.map((tree) => tree.latitude!).toList(),
-                              trees.map((tree) => tree.longitude!).toList())),
-                          initialZoom: 7.0,
-                          maxZoom: 17.0,
-                          minZoom: 5.0,
+                          child: FlutterMap(
+                            key: ValueKey(mapZoom),
+                            options: MapOptions(
+                              initialCenter: getCenterPoint(getLocationTrees(
+                                  trees.map((tree) => tree.latitude!).toList(),
+                                  trees
+                                      .map((tree) => tree.longitude!)
+                                      .toList())),
+                              initialZoom: mapZoom.toDouble(),
+                              maxZoom: 17.0,
+                              minZoom: 5.0,
+                            ),
+                            children: [
+                              TileLayer(
+                                urlTemplate:
+                                    "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                              ),
+                              MarkerLayer(
+                                markers: getLocationTrees(
+                                        trees
+                                            .map((tree) => tree.latitude!)
+                                            .toList(),
+                                        trees
+                                            .map((tree) => tree.longitude!)
+                                            .toList())
+                                    .map((point) => Marker(
+                                          point: point,
+                                          child: const Icon(
+                                            Icons.location_pin,
+                                            size: 30,
+                                            color: Colors.red,
+                                          ),
+                                        ))
+                                    .toList(),
+                              ),
+                            ],
+                          ),
                         ),
-                        children: [
-                          TileLayer(
-                            urlTemplate:
-                                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                        Positioned(
+                          top: 3,
+                          right: 10,
+                          child: Column(
+                            children: [
+                              FloatingActionButton(
+                                onPressed: zoomIn,
+                                child: const Icon(Icons.add),
+                                backgroundColor: Colors.white,
+                                foregroundColor: Colors.black,
+                                mini: true,
+                              ),
+                              // const SizedBox(height: 3),
+                              FloatingActionButton(
+                                onPressed: zoomOut,
+                                child: const Icon(Icons.remove),
+                                backgroundColor: Colors.white,
+                                foregroundColor: Colors.black,
+                                mini: true,
+                              ),
+                            ],
                           ),
-                          MarkerLayer(
-                            markers: getLocationTrees(
-                                    trees
-                                        .map((tree) => tree.latitude!)
-                                        .toList(),
-                                    trees
-                                        .map((tree) => tree.longitude!)
-                                        .toList())
-                                .map((point) => Marker(
-                                      point: point,
-                                      child: const Icon(
-                                        Icons.location_pin,
-                                        size: 30,
-                                        color: Colors.red,
-                                      ),
-                                    ))
-                                .toList(),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 10),
                     Divider(
