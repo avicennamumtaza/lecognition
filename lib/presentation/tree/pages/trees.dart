@@ -34,7 +34,7 @@ class _TreesScreenState extends State<TreesScreen> {
   void zoomIn() {
     if (mapZoom == 17) {
       DisplayMessage.errorMessage(
-          context, 'Zoom level is already at maximum $mapZoom');
+          context, 'Zoom level is already at maximum');
       return;
     }
     setState(() {
@@ -45,7 +45,7 @@ class _TreesScreenState extends State<TreesScreen> {
   void zoomOut() {
     if (mapZoom == 5) {
       DisplayMessage.errorMessage(
-          context, 'Zoom level is already at minimum $mapZoom');
+          context, 'Zoom level is already at minimum');
       return;
     }
     setState(() {
