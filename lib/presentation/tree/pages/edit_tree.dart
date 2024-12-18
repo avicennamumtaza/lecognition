@@ -130,10 +130,10 @@ class _EditTreeScreenState extends State<EditTreeScreen> {
               Icons.my_location,
               size: 27,
             ),
-            activeColor: Theme.of(context).colorScheme.primary,
-            activeTrackColor: Colors.grey.shade400,
+            activeColor: Theme.of(context).colorScheme.onPrimary,
             inactiveThumbColor: Colors.grey,
             inactiveTrackColor: Colors.grey.shade300,
+            activeTrackColor: Colors.grey.shade300,
           ),
         ],
       ),
@@ -180,8 +180,6 @@ class _EditTreeScreenState extends State<EditTreeScreen> {
         }
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Theme.of(context).colorScheme.onPrimary,
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       ),
